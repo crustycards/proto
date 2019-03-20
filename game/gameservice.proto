@@ -1,0 +1,197 @@
+syntax = "proto3";
+
+message ChatMessage {
+  string user_id = 1;
+  string text = 2;
+}
+
+message WhiteCard {
+  string id = 1;
+  string cardpack_id = 2;
+  string text = 3;
+}
+
+message BlackCard {
+  string id = 1;
+  string cardpack_id = 2;
+  string text = 3;
+  int32 answer_fields = 4;
+}
+
+message User {
+  string id = 1;
+  string name = 2;
+}
+
+message Player {
+  string id = 1;
+  string name = 2;
+  int32 score = 3;
+}
+
+message GameInfo {
+  string name = 1;
+  int32 player_count = 2;
+  int32 max_players = 3;
+  Player owner = 4;
+}
+
+message GameView {
+  enum Stage {
+    NOT_RUNNING = 1;
+    PLAY_PHASE = 2;
+    JUDGE_PHASE = 3;
+    ROUND_END_PHASE = 4;
+  }
+
+  message WhiteCardList {
+    repeated WhiteCard cards = 1;
+  }
+
+  string name = 1;
+  int32 max_players = 2;
+  int32 max_score = 3;
+  Stage stage = 4;
+  repeated WhiteCard hand = 5;
+  repeated Player players = 6;
+  repeated Player queued_players = 7;
+  repeated User banned_players = 8;
+  string judge_id = 9;
+  string owner_id = 10;
+  map<string, WhiteCardList> white_played = 11;
+  repeated WhiteCardList white_played_anonymous = 12;
+  BlackCard current_black_card = 13;
+  User winner = 14; // TODO - Possibly change this to use Player message instead
+  repeated ChatMessage chat_messages = 15;
+}
+
+
+
+message SearchGamesRequest {
+  // string query = 1; TODO - Add this optional parameter
+}
+
+message SearchGamesResponse {
+  repeated GameInfo games = 1;
+}
+
+message CreateGameRequest {
+  string user_id = 1; // The ID of the user creating the game
+  string game_name = 2;
+  int32 max_players = 3;
+  int32 max_score = 4;
+  int32 hand_size = 5;
+  repeated string cardpack_ids = 6;
+}
+
+message CreateGameResponse {
+  GameView game = 1;
+}
+
+message StartGameRequest {
+  string userId = 1; // Must be the ID of someone who owns the game that they are in
+}
+
+message StartGameResponse {
+  GameView game = 1;
+}
+
+message StopGameRequest {
+  string userId = 1; // Must be the ID of someone who owns the game that they are in
+}
+
+message StopGameResponse {
+  GameView game = 1;
+}
+
+message JoinGameRequest {
+  string user_id = 1; // The user who is joining a game
+  string game_name = 2; // The unique identifier of the game
+}
+
+message JoinGameResponse {
+  GameView game = 1;
+}
+
+message LeaveGameRequest {
+  string user_id = 1; // The user who is leaving a game
+}
+
+message LeaveGameResponse {
+}
+
+message KickPlayerRequest {
+  string owner_id = 1;
+  string troll_id = 1;
+}
+
+message KickPlayerResponse {
+  GameView game = 1;
+}
+
+message PlayCardRequest {
+  string user_id = 1;
+  repeated string card_ids = 2;
+}
+
+message PlayCardResponse {
+  GameView game = 1;
+}
+
+message UnplayCardRequest {
+  string user_id = 1;
+}
+
+message UnplayCardResponse {
+  GameView game = 1;
+}
+
+message JudgeCardRequest {
+  string user_id = 1;
+  string card_id = 2;
+}
+
+message JudgeCardResponse {
+  GameView game = 1;
+}
+
+message StartNextRoundRequest {
+  string user_id = 1;
+}
+
+message StartNextRoundResponse {
+  GameView game = 1;
+}
+
+message SendMessageToGameRequest {
+  string user_id = 1;
+  string message_text = 2;
+}
+
+message SendMessageToGameResponse {
+  GameView game = 1;
+}
+
+message GetGameViewRequest {
+  string user_id = 1;
+}
+
+message GetGameViewResponse {
+  GameView game = 1;
+}
+
+service GameService {
+  rpc SearchGames (SearchGamesRequest) returns (SearchGamesResponse);
+  rpc CreateGame (CreateGameRequest) returns (CreateGameResponse);
+  rpc StartGame (StartGameRequest) returns (StartGameResponse);
+  rpc StopGame (StopGameRequest) returns (StopGameResponse);
+  rpc JoinGame (JoinGameRequest) returns (JoinGameResponse);
+  rpc LeaveGame (LeaveGameRequest) returns (LeaveGameResponse);
+  rpc KickPlayer (KickPlayerRequest) returns (KickPlayerResponse);
+  rpc PlayCard (PlayCardRequest) returns (PlayCardResponse);
+  rpc UnplayCard (UnplayCardRequest) returns (UnplayCardResponse);
+  rpc JudgeCard (JudgeCardRequest) returns (JudgeCardResponse);
+  rpc StartNextRound (StartNextRoundRequest) returns (StartNextRoundResponse);
+  rpc SendMessageToGame (SendMessageToGameRequest) returns (SendMessageToGameResponse);
+  rpc GetGameView (GetGameViewRequest) returns (GetGameViewResponse);
+}
