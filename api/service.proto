@@ -1,4 +1,10 @@
-import "./model.proto";
+syntax = "proto3";
+
+import "model.proto";
+
+message CreateUserRequest {}
+
+message CreateUserResponse {}
 
 message GetUserRequest {
   // Cannot set id along with oauth data.
@@ -15,6 +21,6 @@ message GetUserResponse {
 }
 
 service UserService {
-  rpc CreateUser(CreateUserRequest) returns CreateUserResponse;
-  rpc GetUser(GetUserRequest) returns GetUserResponse;
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
 }
