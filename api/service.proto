@@ -1,10 +1,11 @@
 import "./model.proto";
 
 message GetUserRequest {
+  // Cannot set id along with oauth data.
   string id = 1;
 
   // The oauth_id and oauth_provider
-  // must both be set or unset
+  // must both be set or unset.
   string oauth_id = 2;
   string oauth_provider = 3;
 }
