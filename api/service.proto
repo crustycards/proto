@@ -2,9 +2,15 @@ syntax = "proto3";
 
 import "model.proto";
 
-message CreateUserRequest {}
+message CreateUserRequest {
+  string name = 1;
+  string oauth_id = 2;
+  string oauth_provider = 3;
+}
 
-message CreateUserResponse {}
+message CreateUserResponse {
+  User user = 1;
+}
 
 message GetUserRequest {
   // Cannot set id along with oauth data.
@@ -20,7 +26,97 @@ message GetUserResponse {
   User user = 1;
 }
 
+message EditUserRequest {
+  string id = 1;
+  string name = 2;
+}
+
+message EditUserResponse {
+  User user = 1;
+}
+
+message AddFriendRequest {
+  string userId = 1;
+  string friendId = 2;
+}
+
+message AddFriendResponse {
+}
+
+message RemoveFriendRequest {
+  string userId = 1;
+  string friendId = 2;
+}
+
+message RemoveFriendResponse {
+}
+
+message GetFriendRequestsSentRequest {
+  string userId = 1;
+  Page page = 2;
+}
+
+message GetFriendRequestsSentResponse {
+  repeated User users = 1;
+  PageInfo pageInfo = 2;
+}
+
+message GetFriendRequestsReceivedRequest {
+  string userId = 1;
+  Page page = 2;
+}
+
+message GetFriendRequestsReceivedResponse {
+  repeated User users = 1;
+  PageInfo pageInfo = 2;
+}
+
+message GetFriendsRequest {
+  string userId = 1;
+  Page page = 2;
+}
+
+message GetFriendsResponse {
+  repeated User users = 1;
+  PageInfo pageInfo = 2;
+}
+
+message SearchUsersRequest {
+  string query = 1;
+  Page page = 2;
+}
+
+message SearchUsersResponse {
+  repeated User users = 1;
+  PageInfo pageInfo = 2;
+}
+
+message GetProfileImageRequest {
+  string userId = 1;
+}
+
+message GetProfileImageResponse {
+  bytes image = 1;
+}
+
+message SetProfileImageRequest {
+  string userId = 1;
+  bytes image = 2;
+}
+
+message SetProfileImageResponse {
+}
+
 service UserService {
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc EditUser(EditUserRequest) returns (EditUserResponse);
+  rpc AddFriend(AddFriendRequest) returns (AddFriendResponse);
+  rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse);
+  rpc GetFriendRequestsSent(GetFriendRequestsSentRequest) returns (GetFriendRequestsSentResponse);
+  rpc GetFriendRequestsReceived(GetFriendRequestsReceivedRequest) returns (GetFriendRequestsReceivedResponse);
+  rpc GetFriends(GetFriendsRequest) returns (GetFriendsResponse);
+  rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
+  rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
+  rpc SetProfileImage(SetProfileImageRequest) returns (SetProfileImageResponse);
 }

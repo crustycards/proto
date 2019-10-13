@@ -1,5 +1,25 @@
 syntax = "proto3";
 
+// Sent by the client to specify which
+// results of a paginated set to retrieve.
+message Page {
+  int32 first = 1;
+  string after = 2;
+  int32 last = 3;
+  string before = 4;
+}
+
+// Returned by the server to specify which pages the client can jump to.
+// Contains all data required for pagination according to the GraphQL Relay spec:
+// https://facebook.github.io/relay/graphql/connections.htm#sec-Arguments
+// All four arguments will always be non-null.
+message PageInfo {
+  bool hasPreviousPage = 1;
+  bool hasNextPage = 2;
+  string startCursor = 3;
+  string endCursor = 4;
+}
+
 message User {
   string id = 1; // TODO - Change to int64
   string name = 2;
