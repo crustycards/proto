@@ -36,49 +36,49 @@ message EditUserResponse {
 }
 
 message AddFriendRequest {
-  string userId = 1;
-  string friendId = 2;
+  string user_id = 1;
+  string friend_id = 2;
 }
 
 message AddFriendResponse {
 }
 
 message RemoveFriendRequest {
-  string userId = 1;
-  string friendId = 2;
+  string user_id = 1;
+  string friend_id = 2;
 }
 
 message RemoveFriendResponse {
 }
 
 message GetFriendRequestsSentRequest {
-  string userId = 1;
+  string user_id = 1;
   Page page = 2;
 }
 
 message GetFriendRequestsSentResponse {
   repeated User users = 1;
-  PageInfo pageInfo = 2;
+  PageInfo page_info = 2;
 }
 
 message GetFriendRequestsReceivedRequest {
-  string userId = 1;
+  string user_id = 1;
   Page page = 2;
 }
 
 message GetFriendRequestsReceivedResponse {
   repeated User users = 1;
-  PageInfo pageInfo = 2;
+  PageInfo page_info = 2;
 }
 
 message GetFriendsRequest {
-  string userId = 1;
+  string user_id = 1;
   Page page = 2;
 }
 
 message GetFriendsResponse {
   repeated User users = 1;
-  PageInfo pageInfo = 2;
+  PageInfo page_info = 2;
 }
 
 message SearchUsersRequest {
@@ -88,11 +88,11 @@ message SearchUsersRequest {
 
 message SearchUsersResponse {
   repeated User users = 1;
-  PageInfo pageInfo = 2;
+  PageInfo page_info = 2;
 }
 
 message GetProfileImageRequest {
-  string userId = 1;
+  string user_id = 1;
 }
 
 message GetProfileImageResponse {
@@ -100,7 +100,7 @@ message GetProfileImageResponse {
 }
 
 message SetProfileImageRequest {
-  string userId = 1;
+  string user_id = 1;
   bytes image = 2;
 }
 

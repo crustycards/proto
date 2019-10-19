@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+import "google/protobuf/timestamp.proto";
+
 // Sent by the client to specify which
 // results of a paginated set to retrieve.
 message Page {
@@ -14,13 +16,45 @@ message Page {
 // https://facebook.github.io/relay/graphql/connections.htm#sec-Arguments
 // All four arguments will always be non-null.
 message PageInfo {
-  bool hasPreviousPage = 1;
-  bool hasNextPage = 2;
-  string startCursor = 3;
-  string endCursor = 4;
+  bool has_previous_page = 1;
+  bool has_next_page = 2;
+  string start_cursor = 3;
+  string end_cursor = 4;
 }
 
 message User {
   string id = 1; // TODO - Change to int64
   string name = 2;
+}
+
+message Cardpack {
+  string id = 1;
+  string name = 2;
+  User owner = 3;
+  google.protobuf.Timestamp created_at = 4;
+  int32 like_count = 5;
+}
+
+// Used to create black cards.
+message BlackCardCreationData {
+  string text = 2;
+  int32 answer_fields = 3;
+}
+
+// Used to create white cards.
+message WhiteCardCreationData {
+  string text = 2;
+}
+
+message BlackCard {
+  string id = 1;
+  string text = 2;
+  int32 answer_fields = 3;
+  string cardpack_id = 4;
+}
+
+message WhiteCard {
+  string id = 1;
+  string text = 2;
+  string cardpack_id = 3;
 }

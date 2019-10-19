@@ -1,0 +1,166 @@
+syntax = "proto3";
+
+import "model.proto";
+
+message CreateCardpackRequest {
+  string user_id = 1;
+  string cardpack_name = 2;
+}
+
+message CreateCardpackResponse {
+  Cardpack cardpack = 1;
+}
+
+message GetCardpackRequest {
+  string id = 1;
+}
+
+message GetCardpackResponse {
+  Cardpack cardpack = 1;
+}
+
+message GetCardpacksRequest {
+  string user_id = 1;
+  Page page = 2;
+}
+
+message GetCardpacksResponse {
+  repeated Cardpack cardpacks = 1;
+  PageInfo page_info = 2;
+}
+
+message UpdateCardpackRequest {
+  string cardpack_id = 1;
+  string name = 2;
+}
+
+message UpdateCardpackResponse {
+}
+
+message DeleteCardpackRequest {
+  string cardpack_id = 1;
+}
+
+message DeleteCardpackResponse {
+}
+
+message AddCardsToCardpackRequest {
+  string cardpack_id = 1;
+  repeated BlackCardCreationData black_cards = 2;
+  repeated WhiteCardCreationData white_cards = 3;
+}
+
+message AddCardsToCardpackResponse {
+  repeated BlackCard black_cards = 1;
+  repeated WhiteCard white_cards = 2;
+}
+
+message DeleteCardsFromCardpackRequest {
+  string cardpack_id = 1;
+  repeated string black_card_ids = 2;
+  repeated string white_card_ids = 3;
+}
+
+message DeleteCardsFromCardpackResponse {
+}
+
+message AddCardpackToFavoritesRequest {
+  string user_id = 1;
+  string cardpack_id = 2;
+}
+
+message AddCardpackToFavoritesResponse {
+}
+
+message RemoveCardpackFromFavoritesRequest {
+  string user_id = 1;
+  string cardpack_id = 2;
+}
+
+message RemoveCardpackFromFavoritesResponse {
+}
+
+message GetFavoritedCardpacksRequest {
+  string user_id = 1;
+  Page page = 2;
+}
+
+message GetFavoritedCardpacksResponse {
+  repeated Cardpack cardpacks = 1;
+  PageInfo page_info = 2;
+}
+
+message GetIsCardpackFavoritedByUserRequest {
+  string user_id = 1;
+  string cardpack_id = 2;
+}
+
+message GetIsCardpackFavoritedByUserResponse {
+  bool is_favorited = 1;
+}
+
+message GetBlackCardsRequest {
+  string cardpack_id = 1;
+  Page page = 2;
+}
+
+message GetBlackCardsResponse {
+  repeated BlackCard cards = 1;
+  PageInfo page_info = 2;
+}
+
+message GetWhiteCardsRequest {
+  string cardpack_id = 1;
+  Page page = 2;
+}
+
+message GetWhiteCardsResponse {
+  repeated WhiteCard cards = 1;
+  PageInfo page_info = 2;
+}
+
+message UpdateBlackCardRequest {
+  string card_id = 1;
+  string text = 2;
+  int32 answer_fields = 3;
+}
+
+message UpdateBlackCardResponse {
+}
+
+message UpdateWhiteCardRequest {
+  string card_id = 1;
+  string text = 2;
+}
+
+message UpdateWhiteCardResponse {
+}
+
+message SearchCardpacksRequest {
+  string query = 1;
+  Page page = 2;
+}
+
+message SearchCardpacksResponse {
+  repeated Cardpack cardpacks = 1;
+  PageInfo page_info = 2;
+}
+
+service CardpackService {
+  rpc CreateCardpack(CreateCardpackRequest) returns (CreateCardpackResponse);
+  rpc GetCardpack(GetCardpackRequest) returns (GetCardpackResponse);
+  rpc GetCardpacks(GetCardpacksRequest) returns (GetCardpacksResponse);
+  rpc UpdateCardpack(UpdateCardpackRequest) returns (UpdateCardpackResponse);
+  rpc DeleteCardpack(DeleteCardpackRequest) returns (DeleteCardpackResponse);
+  rpc AddCardsToCardpack(AddCardsToCardpackRequest) returns (AddCardsToCardpackResponse);
+  rpc DeleteCardsFromCardpack(DeleteCardsFromCardpackRequest) returns (DeleteCardsFromCardpackResponse);
+  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (AddCardpackToFavoritesResponse);
+  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (RemoveCardpackFromFavoritesResponse);
+  rpc GetFavoritedCardpacks(GetFavoritedCardpacksRequest) returns (GetFavoritedCardpacksResponse);
+  rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
+  rpc GetBlackCards(GetBlackCardsRequest) returns (GetBlackCardsResponse);
+  rpc GetWhiteCards(GetWhiteCardsRequest) returns (GetWhiteCardsResponse);
+  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (UpdateBlackCardResponse);
+  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (UpdateWhiteCardResponse);
+  rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
+}
