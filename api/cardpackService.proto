@@ -146,6 +146,15 @@ message SearchCardpacksResponse {
   PageInfo page_info = 2;
 }
 
+message SearchCardpacksAutocompleteRequest {
+  string query = 1;
+  int32 max_results = 2;
+}
+
+message SearchCardpacksAutocompleteResponse {
+  repeated string autocomplete_entry = 1;
+}
+
 service CardpackService {
   rpc CreateCardpack(CreateCardpackRequest) returns (CreateCardpackResponse);
   rpc GetCardpack(GetCardpackRequest) returns (GetCardpackResponse);
@@ -163,4 +172,5 @@ service CardpackService {
   rpc UpdateBlackCard(UpdateBlackCardRequest) returns (UpdateBlackCardResponse);
   rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (UpdateWhiteCardResponse);
   rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
+  rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
 }

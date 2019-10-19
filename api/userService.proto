@@ -91,6 +91,15 @@ message SearchUsersResponse {
   PageInfo page_info = 2;
 }
 
+message SearchUsersAutocompleteRequest {
+  string query = 1;
+  int32 max_results = 2;
+}
+
+message SearchUsersAutocompleteResponse {
+  repeated string autocomplete_entry = 1;
+}
+
 message GetProfileImageRequest {
   string user_id = 1;
 }
@@ -117,6 +126,7 @@ service UserService {
   rpc GetFriendRequestsReceived(GetFriendRequestsReceivedRequest) returns (GetFriendRequestsReceivedResponse);
   rpc GetFriends(GetFriendsRequest) returns (GetFriendsResponse);
   rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
+  rpc SearchUsersAutocomplete(SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
   rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
   rpc SetProfileImage(SetProfileImageRequest) returns (SetProfileImageResponse);
 }
