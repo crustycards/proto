@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-
 // Sent by the client to specify which
 // results of a paginated set to retrieve.
 message Page {
@@ -31,7 +29,7 @@ message Cardpack {
   string id = 1;
   string name = 2;
   User owner = 3;
-  google.protobuf.Timestamp created_at = 4;
+  Timestamp created_at = 4;
   int32 like_count = 5;
 }
 
@@ -57,4 +55,20 @@ message WhiteCard {
   string id = 1;
   string text = 2;
   string cardpack_id = 3;
+}
+
+// Copied from google.protobuf.timestamp.proto
+// TODO - Remove this message and instead import it using
+// import "google/protobuf/timestamp.proto";
+message Timestamp {
+  // Represents seconds of UTC time since Unix epoch
+  // 1970-01-01T00:00:00Z. Must be from 0001-01-01T00:00:00Z to
+  // 9999-12-31T23:59:59Z inclusive.
+  int64 seconds = 1;
+
+  // Non-negative fractions of a second at nanosecond resolution. Negative
+  // second values with fractions must still have non-negative nanos values
+  // that count forward in time. Must be from 0 to 999,999,999
+  // inclusive.
+  int32 nanos = 2;
 }
