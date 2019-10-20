@@ -30,7 +30,7 @@ message Cardpack {
   string name = 2;
   User owner = 3;
   Timestamp created_at = 4;
-  int32 like_count = 5;
+  int64 like_count = 5;
 }
 
 // Used to create black cards.
