@@ -27,7 +27,7 @@ message GetUserResponse {
 }
 
 message EditUserRequest {
-  string id = 1;
+  string user_id = 1;
   string name = 2;
 }
 

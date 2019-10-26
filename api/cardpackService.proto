@@ -29,12 +29,13 @@ message GetCardpacksResponse {
   PageInfo page_info = 2;
 }
 
-message UpdateCardpackRequest {
+message EditCardpackRequest {
   string cardpack_id = 1;
   string name = 2;
 }
 
-message UpdateCardpackResponse {
+message EditCardpackResponse {
+  Cardpack cardpack = 1;
 }
 
 message DeleteCardpackRequest {
@@ -119,21 +120,23 @@ message GetWhiteCardsResponse {
   PageInfo page_info = 2;
 }
 
-message UpdateBlackCardRequest {
+message EditBlackCardRequest {
   string card_id = 1;
   string text = 2;
   int32 answer_fields = 3;
 }
 
-message UpdateBlackCardResponse {
+message EditBlackCardResponse {
+  BlackCard card = 1;
 }
 
-message UpdateWhiteCardRequest {
+message EditWhiteCardRequest {
   string card_id = 1;
   string text = 2;
 }
 
-message UpdateWhiteCardResponse {
+message EditWhiteCardResponse {
+  WhiteCard card = 1;
 }
 
 message SearchCardpacksRequest {
@@ -159,7 +162,7 @@ service CardpackService {
   rpc CreateCardpack(CreateCardpackRequest) returns (CreateCardpackResponse);
   rpc GetCardpack(GetCardpackRequest) returns (GetCardpackResponse);
   rpc GetCardpacks(GetCardpacksRequest) returns (GetCardpacksResponse);
-  rpc UpdateCardpack(UpdateCardpackRequest) returns (UpdateCardpackResponse);
+  rpc EditCardpack(EditCardpackRequest) returns (EditCardpackResponse);
   rpc DeleteCardpack(DeleteCardpackRequest) returns (DeleteCardpackResponse);
   rpc AddCardsToCardpack(AddCardsToCardpackRequest) returns (AddCardsToCardpackResponse);
   rpc DeleteCardsFromCardpack(DeleteCardsFromCardpackRequest) returns (DeleteCardsFromCardpackResponse);
@@ -169,8 +172,8 @@ service CardpackService {
   rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
   rpc GetBlackCards(GetBlackCardsRequest) returns (GetBlackCardsResponse);
   rpc GetWhiteCards(GetWhiteCardsRequest) returns (GetWhiteCardsResponse);
-  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (UpdateBlackCardResponse);
-  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (UpdateWhiteCardResponse);
+  rpc EditBlackCard(EditBlackCardRequest) returns (EditBlackCardResponse);
+  rpc EditWhiteCard(EditWhiteCardRequest) returns (EditWhiteCardResponse);
   rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
   rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
 }
