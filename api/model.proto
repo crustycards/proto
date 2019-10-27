@@ -37,13 +37,13 @@ message Cardpack {
 
 // Used to create black cards.
 message BlackCardCreationData {
-  string text = 2;
-  int32 answer_fields = 3;
+  string text = 1;
+  int32 answer_fields = 2;
 }
 
 // Used to create white cards.
 message WhiteCardCreationData {
-  string text = 2;
+  string text = 1;
 }
 
 message BlackCard {

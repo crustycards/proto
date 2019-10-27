@@ -83,12 +83,11 @@ message GetFriendsResponse {
 
 message SearchUsersRequest {
   string query = 1;
-  Page page = 2;
+  int32 max_results = 2;
 }
 
 message SearchUsersResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
 }
 
 message SearchUsersAutocompleteRequest {
