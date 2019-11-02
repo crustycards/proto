@@ -3,6 +3,7 @@ syntax = "proto3";
 import "model.proto";
 
 message GetOrCreateUserRequest {
+  // Discards name field if user already exists.
   string name = 1;
   string oauth_id = 2;
   string oauth_provider = 3;
