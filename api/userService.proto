@@ -60,7 +60,7 @@ message GetFriendRequestsSentRequest {
 message GetFriendRequestsSentResponse {
   repeated User users = 1;
   string next_page_token = 2;
-  int32 total_size = 3;
+  int64 total_size = 3;
 }
 
 message GetFriendRequestsReceivedRequest {
@@ -72,7 +72,7 @@ message GetFriendRequestsReceivedRequest {
 message GetFriendRequestsReceivedResponse {
   repeated User users = 1;
   string next_page_token = 2;
-  int32 total_size = 3;
+  int64 total_size = 3;
 }
 
 message GetFriendsRequest {
@@ -84,7 +84,7 @@ message GetFriendsRequest {
 message GetFriendsResponse {
   repeated User users = 1;
   string next_page_token = 2;
-  int32 total_size = 3;
+  int64 total_size = 3;
 }
 
 message SearchUsersRequest {
