@@ -2,13 +2,13 @@ syntax = "proto3";
 
 import "model.proto";
 
-message CreateUserRequest {
+message GetOrCreateUserRequest {
   string name = 1;
   string oauth_id = 2;
   string oauth_provider = 3;
 }
 
-message CreateUserResponse {
+message GetOrCreateUserResponse {
   User user = 1;
 }
 
@@ -116,7 +116,7 @@ message SetProfileImageResponse {
 }
 
 service UserService {
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (GetOrCreateUserResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc EditUser(EditUserRequest) returns (EditUserResponse);
   rpc AddFriend(AddFriendRequest) returns (AddFriendResponse);
