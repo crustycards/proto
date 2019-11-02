@@ -55,36 +55,36 @@ message GetFriendRequestsSentRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetFriendRequestsSentResponse {
   repeated User users = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message GetFriendRequestsReceivedRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetFriendRequestsReceivedResponse {
   repeated User users = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message GetFriendsRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetFriendsResponse {
   repeated User users = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message SearchUsersRequest {

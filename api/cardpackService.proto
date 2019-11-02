@@ -23,12 +23,12 @@ message GetCardpacksRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetCardpacksResponse {
   repeated Cardpack cardpacks = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message EditCardpackRequest {
@@ -87,12 +87,12 @@ message GetFavoritedCardpacksRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetFavoritedCardpacksResponse {
   repeated Cardpack cardpacks = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message GetIsCardpackFavoritedByUserRequest {
@@ -108,24 +108,24 @@ message GetBlackCardsRequest {
   string cardpack_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetBlackCardsResponse {
   repeated BlackCard cards = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message GetWhiteCardsRequest {
   string cardpack_id = 1;
   int32 page_size = 2;
   string page_token = 3;
-  int32 total_size = 4;
 }
 
 message GetWhiteCardsResponse {
   repeated WhiteCard cards = 1;
   string next_page_token = 2;
+  int32 total_size = 3;
 }
 
 message EditBlackCardRequest {
