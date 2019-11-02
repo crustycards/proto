@@ -53,32 +53,35 @@ message RemoveFriendResponse {
 
 message GetFriendRequestsSentRequest {
   string user_id = 1;
-  Page page = 2;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message GetFriendRequestsSentResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
+  string next_page_token = 2;
 }
 
 message GetFriendRequestsReceivedRequest {
   string user_id = 1;
-  Page page = 2;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message GetFriendRequestsReceivedResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
+  string next_page_token = 2;
 }
 
 message GetFriendsRequest {
   string user_id = 1;
-  Page page = 2;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message GetFriendsResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
+  string next_page_token = 2;
 }
 
 message SearchUsersRequest {
