@@ -55,6 +55,7 @@ message GetFriendRequestsSentRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetFriendRequestsSentResponse {
@@ -66,6 +67,7 @@ message GetFriendRequestsReceivedRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetFriendRequestsReceivedResponse {
@@ -77,6 +79,7 @@ message GetFriendsRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetFriendsResponse {

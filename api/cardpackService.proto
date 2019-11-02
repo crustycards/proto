@@ -23,6 +23,7 @@ message GetCardpacksRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetCardpacksResponse {
@@ -86,6 +87,7 @@ message GetFavoritedCardpacksRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetFavoritedCardpacksResponse {
@@ -106,6 +108,7 @@ message GetBlackCardsRequest {
   string cardpack_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetBlackCardsResponse {
@@ -117,6 +120,7 @@ message GetWhiteCardsRequest {
   string cardpack_id = 1;
   int32 page_size = 2;
   string page_token = 3;
+  int32 total_size = 4;
 }
 
 message GetWhiteCardsResponse {
