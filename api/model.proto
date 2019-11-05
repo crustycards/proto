@@ -37,6 +37,13 @@ message WhiteCard {
   string cardpack_id = 3;
 }
 
+message AuthSessionInfo {
+  string id = 1;
+  string user_id = 2;
+  string device_name = 3;
+  Timestamp created_at = 4;
+}
+
 // Copied from google.protobuf.timestamp.proto
 // TODO - Remove this message and instead import it using
 // import "google/protobuf/timestamp.proto";

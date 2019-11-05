@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+import "model.proto";
+
+message CreateSessionRequest {
+  string user_id = 1;
+}
+
+message CreateSessionResponse {
+  string secret = 1;
+  AuthSessionInfo session = 2;
+}
+
+message ValidateSessionRequest {
+  string secret = 1;
+}
+
+message ValidateSessionResponse {
+  AuthSessionInfo session = 1;
+}
+
+message GetSessionsRequest {
+  string user_id = 1;
+}
+
+message GetSessionsResponse {
+  repeated AuthSessionInfo sessions = 1;
+}
+
+message DeleteSessionRequest {
+  string session_id = 1;
+}
+
+message DeleteSessionResponse {
+}
+
+message DeleteSessionsRequest {
+  string user_id = 1;
+}
+
+message DeleteSessionsResponse {
+}
+
+service AuthService {
+  rpc CreateSession(CreateSessionRequest) returns (CreateSessionResponse);
+  rpc ValidateSession(ValidateSessionRequest) returns (ValidateSessionResponse);
+  rpc GetSessions(GetSessionsRequest) returns (GetSessionsResponse);
+  rpc DeleteSession(DeleteSessionRequest) returns (DeleteSessionResponse);
+  rpc DeleteSessions(DeleteSessionsRequest) returns (DeleteSessionsResponse);
+}
