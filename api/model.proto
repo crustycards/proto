@@ -31,7 +31,7 @@ message Cardpack {
   string id = 1;
   string name = 2;
   User owner = 3;
-  Timestamp created_at = 4;
+  Timestamp create_time = 4;
   int64 like_count = 5;
 }
 
