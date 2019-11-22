@@ -1,39 +1,25 @@
 syntax = "proto3";
 
+import "../api/model.proto";
+
 message ChatMessage {
-  string user_id = 1;
+  User user = 1;
   string text = 2;
-}
-
-message WhiteCard {
-  string id = 1;
-  string cardpack_id = 2;
-  string text = 3;
-}
-
-message BlackCard {
-  string id = 1;
-  string cardpack_id = 2;
-  string text = 3;
-  int32 answer_fields = 4;
-}
-
-message User {
-  string id = 1;
-  string name = 2;
+  Timestamp create_time = 3;
 }
 
 message Player {
-  string id = 1;
-  string name = 2;
-  int32 score = 3;
+  User user = 1;
+  int32 score = 2;
 }
 
 message GameInfo {
-  string name = 1;
-  int32 player_count = 2;
-  int32 max_players = 3;
-  Player owner = 4;
+  string game_id = 1;
+  string game_name = 2;
+  int32 player_count = 3;
+  int32 max_players = 4;
+  User owner = 5;
+  bool is_running = 6;
 }
 
 message GameView {
@@ -61,14 +47,16 @@ message GameView {
   map<string, WhiteCardList> white_played = 11;
   repeated WhiteCardList white_played_anonymous = 12;
   BlackCard current_black_card = 13;
-  User winner = 14; // TODO - Possibly change this to use Player message instead
+  User winner = 14; // TODO - Possibly change this to use Player message instead.
   repeated ChatMessage chat_messages = 15;
 }
 
 
 
 message SearchGamesRequest {
-  // string query = 1; TODO - Add this optional parameter
+  string query = 1; // Filters games strictly by name. Games must contain the exact text of the query to match.
+  bool filter_full_games = 2;
+  bool filter_stopped_games = 3;
 }
 
 message SearchGamesResponse {
@@ -76,7 +64,7 @@ message SearchGamesResponse {
 }
 
 message CreateGameRequest {
-  string user_id = 1; // The ID of the user creating the game
+  string user_id = 1; // The ID of the user creating the game.
   string game_name = 2;
   int32 max_players = 3;
   int32 max_score = 4;
@@ -89,7 +77,7 @@ message CreateGameResponse {
 }
 
 message StartGameRequest {
-  string userId = 1; // Must be the ID of someone who owns the game that they are in
+  string userId = 1; // Must be the ID of someone who owns the game that they are in.
 }
 
 message StartGameResponse {
@@ -97,7 +85,7 @@ message StartGameResponse {
 }
 
 message StopGameRequest {
-  string userId = 1; // Must be the ID of someone who owns the game that they are in
+  string userId = 1; // Must be the ID of someone who owns the game that they are in.
 }
 
 message StopGameResponse {
@@ -105,8 +93,8 @@ message StopGameResponse {
 }
 
 message JoinGameRequest {
-  string user_id = 1; // The user who is joining a game
-  string game_name = 2; // The unique identifier of the game
+  string user_id = 1; // The user who is joining a game.
+  string game_name = 2; // The unique identifier of the game.
 }
 
 message JoinGameResponse {
@@ -114,7 +102,7 @@ message JoinGameResponse {
 }
 
 message LeaveGameRequest {
-  string user_id = 1; // The user who is leaving a game
+  string user_id = 1; // The user who is leaving a game.
 }
 
 message LeaveGameResponse {
