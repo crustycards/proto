@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "../api/model.proto";
+import "api/model.proto";
 
 message ChatMessage {
   User user = 1;
@@ -41,6 +41,7 @@ message GameInfo {
 
 message GameView {
   enum Stage {
+    STAGE_UNSPECIFIED = 0;
     NOT_RUNNING = 1;
     PLAY_PHASE = 2;
     JUDGE_PHASE = 3;
@@ -149,7 +150,7 @@ message LeaveGameResponse {
 
 message KickUserRequest {
   string owner_id = 1;
-  string troll_id = 1;
+  string troll_id = 2;
 }
 
 message KickUserResponse {
