@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "../api/model.proto";
+import "api/model.proto";
 
 message ChatMessage {
   User user = 1;
