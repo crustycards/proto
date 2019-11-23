@@ -3,41 +3,29 @@ syntax = "proto3";
 import "model.proto";
 
 message CreateCardpackRequest {
-  string user_id = 1;
+  string owner_id = 1; // The user id of whoever the cardpack should belong to.
   string cardpack_name = 2;
-}
-
-message CreateCardpackResponse {
-  Cardpack cardpack = 1;
 }
 
 message GetCardpackRequest {
   string id = 1;
 }
 
-message GetCardpackResponse {
-  Cardpack cardpack = 1;
-}
-
-message GetCardpacksRequest {
-  string user_id = 1;
+message ListCardpacksRequest {
+  string owner_id = 1;
   int32 page_size = 2;
   string page_token = 3;
 }
 
-message GetCardpacksResponse {
+message ListCardpacksResponse {
   repeated Cardpack cardpacks = 1;
   string next_page_token = 2;
   int64 total_size = 3;
 }
 
-message EditCardpackRequest {
+message UpdateCardpackRequest {
   string cardpack_id = 1;
   string name = 2;
-}
-
-message EditCardpackResponse {
-  Cardpack cardpack = 1;
 }
 
 message DeleteCardpackRequest {
@@ -104,47 +92,39 @@ message GetIsCardpackFavoritedByUserResponse {
   bool is_favorited = 1;
 }
 
-message GetBlackCardsRequest {
+message ListBlackCardsRequest {
   string cardpack_id = 1;
   int32 page_size = 2;
   string page_token = 3;
 }
 
-message GetBlackCardsResponse {
+message ListBlackCardsResponse {
   repeated BlackCard cards = 1;
   string next_page_token = 2;
   int64 total_size = 3;
 }
 
-message GetWhiteCardsRequest {
+message ListWhiteCardsRequest {
   string cardpack_id = 1;
   int32 page_size = 2;
   string page_token = 3;
 }
 
-message GetWhiteCardsResponse {
+message ListWhiteCardsResponse {
   repeated WhiteCard cards = 1;
   string next_page_token = 2;
   int64 total_size = 3;
 }
 
-message EditBlackCardRequest {
+message UpdateBlackCardRequest {
   string card_id = 1;
   string text = 2;
   int32 answer_fields = 3;
 }
 
-message EditBlackCardResponse {
-  BlackCard card = 1;
-}
-
-message EditWhiteCardRequest {
+message UpdateWhiteCardRequest {
   string card_id = 1;
   string text = 2;
-}
-
-message EditWhiteCardResponse {
-  WhiteCard card = 1;
 }
 
 message SearchCardpacksRequest {
@@ -166,10 +146,10 @@ message SearchCardpacksAutocompleteResponse {
 }
 
 service CardpackService {
-  rpc CreateCardpack(CreateCardpackRequest) returns (CreateCardpackResponse);
-  rpc GetCardpack(GetCardpackRequest) returns (GetCardpackResponse);
-  rpc GetCardpacks(GetCardpacksRequest) returns (GetCardpacksResponse);
-  rpc EditCardpack(EditCardpackRequest) returns (EditCardpackResponse);
+  rpc CreateCardpack(CreateCardpackRequest) returns (Cardpack);
+  rpc GetCardpack(GetCardpackRequest) returns (Cardpack);
+  rpc ListCardpacks(ListCardpacksRequest) returns (ListCardpacksResponse);
+  rpc UpdateCardpack(UpdateCardpackRequest) returns (Cardpack);
   rpc DeleteCardpack(DeleteCardpackRequest) returns (DeleteCardpackResponse);
   rpc AddCardsToCardpack(AddCardsToCardpackRequest) returns (AddCardsToCardpackResponse);
   rpc DeleteCardsFromCardpack(DeleteCardsFromCardpackRequest) returns (DeleteCardsFromCardpackResponse);
@@ -177,10 +157,10 @@ service CardpackService {
   rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (RemoveCardpackFromFavoritesResponse);
   rpc GetFavoritedCardpacks(GetFavoritedCardpacksRequest) returns (GetFavoritedCardpacksResponse);
   rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
-  rpc GetBlackCards(GetBlackCardsRequest) returns (GetBlackCardsResponse);
-  rpc GetWhiteCards(GetWhiteCardsRequest) returns (GetWhiteCardsResponse);
-  rpc EditBlackCard(EditBlackCardRequest) returns (EditBlackCardResponse);
-  rpc EditWhiteCard(EditWhiteCardRequest) returns (EditWhiteCardResponse);
+  rpc ListBlackCards(ListBlackCardsRequest) returns (ListBlackCardsResponse);
+  rpc ListWhiteCards(ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
+  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (BlackCard);
+  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (BlackCard);
   rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
   rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
 }

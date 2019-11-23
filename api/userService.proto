@@ -22,17 +22,9 @@ message GetUserRequest {
   string oauth_provider = 3;
 }
 
-message GetUserResponse {
-  User user = 1;
-}
-
-message EditUserRequest {
+message UpdateUserRequest {
   string user_id = 1;
   string name = 2;
-}
-
-message EditUserResponse {
-  User user = 1;
 }
 
 message AddFriendRequest {
@@ -123,8 +115,8 @@ message SetProfileImageResponse {
 
 service UserService {
   rpc GetOrCreateUser(GetOrCreateUserRequest) returns (GetOrCreateUserResponse);
-  rpc GetUser(GetUserRequest) returns (GetUserResponse);
-  rpc EditUser(EditUserRequest) returns (EditUserResponse);
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc UpdateUser(UpdateUserRequest) returns (User);
   rpc AddFriend(AddFriendRequest) returns (AddFriendResponse);
   rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse);
   rpc GetFriendRequestsSent(GetFriendRequestsSentRequest) returns (GetFriendRequestsSentResponse);
