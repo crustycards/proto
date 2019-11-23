@@ -35,6 +35,8 @@ message GameInfo {
   int32 max_players = 4;
   User owner = 5;
   bool is_running = 6;
+  // When the underlying game was created.
+  Timestamp create_time = 7;
 }
 
 message GameView {
@@ -71,14 +73,29 @@ message GameView {
   BlackCard current_black_card = 13;
   Player winner = 14;
   repeated ChatMessage chat_messages = 15;
+  // When the underlying game was created.
+  Timestamp create_time = 16;
 }
 
 
 
+// Returns all games that match the search criteria.
+// Has no pagination, simply returns the entire list.
+// Results are always ordered by create_time.
 message SearchGamesRequest {
-  string query = 1; // Filters games strictly by name. Games must contain the exact text of the query to match.
-  bool filter_full_games = 2;
-  bool filter_stopped_games = 3;
+  // Filters games by name, i.e. games must contain the
+  // exact text of the query in their name to match.
+  string filter = 1;
+  // The minimum number of slots
+  // games must have available.
+  int min_available_player_slots = 2;
+
+  enum GameStageFilter {
+    FILTER_NONE = 0; // Bypass game stage filter.
+    FILTER_STOPPED = 1; // Filter all non-running games.
+    FILTER_RUNNING = 2; // Filter all running games.
+  }
+  GameStageFilter game_stage_filter = 3;
 }
 
 message SearchGamesResponse {
