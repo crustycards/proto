@@ -8,9 +8,18 @@ message ChatMessage {
   Timestamp create_time = 3;
 }
 
+// Represents a real user or an artificial player in a game.
 message Player {
-  User user = 1;
-  int32 score = 2;
+  oneof identifier {
+    User user = 1;
+    string artificial_player_name = 2;
+  }
+  int32 score = 3;
+
+  // When the player was added to the game. For real users this is
+  // when the JoinGame RPC is called. For artificial players
+  // this is when the AddArtificialPlayer RPC is called.
+  Timestamp join_time = 4;
 }
 
 message GameInfo {
@@ -39,7 +48,14 @@ message GameView {
   int32 max_score = 3;
   Stage stage = 4;
   repeated WhiteCard hand = 5;
+
+  // All real and artificial players that are currently playing.
+  // Guaranteed to be ordered by join_time.
   repeated Player players = 6;
+  // All real and artificial players that joined while the game was running (any Stage other than NOT_RUNNING).
+  // Guaranteed to be ordered by join_time.
+  // These players will be automatically moved from queued_players to
+  // players when either StopGame or StartNextRound RPCs are called.
   repeated Player queued_players = 7;
   repeated User banned_players = 8;
   string judge_id = 9;
@@ -47,7 +63,7 @@ message GameView {
   map<string, WhiteCardList> white_played = 11;
   repeated WhiteCardList white_played_anonymous = 12;
   BlackCard current_black_card = 13;
-  User winner = 14; // TODO - Possibly change this to use Player message instead.
+  Player winner = 14;
   repeated ChatMessage chat_messages = 15;
 }
 
@@ -108,12 +124,12 @@ message LeaveGameRequest {
 message LeaveGameResponse {
 }
 
-message KickPlayerRequest {
+message KickUserRequest {
   string owner_id = 1;
   string troll_id = 1;
 }
 
-message KickPlayerResponse {
+message KickUserResponse {
   GameView game = 1;
 }
 
@@ -175,7 +191,7 @@ service GameService {
   rpc StopGame (StopGameRequest) returns (StopGameResponse);
   rpc JoinGame (JoinGameRequest) returns (JoinGameResponse);
   rpc LeaveGame (LeaveGameRequest) returns (LeaveGameResponse);
-  rpc KickPlayer (KickPlayerRequest) returns (KickPlayerResponse);
+  rpc KickUser (KickUserRequest) returns (KickUserResponse);
   rpc PlayCard (PlayCardRequest) returns (PlayCardResponse);
   rpc UnplayCard (UnplayCardRequest) returns (UnplayCardResponse);
   rpc JudgeCard (JudgeCardRequest) returns (JudgeCardResponse);
