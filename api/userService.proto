@@ -2,13 +2,13 @@ syntax = "proto3";
 
 import "model.proto";
 
-message CreateUserRequest {
-  string name = 1;
+message GetOrCreateUserRequest {
+  string default_name = 1; // This field is discarded if the user already exists.
   string oauth_id = 2;
   string oauth_provider = 3;
 }
 
-message CreateUserResponse {
+message GetOrCreateUserResponse {
   User user = 1;
 }
 
@@ -53,32 +53,38 @@ message RemoveFriendResponse {
 
 message GetFriendRequestsSentRequest {
   string user_id = 1;
-  Page page = 2;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message GetFriendRequestsSentResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
+  string next_page_token = 2;
+  int64 total_size = 3;
 }
 
 message GetFriendRequestsReceivedRequest {
   string user_id = 1;
-  Page page = 2;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message GetFriendRequestsReceivedResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
+  string next_page_token = 2;
+  int64 total_size = 3;
 }
 
 message GetFriendsRequest {
   string user_id = 1;
-  Page page = 2;
+  int32 page_size = 2;
+  string page_token = 3;
 }
 
 message GetFriendsResponse {
   repeated User users = 1;
-  PageInfo page_info = 2;
+  string next_page_token = 2;
+  int64 total_size = 3;
 }
 
 message SearchUsersRequest {
@@ -116,7 +122,7 @@ message SetProfileImageResponse {
 }
 
 service UserService {
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (GetOrCreateUserResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc EditUser(EditUserRequest) returns (EditUserResponse);
   rpc AddFriend(AddFriendRequest) returns (AddFriendResponse);
