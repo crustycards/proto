@@ -8,11 +8,17 @@ message ChatMessage {
   Timestamp create_time = 3;
 }
 
+message ArtificialUser {
+  string id = 1; // A randomly generated uuid.
+  string name = 2;
+}
+// TODO - Add support for blank cards.
+
 // Represents a real user or an artificial player in a game.
 message Player {
   oneof identifier {
     User user = 1;
-    string artificial_player_name = 2;
+    ArtificialUser artificial_user = 2;
   }
   int32 score = 3;
 
@@ -167,6 +173,23 @@ message StartNextRoundResponse {
   GameView game = 1;
 }
 
+message AddArtificialPlayerRequest {
+  // The name of the artificial player to add.
+  // Name must not be used by any other
+  // existing artificial players.
+  string name = 1;
+}
+
+message AddArtificialPlayerResponse {
+}
+
+message RemoveArtificialPlayerRequest {
+  string id = 1;
+}
+
+message RemoveArtificialPlayerResponse {
+}
+
 message SendMessageToGameRequest {
   string user_id = 1;
   string message_text = 2;
@@ -196,6 +219,8 @@ service GameService {
   rpc UnplayCard (UnplayCardRequest) returns (UnplayCardResponse);
   rpc JudgeCard (JudgeCardRequest) returns (JudgeCardResponse);
   rpc StartNextRound (StartNextRoundRequest) returns (StartNextRoundResponse);
+  rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (AddArtificialPlayerResponse);
+  rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (RemoveArtificialPlayerResponse);
   rpc SendMessageToGame (SendMessageToGameRequest) returns (SendMessageToGameResponse);
   rpc GetGameView (GetGameViewRequest) returns (GetGameViewResponse);
 }
