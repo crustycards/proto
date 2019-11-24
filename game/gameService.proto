@@ -89,7 +89,7 @@ message SearchGamesRequest {
   string filter = 1;
   // The minimum number of slots
   // games must have available.
-  int min_available_player_slots = 2;
+  int32 min_available_player_slots = 2;
 
   enum GameStageFilter {
     FILTER_NONE = 0; // Bypass game stage filter.
