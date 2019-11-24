@@ -87,12 +87,38 @@ message SearchGamesResponse {
 }
 
 message CreateGameRequest {
-  string user_id = 1; // The ID of the user creating the game.
+  // The id of the user creating the game.
+  // This user will be the owner once the game is created.
+  string user_id = 1;
+
+  // The displayed name of the game.
+  // No uniqueness constraint.
   string game_name = 2;
+
+  // The maximum number of players that can be in the game at once.
+  // Artificial players do not count towards this limit.
+  // Value must be at least 3 and at most 100
   int32 max_players = 3;
-  int32 max_score = 4;
-  int32 hand_size = 5;
-  repeated string cardpack_ids = 6;
+
+  // The condition through which
+  // a game will automatically end.
+  oneof end_condition {
+    // Once a player reaches this score, the game
+    // is stopped automatically and that player is
+    // marked as the winner.
+    int32 max_score = 4;
+
+    // The game never ends automatically.
+    // Scores are still tracked.
+    bool endless_mode = 5;
+  }
+
+  int32 hand_size = 6;
+
+  // A list of cardpacks that should be used when making the game.
+  // All cards from all cardpacks listed will be pulled from
+  // the main api at game creation.
+  repeated string cardpack_ids = 7;
 }
 
 message CreateGameResponse {
@@ -100,7 +126,7 @@ message CreateGameResponse {
 }
 
 message StartGameRequest {
-  string userId = 1; // Must be the ID of someone who owns the game that they are in.
+  string userId = 1; // Must be the id of someone who owns the game that they are in.
 }
 
 message StartGameResponse {
@@ -108,7 +134,7 @@ message StartGameResponse {
 }
 
 message StopGameRequest {
-  string userId = 1; // Must be the ID of someone who owns the game that they are in.
+  string userId = 1; // Must be the id of someone who owns the game that they are in.
 }
 
 message StopGameResponse {
