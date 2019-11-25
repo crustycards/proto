@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "model.proto";
+import "api/model.proto";
 
 message GenerateSessionTokenRequest {
   string user_id = 1;

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "model.proto";
+import "api/model.proto";
 
 message CreateCardpackRequest {
   string owner_id = 1; // The user id of whoever the cardpack should belong to.

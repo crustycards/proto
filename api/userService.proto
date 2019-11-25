@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "model.proto";
+import "api/model.proto";
 
 message GetOrCreateUserRequest {
   string default_name = 1; // This field is discarded if the user already exists.
