@@ -183,29 +183,48 @@ message KickUserResponse {
   GameView game = 1;
 }
 
-message PlayCardRequest {
+message BanUserRequest {
+  string owner_id = 1;
+  string troll_id = 2;
+}
+
+message BanUserResponse {
+  GameView game = 1;
+}
+
+message UnbanUserRequest {
+  string owner_id = 1;
+  string troll_id = 2;
+}
+
+message UnbanUserResponse {
+  GameView game = 1;
+}
+
+message PlayCardsRequest {
   string user_id = 1;
   repeated string card_ids = 2;
 }
 
-message PlayCardResponse {
+message PlayCardsResponse {
   GameView game = 1;
 }
 
-message UnplayCardRequest {
+message UnplayCardsRequest {
   string user_id = 1;
 }
 
-message UnplayCardResponse {
+message UnplayCardsResponse {
   GameView game = 1;
 }
 
-message JudgeCardRequest {
+message VoteCardRequest {
   string user_id = 1;
-  string card_id = 2;
+  // The 0-based index of which set the judge votes for.
+  int32 choice_index = 2;
 }
 
-message JudgeCardResponse {
+message VoteCardResponse {
   GameView game = 1;
 }
 
@@ -234,12 +253,12 @@ message RemoveArtificialPlayerRequest {
 message RemoveArtificialPlayerResponse {
 }
 
-message SendMessageToGameRequest {
+message PostMessageRequest {
   string user_id = 1;
   string message_text = 2;
 }
 
-message SendMessageToGameResponse {
+message PostMessageResponse {
   GameView game = 1;
 }
 
@@ -259,12 +278,14 @@ service GameService {
   rpc JoinGame (JoinGameRequest) returns (JoinGameResponse);
   rpc LeaveGame (LeaveGameRequest) returns (LeaveGameResponse);
   rpc KickUser (KickUserRequest) returns (KickUserResponse);
-  rpc PlayCard (PlayCardRequest) returns (PlayCardResponse);
-  rpc UnplayCard (UnplayCardRequest) returns (UnplayCardResponse);
-  rpc JudgeCard (JudgeCardRequest) returns (JudgeCardResponse);
+  rpc BanUser (BanUserRequest) returns (BanUserResponse);
+  rpc UnbanUser (UnbanUserRequest) returns (UnbanUserResponse);
+  rpc PlayCards (PlayCardsRequest) returns (PlayCardsResponse);
+  rpc UnplayCards (UnplayCardsRequest) returns (UnplayCardsResponse);
+  rpc VoteCard (VoteCardRequest) returns (VoteCardResponse);
   rpc StartNextRound (StartNextRoundRequest) returns (StartNextRoundResponse);
   rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (AddArtificialPlayerResponse);
   rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (RemoveArtificialPlayerResponse);
-  rpc SendMessageToGame (SendMessageToGameRequest) returns (SendMessageToGameResponse);
+  rpc PostMessage (PostMessageRequest) returns (PostMessageResponse);
   rpc GetGameView (GetGameViewRequest) returns (GetGameViewResponse);
 }
