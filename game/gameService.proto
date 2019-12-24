@@ -1,15 +1,26 @@
 syntax = "proto3";
 
 import "api/model.proto";
+import "google/protobuf/timestamp.proto";
 
 message ChatMessage {
+  // The user who sent the message.
   User user = 1;
+
+  // The contents of the message.
   string text = 2;
-  Timestamp create_time = 3;
+
+  // When the message was sent.
+  google.protobuf.Timestamp create_time = 3;
 }
 
 message ArtificialUser {
-  string id = 1; // A randomly generated uuid.
+  // A server-generated uuid.
+  string id = 1;
+
+  // The displayed name of the artificial user.
+  // Since each artificial user has a unique id,
+  // the name does not have to be unique.
   string name = 2;
 }
 // TODO - Add support for blank cards.
@@ -20,26 +31,66 @@ message Player {
     User user = 1;
     ArtificialUser artificial_user = 2;
   }
+
+  // The number of rounds this player has won.
   int32 score = 3;
 
   // When the player was added to the game. For real users this is
   // when the JoinGame RPC is called. For artificial players
   // this is when the AddArtificialPlayer RPC is called.
-  Timestamp join_time = 4;
+  google.protobuf.Timestamp join_time = 4;
 }
 
+// Allows players to have regular white cards or blank cards.
+message PlayableWhiteCard {
+  oneof card {
+    WhiteCard white_card = 1;
+  }
+}
+
+// Game list view used when users are browsing games.
 message GameInfo {
+  // A server-generated uuid.
   string game_id = 1;
+
+  // The name of the game, as specified
+  // at game creation. Does not have to
+  // be unique among all games since
+  // each game has a unique game_id.
   string game_name = 2;
+
+  // The number of players currently in the game.
+  // This does not include artificial players.
   int32 player_count = 3;
+
+  // The maximum number of players that can be in the game at once.
+  // Artificial players do not count towards this limit.
+  // Value must be at least 3 and at most 100.
   int32 max_players = 4;
+
+  // The current game owner.
   User owner = 5;
+
+  // Whether the game is currently in progress.
   bool is_running = 6;
+
   // When the underlying game was created.
-  Timestamp create_time = 7;
+  google.protobuf.Timestamp create_time = 7;
 }
 
 message GameView {
+  // The id of the game.
+  string game_id = 1;
+
+  // The displayed name of the game.
+  string name = 2;
+
+  // The maximum number of players that can be in the game at once.
+  // Artificial players do not count towards this limit.
+  // Value must be at least 3 and at most 100.
+  int32 max_players = 3;
+  int32 max_score = 4;
+
   enum Stage {
     STAGE_UNSPECIFIED = 0;
     NOT_RUNNING = 1;
@@ -47,35 +98,102 @@ message GameView {
     JUDGE_PHASE = 3;
     ROUND_END_PHASE = 4;
   }
-
-  message WhiteCardList {
-    repeated WhiteCard cards = 1;
-  }
-
-  string name = 1;
-  int32 max_players = 2;
-  int32 max_score = 3;
-  Stage stage = 4;
-  repeated WhiteCard hand = 5;
+  
+  Stage stage = 5;
+  repeated WhiteCard hand = 6;
 
   // All real and artificial players that are currently playing.
   // Guaranteed to be ordered by join_time.
-  repeated Player players = 6;
-  // All real and artificial players that joined while the game was running (any Stage other than NOT_RUNNING).
+  repeated Player players = 7;
+
+  // All real and artificial players that joined while the
+  // game was running (any Stage other than NOT_RUNNING).
   // Guaranteed to be ordered by join_time.
   // These players will be automatically moved from queued_players to
   // players when either StopGame or StartNextRound RPCs are called.
-  repeated Player queued_players = 7;
-  repeated User banned_players = 8;
-  string judge_id = 9;
-  string owner_id = 10;
-  map<string, WhiteCardList> white_played = 11;
-  repeated WhiteCardList white_played_anonymous = 12;
+  repeated Player queued_players = 8;
+
+  // All users that have been banned from the game.
+  // These users are unable to join the game.
+  repeated User banned_players = 9;
+
+  // The current judge for the round.
+  // This might be empty if the game stage is NOT_RUNNING
+  // (if there is a previous judge to show from the past game
+  // then it will be filled, otherwise it will be empty).
+  // If the game is in any other stage then this is always filled.
+  // When the game stage is PLAY_PHASE or JUDGE_PHASE
+  // it represents the current judge, and the judge does not change
+  // when the stage is changed from JUDGE_PHASE to ROUND_END_PHASE.
+  // Instead, it changes when the game stage changes from ROUND_END_PHASE to PLAY_PHASE.
+  // Whenever a game is started, a new random judge is selected.
+  User judge = 10;
+
+  // The current owner of the game.
+  // The game creator is the initial
+  // owner, but if the current owner
+  // leaves then ownership is transferred
+  // to the next user who has been
+  // in the game the longest.
+  User owner = 11;
+
+  // Contains cards played by
+  // a single user for one round.
+  // See the description for white_played
+  // for details on how this is used
+  // and when certain fields are filled.
+  message WhiteCardsPlayed {
+    // The user who played the cards.
+    User user = 1;
+
+    // The cards played by the user.
+    repeated WhiteCard cards = 2;
+  }
+
+  // The white cards played this round.
+  // Data contained is dependent on the game stage.
+  // ----------------------------------------------
+  // When the game stage is PLAY_PHASE, this never contains any values.
+  //
+  // When the game stage is JUDGE_PHASE, this will contain
+  // one value for each player that has played this round.
+  // This amount will change since users can play during this phase.
+  // For each repeated value, the 'user' property will be left empty so
+  // that users do not know who submitted each card.
+  //
+  // When the game stage is ROUND_END_PHASE, this will contain one
+  // value for every player that played in the current round.
+  // As long as no one joined or left during the round, this
+  // will be x - 1 where x is the number of players in the
+  // game, since one of the players is the judge and doesn't play.
+  // For each repeated value, both 'user' and 'cards' properties will be filled.
+  //
+  // When the game stage is NOT_RUNNING, behavior is the same as ROUND_END_PHASE
+  // except that the repeated field could contain no values. This happens if
+  // the game was just created and there is no past round to show cards for.
+  // Otherwise this will contain cards from the previous game
+  // that just ended (or was stopped).
+  repeated WhiteCardsPlayed white_played = 12;
+
+  // The black card that's active for the current round.
+  // This is empty if stage is NOT_RUNNING, otherwise
+  // this will contain the current card.
   BlackCard current_black_card = 13;
+
+  // Contains the winner of the most recent game.
+  // This is only filled when the stage is NOT_RUNNING
+  // and there is a winner to display. There is not
+  // always a winner to display, such as if the game
+  // was just created or if it was stopped
+  // before someone won.
   Player winner = 14;
+
+  // Chat messages sent by players in the game.
+  // Contains, at most, the 100 most recent messages.
   repeated ChatMessage chat_messages = 15;
-  // When the underlying game was created.
-  Timestamp create_time = 16;
+
+  // When the game was created.
+  google.protobuf.Timestamp create_time = 16;
 }
 
 
@@ -109,12 +227,13 @@ message CreateGameRequest {
   string user_id = 1;
 
   // The displayed name of the game.
-  // No uniqueness constraint.
+  // Does not have to be unique among all
+  // games since each game has a unique game_id.
   string game_name = 2;
 
   // The maximum number of players that can be in the game at once.
   // Artificial players do not count towards this limit.
-  // Value must be at least 3 and at most 100
+  // Value must be at least 3 and at most 100.
   int32 max_players = 3;
 
   // The condition through which
@@ -143,7 +262,9 @@ message CreateGameResponse {
 }
 
 message StartGameRequest {
-  string userId = 1; // Must be the id of someone who owns the game that they are in.
+  // The id of the user trying to start the game.
+  // Must be the id of someone who owns the game that they are in.
+  string user_id = 1;
 }
 
 message StartGameResponse {
@@ -151,7 +272,9 @@ message StartGameResponse {
 }
 
 message StopGameRequest {
-  string userId = 1; // Must be the id of someone who owns the game that they are in.
+  // The id of the user trying to stop the game.
+  // Must be the id of someone who owns the game that they are in.
+  string user_id = 1;
 }
 
 message StopGameResponse {
@@ -159,8 +282,11 @@ message StopGameResponse {
 }
 
 message JoinGameRequest {
-  string user_id = 1; // The user who is joining a game.
-  string game_name = 2; // The unique identifier of the game.
+  // The user who is joining a game.
+  string user_id = 1;
+
+  // The unique identifier of the game to join.
+  string game_id = 2;
 }
 
 message JoinGameResponse {

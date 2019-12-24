@@ -1,20 +1,44 @@
 syntax = "proto3";
 
 import "api/model.proto";
+import "google/protobuf/empty.proto";
 
 message CreateCardpackRequest {
-  string owner_id = 1; // The user id of whoever the cardpack should belong to.
+  // The user id of whoever
+  // is creating the cardpack.
+  // This will be the owner.
+  string owner_id = 1;
+
+  // The display name of the cardpack.
+  // Does not have to be unique.
   string cardpack_name = 2;
 }
 
 message GetCardpackRequest {
+  // The id of the cardpack to retrieve.
   string id = 1;
 }
 
 message ListCardpacksRequest {
-  string owner_id = 1;
-  int32 page_size = 2;
-  string page_token = 3;
+  // Which criteria to list cardpacks by.
+  oneof list_by {
+    // List cardpacks that belong to a user.
+    string owner_id = 1;
+
+    // List cardpacks that are liked by a user.
+    string favoriter_id = 2;
+  }
+
+  // The maximum page size.
+  // Response will never exceed
+  // this length, but it may
+  // return fewer results even
+  // if the end has not been
+  // reached.
+  int32 page_size = 3;
+
+  // A page token returned from a previous rpc.
+  string page_token = 4;
 }
 
 message ListCardpacksResponse {
@@ -32,27 +56,42 @@ message DeleteCardpackRequest {
   string cardpack_id = 1;
 }
 
-message DeleteCardpackResponse {
-}
-
-message AddCardsToCardpackRequest {
+message UndeleteCardpackRequest {
   string cardpack_id = 1;
-  repeated BlackCardCreationData black_cards = 2;
-  repeated WhiteCardCreationData white_cards = 3;
 }
 
-message AddCardsToCardpackResponse {
+message CreateCardsRequest {
+  // The id of the cardpack that
+  // cards should be added to.
+  // This must point to a valid cardpack.
+  string cardpack_id = 1;
+
+  // The black cards to create.
+  // Not all fields should be filled
+  // when creating cards, see the
+  // BlackCard proto definition for
+  // details on what properties
+  // should be left empty.
+  repeated BlackCard black_cards = 2;
+
+  // The white cards to create.
+  // Not all fields should be filled
+  // when creating cards, see the
+  // WhiteCard proto definition for
+  // details on what properties
+  // should be left empty.
+  repeated WhiteCard white_cards = 3;
+}
+
+message CreateCardsResponse {
   repeated BlackCard black_cards = 1;
   repeated WhiteCard white_cards = 2;
 }
 
-message DeleteCardsFromCardpackRequest {
+message DeleteCardsRequest {
   string cardpack_id = 1;
   repeated string black_card_ids = 2;
   repeated string white_card_ids = 3;
-}
-
-message DeleteCardsFromCardpackResponse {
 }
 
 message AddCardpackToFavoritesRequest {
@@ -60,15 +99,9 @@ message AddCardpackToFavoritesRequest {
   string cardpack_id = 2;
 }
 
-message AddCardpackToFavoritesResponse {
-}
-
 message RemoveCardpackFromFavoritesRequest {
   string user_id = 1;
   string cardpack_id = 2;
-}
-
-message RemoveCardpackFromFavoritesResponse {
 }
 
 message GetFavoritedCardpacksRequest {
@@ -137,11 +170,17 @@ message SearchCardpacksResponse {
 }
 
 message SearchCardpacksAutocompleteRequest {
+  // The query to suggest results from.
   string query = 1;
+
+  // The maximum number of suggestions to return.
   int32 max_results = 2;
 }
 
 message SearchCardpacksAutocompleteResponse {
+  // List of autocomplete suggestions.
+  // Each entry is guaranteed to contain
+  // the original query.
   repeated string autocomplete_entry = 1;
 }
 
@@ -150,11 +189,12 @@ service CardpackService {
   rpc GetCardpack(GetCardpackRequest) returns (Cardpack);
   rpc ListCardpacks(ListCardpacksRequest) returns (ListCardpacksResponse);
   rpc UpdateCardpack(UpdateCardpackRequest) returns (Cardpack);
-  rpc DeleteCardpack(DeleteCardpackRequest) returns (DeleteCardpackResponse);
-  rpc AddCardsToCardpack(AddCardsToCardpackRequest) returns (AddCardsToCardpackResponse);
-  rpc DeleteCardsFromCardpack(DeleteCardsFromCardpackRequest) returns (DeleteCardsFromCardpackResponse);
-  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (AddCardpackToFavoritesResponse);
-  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (RemoveCardpackFromFavoritesResponse);
+  rpc DeleteCardpack(DeleteCardpackRequest) returns (Cardpack);
+  rpc UndeleteCardpack(UndeleteCardpackRequest) returns (Cardpack);
+  rpc CreateCards(CreateCardsRequest) returns (CreateCardsResponse);
+  rpc DeleteCards(DeleteCardsRequest) returns (google.protobuf.Empty);
+  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (google.protobuf.Empty);
+  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (google.protobuf.Empty);
   rpc GetFavoritedCardpacks(GetFavoritedCardpacksRequest) returns (GetFavoritedCardpacksResponse);
   rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
   rpc ListBlackCards(ListBlackCardsRequest) returns (ListBlackCardsResponse);
