@@ -23,8 +23,23 @@ message GetUserRequest {
 }
 
 message UpdateUserRequest {
+  // The user to update.
+  User user = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message GetUserSettingsRequest {
+  // The user to fetch settings for.
   string user_id = 1;
-  string name = 2;
+}
+
+message UpdateUserSettingsRequest {
+  UserSettings user_settings = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message AddFriendRequest {
@@ -32,15 +47,9 @@ message AddFriendRequest {
   string friend_id = 2;
 }
 
-message AddFriendResponse {
-}
-
 message RemoveFriendRequest {
   string user_id = 1;
   string friend_id = 2;
-}
-
-message RemoveFriendResponse {
 }
 
 message GetFriendRequestsSentRequest {
@@ -110,20 +119,19 @@ message SetProfileImageRequest {
   bytes image = 2;
 }
 
-message SetProfileImageResponse {
-}
-
 service UserService {
   rpc GetOrCreateUser(GetOrCreateUserRequest) returns (GetOrCreateUserResponse);
   rpc GetUser(GetUserRequest) returns (User);
   rpc UpdateUser(UpdateUserRequest) returns (User);
-  rpc AddFriend(AddFriendRequest) returns (AddFriendResponse);
-  rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse);
+  rpc GetUserSettings(GetUserSettingsRequest) returns (UserSettings);
+  rpc UpdateUserSettings(UpdateUserSettingsRequest) returns (UserSettings);
+  rpc AddFriend(AddFriendRequest) returns (google.protobuf.Empty);
+  rpc RemoveFriend(RemoveFriendRequest) returns (google.protobuf.Empty);
   rpc GetFriendRequestsSent(GetFriendRequestsSentRequest) returns (GetFriendRequestsSentResponse);
   rpc GetFriendRequestsReceived(GetFriendRequestsReceivedRequest) returns (GetFriendRequestsReceivedResponse);
   rpc GetFriends(GetFriendsRequest) returns (GetFriendsResponse);
   rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
   rpc SearchUsersAutocomplete(SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
   rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
-  rpc SetProfileImage(SetProfileImageRequest) returns (SetProfileImageResponse);
+  rpc SetProfileImage(SetProfileImageRequest) returns (google.protobuf.Empty);
 }

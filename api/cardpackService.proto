@@ -42,8 +42,11 @@ message ListCardpacksResponse {
 }
 
 message UpdateCardpackRequest {
-  string cardpack_id = 1;
-  string name = 2;
+  // The cardpack to update.
+  Cardpack cardpack = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message DeleteCardpackRequest {
@@ -144,14 +147,19 @@ message ListWhiteCardsResponse {
 }
 
 message UpdateBlackCardRequest {
-  string card_id = 1;
-  string text = 2;
-  int32 answer_fields = 3;
+  // The card to update.
+  BlackCard card = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message UpdateWhiteCardRequest {
-  string card_id = 1;
-  string text = 2;
+  // The card to update.
+  WhiteCard card = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
 message SearchCardpacksRequest {
@@ -194,7 +202,7 @@ service CardpackService {
   rpc ListBlackCards(ListBlackCardsRequest) returns (ListBlackCardsResponse);
   rpc ListWhiteCards(ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
   rpc UpdateBlackCard(UpdateBlackCardRequest) returns (BlackCard);
-  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (BlackCard);
+  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (WhiteCard);
   rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
   rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
 }
