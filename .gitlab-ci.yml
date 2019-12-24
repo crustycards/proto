@@ -1,0 +1,11 @@
+variables:
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+
+lint:
+  stage: test
+  image: golang:1.13.5
+  services:
+    - docker:dind
+  script:
+    - go get -u github.com/googleapis/api-linter/cmd/api-linter
+    - api-linter api/cardpackService.proto api/model.proto api/userService.proto game/gameService.proto
