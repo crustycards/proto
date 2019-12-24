@@ -4,14 +4,8 @@ import "api/model.proto";
 import "google/protobuf/empty.proto";
 
 message CreateCardpackRequest {
-  // The user id of whoever
-  // is creating the cardpack.
-  // This will be the owner.
-  string owner_id = 1;
-
-  // The display name of the cardpack.
-  // Does not have to be unique.
-  string cardpack_name = 2;
+  // The cardpack to create.
+  Cardpack cardpack = 2;
 }
 
 message GetCardpackRequest {
