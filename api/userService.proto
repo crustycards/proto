@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "api/model.proto";
+import "google/protobuf/field_mask.proto";
 
 message GetOrCreateUserRequest {
   string default_name = 1; // This field is discarded if the user already exists.
