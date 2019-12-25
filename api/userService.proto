@@ -36,6 +36,7 @@ message GetUserSettingsRequest {
 }
 
 message UpdateUserSettingsRequest {
+  // The user settings to update.
   UserSettings user_settings = 1;
 
   // The list of fields to be updated.
