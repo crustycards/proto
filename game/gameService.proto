@@ -24,7 +24,6 @@ message ArtificialUser {
   // the name does not have to be unique.
   string name = 2;
 }
-// TODO - Add support for blank cards.
 
 // Represents a real user or an artificial player in a game.
 message Player {
@@ -44,6 +43,7 @@ message Player {
 
 // Allows players to have regular white cards or blank cards.
 message PlayableWhiteCard {
+  // TODO - Add support for blank cards.
   oneof card {
     WhiteCard white_card = 1;
   }
@@ -54,20 +54,11 @@ message GameInfo {
   // A server-generated uuid.
   string game_id = 1;
 
-  // The name of the game, as specified
-  // at game creation. Does not have to
-  // be unique among all games since
-  // each game has a unique game_id.
-  string game_name = 2;
+  GameConfig config = 2;
 
   // The number of players currently in the game.
   // This does not include artificial players.
   int32 player_count = 3;
-
-  // The maximum number of players that can be in the game at once.
-  // Artificial players do not count towards this limit.
-  // Value must be at least 3 and at most 100.
-  int32 max_players = 4;
 
   // The current game owner.
   User owner = 5;
@@ -227,7 +218,8 @@ message CreateGameRequest {
   // This user will be the owner once the game is created.
   string user_id = 1;
 
-  GameSettings settings = 2;
+  // Game configuration options.
+  GameConfig config = 2;
 }
 
 message CreateGameResponse {
