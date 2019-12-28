@@ -18,8 +18,10 @@ message User {
   string name = 2;
 
   // When the user was created.
+  // This field is managed automatically.
   //
-  // Ignored when creating or updating the cardpack since this is set automatically.
+  // Not allowed when creating.
+  // Not allowed when updating.
   google.protobuf.Timestamp create_time = 3;
 }
 
@@ -78,6 +80,7 @@ message Cardpack {
   string id = 1;
 
   // The display name of the cardpack.
+  //
   // Required when creating.
   // Allowed when updating.
   string name = 2;
@@ -85,33 +88,39 @@ message Cardpack {
   // The owner of the cardpack.
   // This user has full access to add, modify, or delete any cards in the pack.
   //
-  // When creating the cardpack, only the user_id field is required and all other fields are
-  // ignored.
-  //
+  // Required when creating (only user_id field is required).
   // Not allowed when updating.
   User owner = 3;
 
   // When the cardpack was created.
+  // This field is managed automatically.
   //
-  // Ignored when creating or updating the cardpack since this is set automatically.
+  // Not allowed when creating.
+  // Not allowed when updating.
   google.protobuf.Timestamp create_time = 4;
 
   // This field is reset anytime any changes are made to the cardpack including adding, modifying
   // and deleting cards as well as renaming the cardpack.
+  // This field is managed automatically.
   //
-  // Ignored when creating or updating the cardpack since this is set and updated automatically.
+  // Not allowed when creating.
+  // Not allowed when updating.
   google.protobuf.Timestamp update_time = 5;
 
   // If this field is not empty, it indicates that the cardpack has been deleted. Cardpacks that
   // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
+  // This field is managed automatically.
   //
-  // Ignored when creating or updating the cardpack since this is set and updated automatically.
+  // Not allowed when creating.
+  // Not allowed when updating.
   google.protobuf.Timestamp delete_time = 6;
 
   // How many other users have added
   // the cardpack to their favorites.
+  // This field is managed automatically.
   //
-  // Ignored when creating or updating the cardpack since this is set and updated automatically.
+  // Not allowed when creating.
+  // Not allowed when updating.
   int64 like_count = 7;
 }
 
@@ -125,16 +134,19 @@ message BlackCard {
   string id = 1;
 
   // The contents of the card.
+  //
   // Required when creating.
   // Allowed when updating.
   string text = 2;
 
   // The number of white cards that should be played when this card is used.
+  //
   // Required when creating.
   // Allowed when updating.
   int32 answer_fields = 3;
 
   // The cardpack this card belongs to.
+  //
   // Required when creating.
   // Not allowed when updating.
   string cardpack_id = 4; // TODO - Possibly rename to parent_id.
@@ -150,11 +162,13 @@ message WhiteCard {
   string id = 1;
 
   // The contents of the card.
+  //
   // Required when creating.
   // Allowed when updating.
   string text = 2;
 
   // The cardpack this card belongs to.
+  //
   // Required when creating.
   // Not allowed when updating.
   string cardpack_id = 3; // TODO - Possibly rename to parent_id.
