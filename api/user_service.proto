@@ -106,7 +106,7 @@ message GetFriendsResponse {
 
 message SearchUsersRequest {
   string query = 1;
-  int32 max_results = 2;
+  int32 page_size = 2;
 }
 
 message SearchUsersResponse {
@@ -115,7 +115,7 @@ message SearchUsersResponse {
 
 message SearchUsersAutocompleteRequest {
   string query = 1;
-  int32 max_results = 2;
+  int32 page_size = 2;
 }
 
 message SearchUsersAutocompleteResponse {

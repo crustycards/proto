@@ -6,22 +6,22 @@ import "google/protobuf/timestamp.proto";
 
 service GameService {
   rpc SearchGames (SearchGamesRequest) returns (SearchGamesResponse);
-  rpc CreateGame (CreateGameRequest) returns (CreateGameResponse);
-  rpc StartGame (StartGameRequest) returns (StartGameResponse);
-  rpc StopGame (StopGameRequest) returns (StopGameResponse);
-  rpc JoinGame (JoinGameRequest) returns (JoinGameResponse);
+  rpc CreateGame (CreateGameRequest) returns (GameView);
+  rpc StartGame (StartGameRequest) returns (GameView);
+  rpc StopGame (StopGameRequest) returns (GameView);
+  rpc JoinGame (JoinGameRequest) returns (GameView);
   rpc LeaveGame (LeaveGameRequest) returns (google.protobuf.Empty);
-  rpc KickUser (KickUserRequest) returns (KickUserResponse);
-  rpc BanUser (BanUserRequest) returns (BanUserResponse);
-  rpc UnbanUser (UnbanUserRequest) returns (UnbanUserResponse);
-  rpc PlayCards (PlayCardsRequest) returns (PlayCardsResponse);
-  rpc UnplayCards (UnplayCardsRequest) returns (UnplayCardsResponse);
-  rpc VoteCard (VoteCardRequest) returns (VoteCardResponse);
-  rpc StartNextRound (StartNextRoundRequest) returns (StartNextRoundResponse);
+  rpc KickUser (KickUserRequest) returns (GameView);
+  rpc BanUser (BanUserRequest) returns (GameView);
+  rpc UnbanUser (UnbanUserRequest) returns (GameView);
+  rpc PlayCards (PlayCardsRequest) returns (GameView);
+  rpc UnplayCards (UnplayCardsRequest) returns (GameView);
+  rpc VoteCard (VoteCardRequest) returns (GameView);
+  rpc StartNextRound (StartNextRoundRequest) returns (GameView);
   rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (google.protobuf.Empty);
   rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (google.protobuf.Empty);
-  rpc PostMessage (PostMessageRequest) returns (PostMessageResponse);
-  rpc GetGameView (GetGameViewRequest) returns (GetGameViewResponse);
+  rpc CreateChatMessage (CreateChatMessageRequest) returns (GameView);
+  rpc GetGameView (GetGameViewRequest) returns (GameView);
 }
 
 // Returns all games that match the search criteria.
@@ -56,18 +56,10 @@ message CreateGameRequest {
   GameConfig config = 2;
 }
 
-message CreateGameResponse {
-  GameView game = 1;
-}
-
 message StartGameRequest {
   // The id of the user trying to start the game.
   // Must be the id of someone who owns the game that they are in.
   string user_id = 1;
-}
-
-message StartGameResponse {
-  GameView game = 1;
 }
 
 message StopGameRequest {
@@ -76,20 +68,12 @@ message StopGameRequest {
   string user_id = 1;
 }
 
-message StopGameResponse {
-  GameView game = 1;
-}
-
 message JoinGameRequest {
   // The user who is joining a game.
   string user_id = 1;
 
   // The unique identifier of the game to join.
   string game_id = 2;
-}
-
-message JoinGameResponse {
-  GameView game = 1;
 }
 
 message LeaveGameRequest {
@@ -101,17 +85,9 @@ message KickUserRequest {
   string troll_id = 2;
 }
 
-message KickUserResponse {
-  GameView game = 1;
-}
-
 message BanUserRequest {
   string owner_id = 1;
   string troll_id = 2;
-}
-
-message BanUserResponse {
-  GameView game = 1;
 }
 
 message UnbanUserRequest {
@@ -119,25 +95,13 @@ message UnbanUserRequest {
   string troll_id = 2;
 }
 
-message UnbanUserResponse {
-  GameView game = 1;
-}
-
 message PlayCardsRequest {
   string user_id = 1;
   repeated string card_ids = 2;
 }
 
-message PlayCardsResponse {
-  GameView game = 1;
-}
-
 message UnplayCardsRequest {
   string user_id = 1;
-}
-
-message UnplayCardsResponse {
-  GameView game = 1;
 }
 
 message VoteCardRequest {
@@ -146,16 +110,8 @@ message VoteCardRequest {
   int32 choice_index = 2;
 }
 
-message VoteCardResponse {
-  GameView game = 1;
-}
-
 message StartNextRoundRequest {
   string user_id = 1;
-}
-
-message StartNextRoundResponse {
-  GameView game = 1;
 }
 
 message AddArtificialPlayerRequest {
@@ -167,31 +123,30 @@ message RemoveArtificialPlayerRequest {
   string artificial_user_id = 1;
 }
 
-message PostMessageRequest {
-  string user_id = 1;
-  string message_text = 2;
-}
-
-message PostMessageResponse {
-  GameView game = 1;
+message CreateChatMessageRequest {
+  // The chat message to create.
+  ChatMessage chat_message = 1;
 }
 
 message GetGameViewRequest {
   string user_id = 1;
 }
 
-message GetGameViewResponse {
-  GameView game = 1;
-}
-
 message ChatMessage {
   // The user who sent the message.
+  //
+  // Required when creating (only user_id field is required).
   User user = 1;
 
   // The contents of the message.
+  //
+  // Required when creating.
   string text = 2;
 
-  // When the message was sent.
+  // When the message was created.
+  // This field is managed automatically.
+  //
+  // Not allowed when creating.
   google.protobuf.Timestamp create_time = 3;
 }
 
