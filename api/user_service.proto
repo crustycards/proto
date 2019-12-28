@@ -12,9 +12,9 @@ service UserService {
   rpc UpdateUserSettings(UpdateUserSettingsRequest) returns (UserSettings);
   rpc AddFriend(AddFriendRequest) returns (google.protobuf.Empty);
   rpc RemoveFriend(RemoveFriendRequest) returns (google.protobuf.Empty);
-  rpc GetFriendRequestsSent(GetFriendRequestsSentRequest) returns (GetFriendRequestsSentResponse);
-  rpc GetFriendRequestsReceived(GetFriendRequestsReceivedRequest) returns (GetFriendRequestsReceivedResponse);
-  rpc GetFriends(GetFriendsRequest) returns (GetFriendsResponse);
+  rpc ListFriendRequestsSent(ListFriendRequestsSentRequest) returns (ListFriendRequestsSentResponse);
+  rpc ListFriendRequestsReceived(ListFriendRequestsReceivedRequest) returns (ListFriendRequestsReceivedResponse);
+  rpc ListFriends(ListFriendsRequest) returns (ListFriendsResponse);
   rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
   rpc SearchUsersAutocomplete(SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
   rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
@@ -75,17 +75,25 @@ message UpdateUserSettingsRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
+// TODO - Rethink friend request management. Possibly create a message representing a pending friend request.
 message AddFriendRequest {
+  // The user who's adding a friend.
   string user_id = 1;
+
+  // The user being added.
   string friend_id = 2;
 }
 
 message RemoveFriendRequest {
+  // The user who's removing a friend.
   string user_id = 1;
+
+  // The user being removed.
   string friend_id = 2;
 }
 
-message GetFriendRequestsSentRequest {
+message ListFriendRequestsSentRequest {
+  // The user that requests were sent from.
   string user_id = 1;
 
   // The maximum page size.
@@ -95,7 +103,8 @@ message GetFriendRequestsSentRequest {
   string page_token = 3;
 }
 
-message GetFriendRequestsSentResponse {
+message ListFriendRequestsSentResponse {
+  // Users who were sent a friend request by the user specified in the request.
   repeated User users = 1;
 
   // Can be passed to a subsequent request to retrieve the next page of items.
@@ -105,7 +114,8 @@ message GetFriendRequestsSentResponse {
   int64 total_size = 3;
 }
 
-message GetFriendRequestsReceivedRequest {
+message ListFriendRequestsReceivedRequest {
+  // The user that requests were sent to.
   string user_id = 1;
 
   // The maximum page size.
@@ -115,7 +125,8 @@ message GetFriendRequestsReceivedRequest {
   string page_token = 3;
 }
 
-message GetFriendRequestsReceivedResponse {
+message ListFriendRequestsReceivedResponse {
+  // Users who sent a friend request to the user specified in the request.
   repeated User users = 1;
 
   // Can be passed to a subsequent request to retrieve the next page of items.
@@ -125,7 +136,8 @@ message GetFriendRequestsReceivedResponse {
   int64 total_size = 3;
 }
 
-message GetFriendsRequest {
+message ListFriendsRequest {
+  // The user to list friends for.
   string user_id = 1;
 
   // The maximum page size.
@@ -135,7 +147,8 @@ message GetFriendsRequest {
   string page_token = 3;
 }
 
-message GetFriendsResponse {
+message ListFriendsResponse {
+  // Friends of the user specified in the request.
   repeated User users = 1;
 
   // Can be passed to a subsequent request to retrieve the next page of items.
