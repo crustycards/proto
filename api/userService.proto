@@ -10,13 +10,9 @@ message GetOrCreateUserRequest {
   string oauth_provider = 3;
 }
 
-message GetOrCreateUserResponse {
-  User user = 1;
-}
-
 message GetUserRequest {
   // Cannot set id along with oauth data.
-  string id = 1;
+  string user_id = 1;
 
   // The oauth_id and oauth_provider
   // must both be set or unset.
@@ -123,7 +119,7 @@ message SetProfileImageRequest {
 }
 
 service UserService {
-  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (GetOrCreateUserResponse);
+  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (User);
   rpc GetUser(GetUserRequest) returns (User);
   rpc UpdateUser(UpdateUserRequest) returns (User);
   rpc GetUserSettings(GetUserSettingsRequest) returns (UserSettings);

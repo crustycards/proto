@@ -338,7 +338,7 @@ message AddArtificialPlayerRequest {
 }
 
 message RemoveArtificialPlayerRequest {
-  string id = 1;
+  string artificial_user_id = 1;
 }
 
 message PostMessageRequest {

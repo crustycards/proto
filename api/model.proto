@@ -140,6 +140,7 @@ message BlackCard {
   string text = 2;
 
   // The number of white cards that should be played when this card is used.
+  // Value must be 1, 2, or 3.
   //
   // Required when creating.
   // Allowed when updating.

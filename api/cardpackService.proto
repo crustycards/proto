@@ -10,8 +10,8 @@ message CreateCardpackRequest {
 }
 
 message GetCardpackRequest {
-  // The id of the cardpack to retrieve.
-  string id = 1;
+  // The cardpack to retrieve.
+  string cardpack_id = 1;
 }
 
 message ListCardpacksRequest {
@@ -61,50 +61,6 @@ message UndeleteCardpackRequest {
   string cardpack_id = 1;
 }
 
-message CreateBlackCardRequest {
-  // The card to create.
-  BlackCard card = 1;
-}
-
-message CreateWhiteCardRequest {
-  // The card to create.
-  WhiteCard card = 1;
-}
-
-message DeleteBlackCardRequest {
-  // The card to delete.
-  string card_id = 1;
-}
-
-message DeleteWhiteCardRequest {
-  // The card to delete.
-  string card_id = 1;
-}
-
-message BatchCreateCardsRequest {
-  // The id of the cardpack that
-  // cards should be added to.
-  // This must point to a valid cardpack.
-  string cardpack_id = 1;
-
-  // The black cards to create.
-  repeated BlackCard black_cards = 2;
-
-  // The white cards to create.
-  repeated WhiteCard white_cards = 3;
-}
-
-message BatchCreateCardsResponse {
-  repeated BlackCard black_cards = 1;
-  repeated WhiteCard white_cards = 2;
-}
-
-message BatchDeleteCardsRequest {
-  string cardpack_id = 1;
-  repeated string black_card_ids = 2;
-  repeated string white_card_ids = 3;
-}
-
 message AddCardpackToFavoritesRequest {
   string user_id = 1;
   string cardpack_id = 2;
@@ -115,13 +71,13 @@ message RemoveCardpackFromFavoritesRequest {
   string cardpack_id = 2;
 }
 
-message GetFavoritedCardpacksRequest {
+message ListFavoritedCardpacksRequest {
   string user_id = 1;
   int32 page_size = 2;
   string page_token = 3;
 }
 
-message GetFavoritedCardpacksResponse {
+message ListFavoritedCardpacksResponse {
   repeated Cardpack cardpacks = 1;
   string next_page_token = 2;
   int64 total_size = 3;
@@ -134,46 +90,6 @@ message GetIsCardpackFavoritedByUserRequest {
 
 message GetIsCardpackFavoritedByUserResponse {
   bool is_favorited = 1;
-}
-
-message ListBlackCardsRequest {
-  string cardpack_id = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-}
-
-message ListBlackCardsResponse {
-  repeated BlackCard cards = 1;
-  string next_page_token = 2;
-  int64 total_size = 3;
-}
-
-message ListWhiteCardsRequest {
-  string cardpack_id = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-}
-
-message ListWhiteCardsResponse {
-  repeated WhiteCard cards = 1;
-  string next_page_token = 2;
-  int64 total_size = 3;
-}
-
-message UpdateBlackCardRequest {
-  // The card to update.
-  BlackCard card = 1;
-
-  // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
-}
-
-message UpdateWhiteCardRequest {
-  // The card to update.
-  WhiteCard card = 1;
-
-  // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
 }
 
 message SearchCardpacksRequest {
@@ -200,6 +116,98 @@ message SearchCardpacksAutocompleteResponse {
   repeated string autocomplete_entry = 1;
 }
 
+message CreateBlackCardRequest {
+  // The card to create.
+  BlackCard card = 1;
+}
+
+message CreateWhiteCardRequest {
+  // The card to create.
+  WhiteCard card = 1;
+}
+
+message UpdateBlackCardRequest {
+  // The card to update.
+  BlackCard card = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateWhiteCardRequest {
+  // The card to update.
+  WhiteCard card = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteBlackCardRequest {
+  // The card to delete.
+  string card_id = 1;
+}
+
+message DeleteWhiteCardRequest {
+  // The card to delete.
+  string card_id = 1;
+}
+
+message BatchCreateCardsRequest {
+  // The id of the cardpack that cards should be added to. Must point to a valid cardpack.
+  string cardpack_id = 1;
+
+  // The black cards to create.
+  repeated BlackCard black_cards = 2;
+
+  // The white cards to create.
+  repeated WhiteCard white_cards = 3;
+}
+
+// All black and white cards within a single request must have the same value for cardpack_id.
+message BatchCreateCardsResponse {
+  // The black cards to create.
+  repeated BlackCard black_cards = 1;
+
+  // The white cards to create.
+  repeated WhiteCard white_cards = 2;
+}
+
+message BatchDeleteCardsRequest {
+  // The cardpack to delete cards from. The entire request will fail atomically if any black or
+  // white cards specified do not belong to this cardpack.
+  string cardpack_id = 1;
+
+  // The black cards to delete.
+  repeated string black_card_ids = 2;
+
+  // The white cards to delete.
+  repeated string white_card_ids = 3;
+}
+
+message ListBlackCardsRequest {
+  string cardpack_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListBlackCardsResponse {
+  repeated BlackCard cards = 1;
+  string next_page_token = 2;
+  int64 total_size = 3;
+}
+
+message ListWhiteCardsRequest {
+  string cardpack_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListWhiteCardsResponse {
+  repeated WhiteCard cards = 1;
+  string next_page_token = 2;
+  int64 total_size = 3;
+}
+
 service CardpackService {
   rpc CreateCardpack(CreateCardpackRequest) returns (Cardpack);
   rpc GetCardpack(GetCardpackRequest) returns (Cardpack);
@@ -207,20 +215,20 @@ service CardpackService {
   rpc UpdateCardpack(UpdateCardpackRequest) returns (Cardpack);
   rpc DeleteCardpack(DeleteCardpackRequest) returns (Cardpack);
   rpc UndeleteCardpack(UndeleteCardpackRequest) returns (Cardpack);
+  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (google.protobuf.Empty);
+  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (google.protobuf.Empty);
+  rpc ListFavoritedCardpacks(ListFavoritedCardpacksRequest) returns (ListFavoritedCardpacksResponse);
+  rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
+  rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
+  rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
   rpc CreateBlackCard(CreateBlackCardRequest) returns (BlackCard);
   rpc CreateWhiteCard(CreateWhiteCardRequest) returns (WhiteCard);
+  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (BlackCard);
+  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (WhiteCard);
   rpc DeleteBlackCard(DeleteBlackCardRequest) returns (google.protobuf.Empty);
   rpc DeleteWhiteCard(DeleteWhiteCardRequest) returns (google.protobuf.Empty);
   rpc BatchCreateCards(BatchCreateCardsRequest) returns (BatchCreateCardsResponse);
   rpc BatchDeleteCards(BatchDeleteCardsRequest) returns (google.protobuf.Empty);
-  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (google.protobuf.Empty);
-  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (google.protobuf.Empty);
-  rpc GetFavoritedCardpacks(GetFavoritedCardpacksRequest) returns (GetFavoritedCardpacksResponse);
-  rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
   rpc ListBlackCards(ListBlackCardsRequest) returns (ListBlackCardsResponse);
   rpc ListWhiteCards(ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
-  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (BlackCard);
-  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (WhiteCard);
-  rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
-  rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
 }
