@@ -11,10 +11,10 @@ service CardpackService {
   rpc UpdateCardpack(UpdateCardpackRequest) returns (Cardpack);
   rpc DeleteCardpack(DeleteCardpackRequest) returns (Cardpack);
   rpc UndeleteCardpack(UndeleteCardpackRequest) returns (Cardpack);
-  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (google.protobuf.Empty);
-  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (google.protobuf.Empty);
+  rpc LikeCardpack(LikeCardpackRequest) returns (google.protobuf.Empty);
+  rpc UnlikeCardpack(UnlikeCardpackRequest) returns (google.protobuf.Empty);
   rpc ListFavoritedCardpacks(ListFavoritedCardpacksRequest) returns (ListFavoritedCardpacksResponse);
-  rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
+  rpc GetIsCardpackLikedByUser(GetIsCardpackLikedByUserRequest) returns (GetIsCardpackLikedByUserResponse);
   rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
   rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
   rpc CreateBlackCard(CreateBlackCardRequest) returns (BlackCard);
@@ -46,18 +46,13 @@ message ListCardpacksRequest {
     string owner_id = 1;
 
     // List cardpacks that are liked by a user.
-    string favoriter_id = 2;
+    string liker_id = 2;
   }
 
   // The maximum page size.
-  // Response will never exceed
-  // this length, but it may
-  // return fewer results even
-  // if the end has not been
-  // reached.
   int32 page_size = 3;
 
-  // A page token returned from a previous rpc.
+  // Optional page token returned from a previous rpc.
   string page_token = 4;
 
   // Includes soft-deleted cardpacks if set to true.
@@ -65,8 +60,13 @@ message ListCardpacksRequest {
 }
 
 message ListCardpacksResponse {
+  // The requested cardpacks.
   repeated Cardpack cardpacks = 1;
+
+  // Can be passed to a subsequent request to retrieve the next page of items.
   string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
   int64 total_size = 3;
 }
 
@@ -79,55 +79,82 @@ message UpdateCardpackRequest {
 }
 
 message DeleteCardpackRequest {
+  // The cardpack to delete.
   string cardpack_id = 1;
 }
 
 message UndeleteCardpackRequest {
+  // The cardpack to undelete.
+  // Deleted cardpacks are guaranteed to remain available to be undeleted for at least 30 days.
   string cardpack_id = 1;
 }
 
-message AddCardpackToFavoritesRequest {
+message LikeCardpackRequest {
+  // The user who liked the cardpack.
   string user_id = 1;
+
+  // The cardpack they liked.
   string cardpack_id = 2;
 }
 
-message RemoveCardpackFromFavoritesRequest {
+message UnlikeCardpackRequest {
+  // The user who unliked the cardpack.
   string user_id = 1;
+
+  // The cardpack they unliked.
   string cardpack_id = 2;
 }
 
 message ListFavoritedCardpacksRequest {
+  // Which user's liked cardpacks to list.
   string user_id = 1;
+
+  // The maximum page size.
   int32 page_size = 2;
+
+  // Optional page token returned from a previous rpc.
   string page_token = 3;
 }
 
 message ListFavoritedCardpacksResponse {
+  // The requested cardpacks.
   repeated Cardpack cardpacks = 1;
+
+  // Can be passed to a subsequent request to retrieve the next page of items.
   string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
   int64 total_size = 3;
 }
 
-message GetIsCardpackFavoritedByUserRequest {
+message GetIsCardpackLikedByUserRequest {
+  // The user to check.
   string user_id = 1;
+
+  // The cardpack to check against.
   string cardpack_id = 2;
 }
 
-message GetIsCardpackFavoritedByUserResponse {
-  bool is_favorited = 1;
+message GetIsCardpackLikedByUserResponse {
+  // Whether the user has liked the cardpack.
+  bool is_liked = 1;
 }
 
 message SearchCardpacksRequest {
+  // The search query to suggest results from.
   string query = 1;
+
+  // The maximum page size.
   int32 page_size = 2;
 }
 
 message SearchCardpacksResponse {
+  // Search results.
   repeated Cardpack cardpacks = 1;
 }
 
 message SearchCardpacksAutocompleteRequest {
-  // The query to suggest results from.
+  // The search query to suggest results from.
   string query = 1;
 
   // The maximum number of suggestions to return.
@@ -190,10 +217,10 @@ message BatchCreateCardsRequest {
 
 // All black and white cards within a single request must have the same value for cardpack_id.
 message BatchCreateCardsResponse {
-  // The black cards to create.
+  // The black cards created. Guaranteed to be in the same order as the request.
   repeated BlackCard black_cards = 1;
 
-  // The white cards to create.
+  // The white cards created. Guaranteed to be in the same order as the request.
   repeated WhiteCard white_cards = 2;
 }
 
@@ -210,25 +237,45 @@ message BatchDeleteCardsRequest {
 }
 
 message ListBlackCardsRequest {
+  // The cardpack to list cards from.
   string cardpack_id = 1;
+
+  // The maximum page size.
   int32 page_size = 2;
+
+  // Optional page token returned from a previous rpc.
   string page_token = 3;
 }
 
 message ListBlackCardsResponse {
+  // The requested cards.
   repeated BlackCard cards = 1;
+
+  // Can be passed to a subsequent request to retrieve the next page of items.
   string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
   int64 total_size = 3;
 }
 
 message ListWhiteCardsRequest {
+  // The cardpack to list cards from.
   string cardpack_id = 1;
+
+  // The maximum page size.
   int32 page_size = 2;
+
+  // Optional page token returned from a previous rpc.
   string page_token = 3;
 }
 
 message ListWhiteCardsResponse {
+  // The requested cards.
   repeated WhiteCard cards = 1;
+
+  // Can be passed to a subsequent request to retrieve the next page of items.
   string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
   int64 total_size = 3;
 }

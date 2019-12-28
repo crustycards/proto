@@ -63,11 +63,19 @@ message GameConfig {
 // Exactly one exists for every user, and are created automatically whenever a user is created.
 // All values are unset for new users and can only be changed by calling UpdateUserSettings.
 message UserSettings {
+  // Color schemes the frontend supports.
   enum ColorScheme {
+    // Default color scheme.
     DEFAULT_LIGHT = 0;
+
+    // Dark mode.
     DEFAULT_DARK = 1;
   }
+
+  // The color scheme to show for the user.
   ColorScheme color_scheme = 1;
+
+  // Default game settings for a user to quickly start a game.
   GameConfig quick_start_config = 2;
 }
 
@@ -116,8 +124,7 @@ message Cardpack {
   // Not allowed when updating.
   google.protobuf.Timestamp delete_time = 6;
 
-  // How many other users have added
-  // the cardpack to their favorites.
+  // How many other users liked this cardpack.
   // This field is managed automatically.
   //
   // Not allowed when creating.
@@ -151,7 +158,7 @@ message BlackCard {
   //
   // Required when creating.
   // Not allowed when updating.
-  string cardpack_id = 4; // TODO - Possibly rename to parent_id.
+  string cardpack_id = 4;
 }
 
 message WhiteCard {
@@ -173,5 +180,5 @@ message WhiteCard {
   //
   // Required when creating.
   // Not allowed when updating.
-  string cardpack_id = 3; // TODO - Possibly rename to parent_id.
+  string cardpack_id = 3;
 }

@@ -30,9 +30,10 @@ service GameService {
 message SearchGamesRequest {
   // Filters games by name, i.e. games must contain the
   // exact text of the query in their name to match.
-  string filter = 1;
-  // The minimum number of slots
-  // games must have available.
+  string query = 1;
+
+  // The minimum number of slots games must have available. Used to filter out games that are full
+  // or nearly full.
   int32 min_available_player_slots = 2;
 
   enum GameStageFilter {
@@ -53,7 +54,7 @@ message CreateGameRequest {
   string user_id = 1;
 
   // Game configuration options.
-  GameConfig config = 2;
+  GameConfig game_config = 2;
 }
 
 message StartGameRequest {
@@ -77,7 +78,8 @@ message JoinGameRequest {
 }
 
 message LeaveGameRequest {
-  string user_id = 1; // The user who is leaving a game.
+  // The user who is leaving a game.
+  string user_id = 1;
 }
 
 message KickUserRequest {
