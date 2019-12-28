@@ -65,19 +65,9 @@ message CreateCardsRequest {
   string cardpack_id = 1;
 
   // The black cards to create.
-  // Not all fields should be filled
-  // when creating cards, see the
-  // BlackCard proto definition for
-  // details on what properties
-  // should be left empty.
   repeated BlackCard black_cards = 2;
 
   // The white cards to create.
-  // Not all fields should be filled
-  // when creating cards, see the
-  // WhiteCard proto definition for
-  // details on what properties
-  // should be left empty.
   repeated WhiteCard white_cards = 3;
 }
 
