@@ -8,4 +8,4 @@ lint:
     - docker:dind
   script:
     - go get -u github.com/googleapis/api-linter/cmd/api-linter
-    - api-linter api/cardpackService.proto api/model.proto api/userService.proto game/gameService.proto
+    - api-linter api/cardpack_service.proto api/model.proto api/user_service.proto game/game_service.proto
