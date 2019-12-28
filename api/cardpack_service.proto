@@ -4,6 +4,31 @@ import "api/model.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 
+service CardpackService {
+  rpc CreateCardpack(CreateCardpackRequest) returns (Cardpack);
+  rpc GetCardpack(GetCardpackRequest) returns (Cardpack);
+  rpc ListCardpacks(ListCardpacksRequest) returns (ListCardpacksResponse);
+  rpc UpdateCardpack(UpdateCardpackRequest) returns (Cardpack);
+  rpc DeleteCardpack(DeleteCardpackRequest) returns (Cardpack);
+  rpc UndeleteCardpack(UndeleteCardpackRequest) returns (Cardpack);
+  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (google.protobuf.Empty);
+  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (google.protobuf.Empty);
+  rpc ListFavoritedCardpacks(ListFavoritedCardpacksRequest) returns (ListFavoritedCardpacksResponse);
+  rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
+  rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
+  rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
+  rpc CreateBlackCard(CreateBlackCardRequest) returns (BlackCard);
+  rpc CreateWhiteCard(CreateWhiteCardRequest) returns (WhiteCard);
+  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (BlackCard);
+  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (WhiteCard);
+  rpc DeleteBlackCard(DeleteBlackCardRequest) returns (google.protobuf.Empty);
+  rpc DeleteWhiteCard(DeleteWhiteCardRequest) returns (google.protobuf.Empty);
+  rpc BatchCreateCards(BatchCreateCardsRequest) returns (BatchCreateCardsResponse);
+  rpc BatchDeleteCards(BatchDeleteCardsRequest) returns (google.protobuf.Empty);
+  rpc ListBlackCards(ListBlackCardsRequest) returns (ListBlackCardsResponse);
+  rpc ListWhiteCards(ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
+}
+
 message CreateCardpackRequest {
   // The cardpack to create.
   Cardpack cardpack = 1;
@@ -206,29 +231,4 @@ message ListWhiteCardsResponse {
   repeated WhiteCard cards = 1;
   string next_page_token = 2;
   int64 total_size = 3;
-}
-
-service CardpackService {
-  rpc CreateCardpack(CreateCardpackRequest) returns (Cardpack);
-  rpc GetCardpack(GetCardpackRequest) returns (Cardpack);
-  rpc ListCardpacks(ListCardpacksRequest) returns (ListCardpacksResponse);
-  rpc UpdateCardpack(UpdateCardpackRequest) returns (Cardpack);
-  rpc DeleteCardpack(DeleteCardpackRequest) returns (Cardpack);
-  rpc UndeleteCardpack(UndeleteCardpackRequest) returns (Cardpack);
-  rpc AddCardpackToFavorites(AddCardpackToFavoritesRequest) returns (google.protobuf.Empty);
-  rpc RemoveCardpackFromFavorites(RemoveCardpackFromFavoritesRequest) returns (google.protobuf.Empty);
-  rpc ListFavoritedCardpacks(ListFavoritedCardpacksRequest) returns (ListFavoritedCardpacksResponse);
-  rpc GetIsCardpackFavoritedByUser(GetIsCardpackFavoritedByUserRequest) returns (GetIsCardpackFavoritedByUserResponse);
-  rpc SearchCardpacks(SearchCardpacksRequest) returns (SearchCardpacksResponse);
-  rpc SearchCardpacksAutocomplete(SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
-  rpc CreateBlackCard(CreateBlackCardRequest) returns (BlackCard);
-  rpc CreateWhiteCard(CreateWhiteCardRequest) returns (WhiteCard);
-  rpc UpdateBlackCard(UpdateBlackCardRequest) returns (BlackCard);
-  rpc UpdateWhiteCard(UpdateWhiteCardRequest) returns (WhiteCard);
-  rpc DeleteBlackCard(DeleteBlackCardRequest) returns (google.protobuf.Empty);
-  rpc DeleteWhiteCard(DeleteWhiteCardRequest) returns (google.protobuf.Empty);
-  rpc BatchCreateCards(BatchCreateCardsRequest) returns (BatchCreateCardsResponse);
-  rpc BatchDeleteCards(BatchDeleteCardsRequest) returns (google.protobuf.Empty);
-  rpc ListBlackCards(ListBlackCardsRequest) returns (ListBlackCardsResponse);
-  rpc ListWhiteCards(ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
 }

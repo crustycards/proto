@@ -4,6 +4,23 @@ import "api/model.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 
+service UserService {
+  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (User);
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc UpdateUser(UpdateUserRequest) returns (User);
+  rpc GetUserSettings(GetUserSettingsRequest) returns (UserSettings);
+  rpc UpdateUserSettings(UpdateUserSettingsRequest) returns (UserSettings);
+  rpc AddFriend(AddFriendRequest) returns (google.protobuf.Empty);
+  rpc RemoveFriend(RemoveFriendRequest) returns (google.protobuf.Empty);
+  rpc GetFriendRequestsSent(GetFriendRequestsSentRequest) returns (GetFriendRequestsSentResponse);
+  rpc GetFriendRequestsReceived(GetFriendRequestsReceivedRequest) returns (GetFriendRequestsReceivedResponse);
+  rpc GetFriends(GetFriendsRequest) returns (GetFriendsResponse);
+  rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
+  rpc SearchUsersAutocomplete(SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
+  rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
+  rpc SetProfileImage(SetProfileImageRequest) returns (google.protobuf.Empty);
+}
+
 message GetOrCreateUserRequest {
   string default_name = 1; // This field is discarded if the user already exists.
   string oauth_id = 2;
@@ -116,21 +133,4 @@ message GetProfileImageResponse {
 message SetProfileImageRequest {
   string user_id = 1;
   bytes image = 2;
-}
-
-service UserService {
-  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (User);
-  rpc GetUser(GetUserRequest) returns (User);
-  rpc UpdateUser(UpdateUserRequest) returns (User);
-  rpc GetUserSettings(GetUserSettingsRequest) returns (UserSettings);
-  rpc UpdateUserSettings(UpdateUserSettingsRequest) returns (UserSettings);
-  rpc AddFriend(AddFriendRequest) returns (google.protobuf.Empty);
-  rpc RemoveFriend(RemoveFriendRequest) returns (google.protobuf.Empty);
-  rpc GetFriendRequestsSent(GetFriendRequestsSentRequest) returns (GetFriendRequestsSentResponse);
-  rpc GetFriendRequestsReceived(GetFriendRequestsReceivedRequest) returns (GetFriendRequestsReceivedResponse);
-  rpc GetFriends(GetFriendsRequest) returns (GetFriendsResponse);
-  rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
-  rpc SearchUsersAutocomplete(SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
-  rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
-  rpc SetProfileImage(SetProfileImageRequest) returns (google.protobuf.Empty);
 }
