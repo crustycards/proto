@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "api/model.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 message ChatMessage {
@@ -269,9 +270,6 @@ message LeaveGameRequest {
   string user_id = 1; // The user who is leaving a game.
 }
 
-message LeaveGameResponse {
-}
-
 message KickUserRequest {
   string owner_id = 1;
   string troll_id = 2;
@@ -336,19 +334,11 @@ message StartNextRoundResponse {
 
 message AddArtificialPlayerRequest {
   // The name of the artificial player to add.
-  // Name must not be used by any other
-  // existing artificial players.
   string name = 1;
-}
-
-message AddArtificialPlayerResponse {
 }
 
 message RemoveArtificialPlayerRequest {
   string id = 1;
-}
-
-message RemoveArtificialPlayerResponse {
 }
 
 message PostMessageRequest {
@@ -374,7 +364,7 @@ service GameService {
   rpc StartGame (StartGameRequest) returns (StartGameResponse);
   rpc StopGame (StopGameRequest) returns (StopGameResponse);
   rpc JoinGame (JoinGameRequest) returns (JoinGameResponse);
-  rpc LeaveGame (LeaveGameRequest) returns (LeaveGameResponse);
+  rpc LeaveGame (LeaveGameRequest) returns (google.protobuf.Empty);
   rpc KickUser (KickUserRequest) returns (KickUserResponse);
   rpc BanUser (BanUserRequest) returns (BanUserResponse);
   rpc UnbanUser (UnbanUserRequest) returns (UnbanUserResponse);
@@ -382,8 +372,8 @@ service GameService {
   rpc UnplayCards (UnplayCardsRequest) returns (UnplayCardsResponse);
   rpc VoteCard (VoteCardRequest) returns (VoteCardResponse);
   rpc StartNextRound (StartNextRoundRequest) returns (StartNextRoundResponse);
-  rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (AddArtificialPlayerResponse);
-  rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (RemoveArtificialPlayerResponse);
+  rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (google.protobuf.Empty);
+  rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (google.protobuf.Empty);
   rpc PostMessage (PostMessageRequest) returns (PostMessageResponse);
   rpc GetGameView (GetGameViewRequest) returns (GetGameViewResponse);
 }
