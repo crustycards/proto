@@ -170,17 +170,17 @@ message SearchCardpacksAutocompleteResponse {
 
 message CreateBlackCardRequest {
   // The card to create.
-  BlackCard card = 1;
+  BlackCard black_card = 1;
 }
 
 message CreateWhiteCardRequest {
   // The card to create.
-  WhiteCard card = 1;
+  WhiteCard white_card = 1;
 }
 
 message UpdateBlackCardRequest {
   // The card to update.
-  BlackCard card = 1;
+  BlackCard black_card = 1;
 
   // The list of fields to be updated.
   google.protobuf.FieldMask update_mask = 2;
@@ -188,7 +188,7 @@ message UpdateBlackCardRequest {
 
 message UpdateWhiteCardRequest {
   // The card to update.
-  WhiteCard card = 1;
+  WhiteCard white_card = 1;
 
   // The list of fields to be updated.
   google.protobuf.FieldMask update_mask = 2;
@@ -196,12 +196,12 @@ message UpdateWhiteCardRequest {
 
 message DeleteBlackCardRequest {
   // The card to delete.
-  string card_id = 1;
+  string black_card_id = 1;
 }
 
 message DeleteWhiteCardRequest {
   // The card to delete.
-  string card_id = 1;
+  string white_card_id = 1;
 }
 
 message BatchCreateCardsRequest {
