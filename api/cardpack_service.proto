@@ -39,6 +39,7 @@ message GetCardpackRequest {
   string cardpack_id = 1;
 }
 
+// TODO - Add sort_by property to all ListXRequest messages.
 message ListCardpacksRequest {
   // Which entity to list cardpacks from.
   oneof list_by {
