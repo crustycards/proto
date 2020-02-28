@@ -6,20 +6,20 @@ import "google/protobuf/field_mask.proto";
 import "google/protobuf/timestamp.proto";
 
 service UserService {
-  rpc GetOrCreateUser(GetOrCreateUserRequest) returns (User);
-  rpc GetUser(GetUserRequest) returns (User);
-  rpc UpdateUser(UpdateUserRequest) returns (User);
-  rpc GetUserSettings(GetUserSettingsRequest) returns (UserSettings);
-  rpc UpdateUserSettings(UpdateUserSettingsRequest) returns (UserSettings);
-  rpc AddFriend(AddFriendRequest) returns (google.protobuf.Empty);
-  rpc RemoveFriend(RemoveFriendRequest) returns (google.protobuf.Empty);
-  rpc ListFriendRequestsSent(ListFriendRequestsSentRequest) returns (ListFriendRequestsSentResponse);
-  rpc ListFriendRequestsReceived(ListFriendRequestsReceivedRequest) returns (ListFriendRequestsReceivedResponse);
-  rpc ListFriends(ListFriendsRequest) returns (ListFriendsResponse);
-  rpc SearchUsers(SearchUsersRequest) returns (SearchUsersResponse);
-  rpc SearchUsersAutocomplete(SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
-  rpc GetProfileImage(GetProfileImageRequest) returns (GetProfileImageResponse);
-  rpc SetProfileImage(SetProfileImageRequest) returns (google.protobuf.Empty);
+  rpc GetOrCreateUser (GetOrCreateUserRequest) returns (User);
+  rpc GetUser (GetUserRequest) returns (User);
+  rpc UpdateUser (UpdateUserRequest) returns (User);
+  rpc GetUserSettings (GetUserSettingsRequest) returns (UserSettings);
+  rpc UpdateUserSettings (UpdateUserSettingsRequest) returns (UserSettings);
+  rpc AddFriend (AddFriendRequest) returns (google.protobuf.Empty);
+  rpc RemoveFriend (RemoveFriendRequest) returns (google.protobuf.Empty);
+  rpc ListFriendRequestsSent (ListFriendRequestsSentRequest) returns (ListFriendRequestsSentResponse);
+  rpc ListFriendRequestsReceived (ListFriendRequestsReceivedRequest) returns (ListFriendRequestsReceivedResponse);
+  rpc ListFriends (ListFriendsRequest) returns (ListFriendsResponse);
+  rpc SearchUsers (SearchUsersRequest) returns (SearchUsersResponse);
+  rpc SearchUsersAutocomplete (SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
+  rpc GetProfileImage (GetProfileImageRequest) returns (GetProfileImageResponse);
+  rpc SetProfileImage (SetProfileImageRequest) returns (google.protobuf.Empty);
 }
 
 message OAuthIdentifier {
