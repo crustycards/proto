@@ -3,6 +3,7 @@ syntax = "proto3";
 import "api/model.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
 
 service UserService {
   rpc GetOrCreateUser(GetOrCreateUserRequest) returns (User);
@@ -75,21 +76,27 @@ message UpdateUserSettingsRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
-// TODO - Rethink friend request management. Possibly create a message representing a pending friend request.
+// Creates or responds to a friend request.
+// If the receiver has already sent a friend request
+// to the sender, this is treated as responding to
+// that request. Otherwise this will send a friend
+// request to the receiver.
 message AddFriendRequest {
-  // The user who's adding a friend.
-  string user_id = 1;
+  // The user who's sending or responding to a friend request.
+  string sender_user_id = 1;
 
   // The user being added.
-  string friend_id = 2;
+  string receiver_user_id = 2;
 }
 
+// Removes a friend from a user's friend list
+// or deletes an incoming friend request.
 message RemoveFriendRequest {
-  // The user who's removing a friend.
-  string user_id = 1;
+  // The user who's removing a friend or deleting a friend request.
+  string sender_user_id = 1;
 
   // The user being removed.
-  string friend_id = 2;
+  string receiver_user_id = 2;
 }
 
 message ListFriendRequestsSentRequest {
@@ -104,8 +111,8 @@ message ListFriendRequestsSentRequest {
 }
 
 message ListFriendRequestsSentResponse {
-  // Users who were sent a friend request by the user specified in the request.
-  repeated User users = 1;
+  // Friend requests sent by the specified user.
+  repeated PendingFriendRequest friend_requests_sent = 1;
 
   // Can be passed to a subsequent request to retrieve the next page of items.
   string next_page_token = 2;
@@ -126,8 +133,8 @@ message ListFriendRequestsReceivedRequest {
 }
 
 message ListFriendRequestsReceivedResponse {
-  // Users who sent a friend request to the user specified in the request.
-  repeated User users = 1;
+  // Friend requests received by the specified user.
+  repeated PendingFriendRequest friend_requests_received = 1;
 
   // Can be passed to a subsequent request to retrieve the next page of items.
   string next_page_token = 2;
@@ -197,4 +204,15 @@ message GetProfileImageResponse {
 message SetProfileImageRequest {
   string user_id = 1;
   bytes image = 2;
+}
+
+message PendingFriendRequest {
+  // The user who sent the friend request.
+  User sender = 1;
+
+  // The user whom the friend request was sent to.
+  User recipient = 2;
+
+  // When the friend request was sent.
+  google.protobuf.Timestamp create_time = 3;
 }
