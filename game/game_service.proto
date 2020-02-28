@@ -146,9 +146,6 @@ message ChatMessage {
   string text = 2;
 
   // When the message was created.
-  // This field is managed automatically.
-  //
-  // Not allowed when creating.
   google.protobuf.Timestamp create_time = 3;
 }
 
