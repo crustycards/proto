@@ -54,6 +54,40 @@ message GameConfig {
   // All cards from all cardpacks listed will be pulled from
   // the main api at game creation.
   repeated string cardpack_ids = 6;
+
+  message BlankCardConfig {
+    enum Behavior {
+      BEHAVIOR_UNSPECIFIED = 0;
+
+      // No blank cards are added to the deck.
+      DISABLED = 1;
+
+      // Allow users to play blank cards from their hand
+      // and write any text (limited to 100 characters).
+      OPEN_TEXT = 2;
+
+      // At any time, a user can choose to trade in a blank card. Whenever
+      // they do, five cards are drawn from the deck and displayed to the user.
+      // The user can pick any one of them and it is added to their hand.
+      RANDOM_CHOICE = 3;
+    }
+
+    // Specifies behavior of blank cards.
+    Behavior behavior = 1;
+
+    oneof blank_cards_added {
+      // Adds a fixed number of blank cards to the deck.
+      int32 card_count = 2;
+
+      // A number between 0 and 100 specifying how many blank cards to add
+      // as a percentage of the deck size. For example, if there are 1000
+      // non-blank cards in your game and you specify a blank card percentage
+      // of 10, there will be 100 blank cards added for a total of 1100.
+      int32 percentage = 3;
+    }
+  }
+
+  BlankCardConfig blank_card_config = 7;
 }
 
 // A singleton resource belonging to a user that contains user-specific settings.

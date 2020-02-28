@@ -175,11 +175,16 @@ message Player {
   google.protobuf.Timestamp join_time = 4;
 }
 
+message BlankWhiteCard {
+  // A server-generated uuid.
+  string id = 1;
+}
+
 // Allows players to have regular white cards or blank cards.
 message PlayableWhiteCard {
-  // TODO - Add support for blank cards.
   oneof card {
     WhiteCard white_card = 1;
+    BlankWhiteCard blank_card = 2;
   }
 }
 
@@ -188,6 +193,7 @@ message GameInfo {
   // A server-generated uuid.
   string game_id = 1;
 
+  // Game configuration options.
   GameConfig config = 2;
 
   // The number of players currently in the game.
@@ -226,7 +232,7 @@ message GameView {
   }
   
   Stage stage = 5;
-  repeated WhiteCard hand = 6;
+  repeated PlayableWhiteCard hand = 6;
 
   // All real and artificial players that are currently playing.
   // Guaranteed to be ordered by join_time.
@@ -273,26 +279,32 @@ message GameView {
     User user = 1;
 
     // The cards played by the user.
-    repeated WhiteCard cards = 2;
+    repeated PlayableWhiteCard cards = 2;
   }
 
   // The white cards played this round.
   // Data contained is dependent on the game stage.
   // ----------------------------------------------
-  // When the game stage is PLAY_PHASE, this never contains any values.
+  // When the game stage is PLAY_PHASE, each repeated value
+  // represents who has played this round. The 'user' field
+  // is filled for each value so that players know who has
+  // played, but the 'cards' field is empty so cards remain
+  // anonymous until after the judge phase. Values are
+  // in the order that players played.
   //
   // When the game stage is JUDGE_PHASE, this will contain
   // one value for each player that has played this round.
-  // This amount will change since users can play during this phase.
-  // For each repeated value, the 'user' property will be left empty so
-  // that users do not know who submitted each card.
+  // For each repeated value, the 'cards' property will be
+  // filled but the 'user' property will be left empty and
+  // the order of values randomized so users don't know who
+  // submitted each card.
   //
-  // When the game stage is ROUND_END_PHASE, this will contain one
-  // value for every player that played in the current round.
-  // As long as no one joined or left during the round, this
-  // will be x - 1 where x is the number of players in the
-  // game, since one of the players is the judge and doesn't play.
-  // For each repeated value, both 'user' and 'cards' properties will be filled.
+  // When the game stage is ROUND_END_PHASE, this will
+  // contain one value for every player that played in
+  // the current round. For each repeated value, both
+  // 'user' and 'cards' properties will be filled.
+  // Values are in the same order as they were during
+  // the judge phase.
   //
   // When the game stage is NOT_RUNNING, behavior is the same as ROUND_END_PHASE
   // except that the repeated field could contain no values. This happens if
