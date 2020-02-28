@@ -114,7 +114,8 @@ message ListFriendRequestsSentResponse {
   // Friend requests sent by the specified user.
   repeated PendingFriendRequest friend_requests_sent = 1;
 
-  // Can be passed to a subsequent request to retrieve the next page of items.
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
   string next_page_token = 2;
 
   // The total number of items in the list specified in the request.
@@ -136,7 +137,8 @@ message ListFriendRequestsReceivedResponse {
   // Friend requests received by the specified user.
   repeated PendingFriendRequest friend_requests_received = 1;
 
-  // Can be passed to a subsequent request to retrieve the next page of items.
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
   string next_page_token = 2;
 
   // The total number of items in the list specified in the request.
@@ -158,7 +160,8 @@ message ListFriendsResponse {
   // Friends of the user specified in the request.
   repeated User users = 1;
 
-  // Can be passed to a subsequent request to retrieve the next page of items.
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
   string next_page_token = 2;
 
   // The total number of items in the list specified in the request.
