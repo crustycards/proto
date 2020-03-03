@@ -3,7 +3,7 @@ variables:
 
 lint:
   stage: test
-  image: golang:1.13.5
+  image: grpc/go:1.0
   services:
     - docker:dind
   script:
