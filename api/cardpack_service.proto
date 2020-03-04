@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "api/model.proto";
-import "google/protobuf/empty.proto";
 import "google/protobuf/field_mask.proto";
 
 service CardpackService {
@@ -11,8 +10,8 @@ service CardpackService {
   rpc UpdateCardpack (UpdateCardpackRequest) returns (Cardpack);
   rpc DeleteCardpack (DeleteCardpackRequest) returns (Cardpack);
   rpc UndeleteCardpack (UndeleteCardpackRequest) returns (Cardpack);
-  rpc LikeCardpack (LikeCardpackRequest) returns (google.protobuf.Empty);
-  rpc UnlikeCardpack (UnlikeCardpackRequest) returns (google.protobuf.Empty);
+  rpc LikeCardpack (LikeCardpackRequest) returns (Cardpack);
+  rpc UnlikeCardpack (UnlikeCardpackRequest) returns (Cardpack);
   rpc GetIsCardpackLikedByUser (GetIsCardpackLikedByUserRequest) returns (GetIsCardpackLikedByUserResponse);
   rpc SearchCardpacks (SearchCardpacksRequest) returns (SearchCardpacksResponse);
   rpc SearchCardpacksAutocomplete (SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
@@ -20,10 +19,13 @@ service CardpackService {
   rpc CreateWhiteCard (CreateWhiteCardRequest) returns (WhiteCard);
   rpc UpdateBlackCard (UpdateBlackCardRequest) returns (BlackCard);
   rpc UpdateWhiteCard (UpdateWhiteCardRequest) returns (WhiteCard);
-  rpc DeleteBlackCard (DeleteBlackCardRequest) returns (google.protobuf.Empty);
-  rpc DeleteWhiteCard (DeleteWhiteCardRequest) returns (google.protobuf.Empty);
+  rpc DeleteBlackCard (DeleteBlackCardRequest) returns (BlackCard);
+  rpc DeleteWhiteCard (DeleteWhiteCardRequest) returns (WhiteCard);
+  rpc UndeleteBlackCard (UndeleteBlackCardRequest) returns (BlackCard);
+  rpc UndeleteWhiteCard (UndeleteWhiteCardRequest) returns (WhiteCard);
   rpc BatchCreateCards (BatchCreateCardsRequest) returns (BatchCreateCardsResponse);
-  rpc BatchDeleteCards (BatchDeleteCardsRequest) returns (google.protobuf.Empty);
+  rpc BatchDeleteCards (BatchDeleteCardsRequest) returns (BatchDeleteCardsResponse);
+  rpc BatchUndeleteCards (BatchUndeleteCardsRequest) returns (BatchUndeleteCardsResponse);
   rpc ListBlackCards (ListBlackCardsRequest) returns (ListBlackCardsResponse);
   rpc ListWhiteCards (ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
 }
@@ -189,6 +191,19 @@ message DeleteWhiteCardRequest {
   string white_card_id = 1;
 }
 
+message UndeleteBlackCardRequest {
+  // The card to undelete.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  string card_id = 1;
+}
+
+message UndeleteWhiteCardRequest {
+  // The card to undelete.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  string card_id = 1;
+}
+
+// All black and white cards within a single request must have the same value for cardpack_id.
 message BatchCreateCardsRequest {
   // The id of the cardpack that cards should be added to. Must point to a valid cardpack.
   string cardpack_id = 1;
@@ -200,15 +215,15 @@ message BatchCreateCardsRequest {
   repeated WhiteCard white_cards = 3;
 }
 
-// All black and white cards within a single request must have the same value for cardpack_id.
 message BatchCreateCardsResponse {
-  // The black cards created. Guaranteed to be in the same order as the request.
+  // The created black cards. Guaranteed to be in the same order as the request.
   repeated BlackCard black_cards = 1;
 
-  // The white cards created. Guaranteed to be in the same order as the request.
+  // The created white cards. Guaranteed to be in the same order as the request.
   repeated WhiteCard white_cards = 2;
 }
 
+// All black and white cards within a single request must have the same value for cardpack_id.
 message BatchDeleteCardsRequest {
   // The cardpack to delete cards from. The entire request will fail atomically if any black or
   // white cards specified do not belong to this cardpack.
@@ -221,15 +236,58 @@ message BatchDeleteCardsRequest {
   repeated string white_card_ids = 3;
 }
 
+message BatchDeleteCardsResponse {
+  // The deleted black cards. Guaranteed to be in the same order as the request.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  repeated BlackCard black_cards = 1;
+
+  // The deleted white cards. Guaranteed to be in the same order as the request.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  repeated WhiteCard white_cards = 2;
+}
+
+// All black and white cards within a single request must have the same value for cardpack_id.
+message BatchUndeleteCardsRequest {
+  // The cardpack to undelete cards from. The entire request will fail atomically if any black or
+  // white cards specified do not belong to this cardpack.
+  string cardpack_id = 1;
+
+  // The black cards to undelete.
+  repeated string black_card_ids = 2;
+
+  // The white cards to undelete.
+  repeated string white_card_ids = 3;
+}
+
+message BatchUndeleteCardsResponse {
+  // The undeleted black cards. Guaranteed to be in the same order as the request.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  repeated BlackCard black_cards = 1;
+
+  // The undeleted white cards. Guaranteed to be in the same order as the request.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  repeated WhiteCard white_cards = 2;
+}
+
 message ListBlackCardsRequest {
   // The cardpack to list cards from.
   string cardpack_id = 1;
 
+  // The order cards are returned in.
+  // Follows https://aip.dev/132#ordering.
+  // Allowed values: "text",
+  // "create_time", "update_time", "delete_time".
+  // Defaults to "create_time".
+  string order_by = 2;
+
   // The maximum page size.
-  int32 page_size = 2;
+  int32 page_size = 3;
 
   // Optional page token returned from a previous rpc.
-  string page_token = 3;
+  string page_token = 4;
+
+  // Show soft-deleted cards instead.
+  bool show_deleted = 5;
 }
 
 message ListBlackCardsResponse {
@@ -248,11 +306,21 @@ message ListWhiteCardsRequest {
   // The cardpack to list cards from.
   string cardpack_id = 1;
 
+  // The order cards are returned in.
+  // Follows https://aip.dev/132#ordering.
+  // Allowed values: "text",
+  // "create_time", "update_time", "delete_time".
+  // Defaults to "create_time".
+  string order_by = 2;
+
   // The maximum page size.
-  int32 page_size = 2;
+  int32 page_size = 3;
 
   // Optional page token returned from a previous rpc.
-  string page_token = 3;
+  string page_token = 4;
+
+  // Show soft-deleted cards instead.
+  bool show_deleted = 5;
 }
 
 message ListWhiteCardsResponse {

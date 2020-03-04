@@ -175,6 +175,16 @@ message BlackCard {
   // Required when creating.
   // Not allowed when updating.
   string cardpack_id = 4;
+
+  // When the card was created.
+  google.protobuf.Timestamp create_time = 5; // [(google.api.field_behavior) = OUTPUT_ONLY].
+
+  // When the card was last modified.
+  google.protobuf.Timestamp update_time = 6; // [(google.api.field_behavior) = OUTPUT_ONLY].
+
+  // If this field is not empty, it indicates that the card has been deleted. Cards that
+  // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
+  google.protobuf.Timestamp delete_time = 7; // [(google.api.field_behavior) = OUTPUT_ONLY].
 }
 
 message WhiteCard {
@@ -197,4 +207,14 @@ message WhiteCard {
   // Required when creating.
   // Not allowed when updating.
   string cardpack_id = 3;
+
+  // When the card was created.
+  google.protobuf.Timestamp create_time = 4; // [(google.api.field_behavior) = OUTPUT_ONLY].
+
+  // When the card was last modified.
+  google.protobuf.Timestamp update_time = 5; // [(google.api.field_behavior) = OUTPUT_ONLY].
+
+  // If this field is not empty, it indicates that the card has been deleted. Cards that
+  // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
+  google.protobuf.Timestamp delete_time = 6; // [(google.api.field_behavior) = OUTPUT_ONLY].
 }
