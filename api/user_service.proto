@@ -149,16 +149,22 @@ message ListFriendsRequest {
   // The user to list friends for.
   string user_id = 1;
 
+  // The order friends are returned in.
+  // Follows https://aip.dev/132#ordering.
+  // Allowed values: "friend.name", "create_time".
+  // Defaults to "create_time".
+  string order_by = 2;
+
   // The maximum page size.
-  int32 page_size = 2;
+  int32 page_size = 3;
 
   // Optional page token returned from a previous rpc.
-  string page_token = 3;
+  string page_token = 4;
 }
 
 message ListFriendsResponse {
   // Friends of the user specified in the request.
-  repeated User users = 1;
+  repeated Friend friends = 1;
 
   // Opaque string. Can be passed to a subsequent
   // request to retrieve the next page of items.
@@ -218,4 +224,13 @@ message PendingFriendRequest {
 
   // When the friend request was sent.
   google.protobuf.Timestamp create_time = 3;
+}
+
+message Friend {
+  // The user who is friends with the user specified in the ListFriendsRequest.
+  User friend = 1;
+
+  // When the user became friends with the user specified in the ListFriendsRequest.
+  // (NOT when the friend request was sent, but instead when it was accepted).
+  google.protobuf.Timestamp create_time = 2;
 }
