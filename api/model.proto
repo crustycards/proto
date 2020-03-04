@@ -1,6 +1,7 @@
 syntax = "proto3";
 
-import "google/api/field_behavior.proto";
+// TODO - Uncomment this and use field_behavior OUTPUT_ONLY according to https://aip.dev/203.
+// import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 
 message User {
@@ -19,7 +20,7 @@ message User {
   string name = 2;
 
   // When the user was created.
-  google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 3; // [(google.api.field_behavior) = OUTPUT_ONLY].
 }
 
 // Configuration settings used to create a game.
@@ -133,18 +134,18 @@ message Cardpack {
   User owner = 3;
 
   // When the cardpack was created.
-  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 4; // [(google.api.field_behavior) = OUTPUT_ONLY].
 
   // This field is reset anytime any changes are made to the cardpack including adding, modifying
   // and deleting cards as well as renaming the cardpack.
-  google.protobuf.Timestamp update_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp update_time = 5; // [(google.api.field_behavior) = OUTPUT_ONLY].
 
   // If this field is not empty, it indicates that the cardpack has been deleted. Cardpacks that
   // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
-  google.protobuf.Timestamp delete_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp delete_time = 6; // [(google.api.field_behavior) = OUTPUT_ONLY].
 
   // How many other users liked this cardpack.
-  int64 like_count = 7 [(google.api.field_behavior) = OUTPUT_ONLY];
+  int64 like_count = 7; // [(google.api.field_behavior) = OUTPUT_ONLY].
 }
 
 message BlackCard {
