@@ -13,7 +13,6 @@ service CardpackService {
   rpc UndeleteCardpack (UndeleteCardpackRequest) returns (Cardpack);
   rpc LikeCardpack (LikeCardpackRequest) returns (google.protobuf.Empty);
   rpc UnlikeCardpack (UnlikeCardpackRequest) returns (google.protobuf.Empty);
-  rpc ListFavoritedCardpacks (ListFavoritedCardpacksRequest) returns (ListFavoritedCardpacksResponse);
   rpc GetIsCardpackLikedByUser (GetIsCardpackLikedByUserRequest) returns (GetIsCardpackLikedByUserResponse);
   rpc SearchCardpacks (SearchCardpacksRequest) returns (SearchCardpacksResponse);
   rpc SearchCardpacksAutocomplete (SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
@@ -39,7 +38,6 @@ message GetCardpackRequest {
   string cardpack_id = 1;
 }
 
-// TODO - Add sort_by property to all ListXRequest messages.
 message ListCardpacksRequest {
   // Which entity to list cardpacks from.
   oneof list_by {
@@ -50,14 +48,21 @@ message ListCardpacksRequest {
     string liker_id = 2;
   }
 
+  // The order cardpacks are returned in.
+  // Follows https://aip.dev/132#ordering.
+  // Allowed values: "name", "like_count",
+  // "create_time", "update_time", "delete_time".
+  // Defaults to "create_time".
+  string order_by = 3;
+
   // The maximum page size.
-  int32 page_size = 3;
+  int32 page_size = 4;
 
   // Optional page token returned from a previous rpc.
-  string page_token = 4;
+  string page_token = 5;
 
-  // Includes soft-deleted cardpacks if set to true.
-  bool show_deleted = 5;
+  // Show soft-deleted cardpacks instead.
+  bool show_deleted = 6;
 }
 
 message ListCardpacksResponse {
@@ -105,29 +110,6 @@ message UnlikeCardpackRequest {
 
   // The cardpack they unliked.
   string cardpack_id = 2;
-}
-
-message ListFavoritedCardpacksRequest {
-  // Which user's liked cardpacks to list.
-  string user_id = 1;
-
-  // The maximum page size.
-  int32 page_size = 2;
-
-  // Optional page token returned from a previous rpc.
-  string page_token = 3;
-}
-
-message ListFavoritedCardpacksResponse {
-  // The requested cardpacks.
-  repeated Cardpack cardpacks = 1;
-
-  // Opaque string. Can be passed to a subsequent
-  // request to retrieve the next page of items.
-  string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
 }
 
 message GetIsCardpackLikedByUserRequest {
