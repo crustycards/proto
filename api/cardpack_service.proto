@@ -32,7 +32,7 @@ service CardpackService {
 
 message CreateCardpackRequest {
   // The cardpack to create.
-  Cardpack cardpack = 1;
+  Cardpack cardpack = 1; // [(google.api.field_behavior) = REQUIRED].
 }
 
 message GetCardpackRequest {
@@ -157,12 +157,12 @@ message SearchCardpacksAutocompleteResponse {
 
 message CreateBlackCardRequest {
   // The card to create.
-  BlackCard black_card = 1;
+  BlackCard black_card = 1; // [(google.api.field_behavior) = REQUIRED].
 }
 
 message CreateWhiteCardRequest {
   // The card to create.
-  WhiteCard white_card = 1;
+  WhiteCard white_card = 1; // [(google.api.field_behavior) = REQUIRED].
 }
 
 message UpdateBlackCardRequest {

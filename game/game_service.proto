@@ -127,7 +127,7 @@ message RemoveArtificialPlayerRequest {
 
 message CreateChatMessageRequest {
   // The chat message to create.
-  ChatMessage chat_message = 1;
+  ChatMessage chat_message = 1; // [(google.api.field_behavior) = REQUIRED].
 }
 
 message GetGameViewRequest {
