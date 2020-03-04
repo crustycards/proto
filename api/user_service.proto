@@ -11,7 +11,7 @@ service UserService {
   rpc UpdateUser (UpdateUserRequest) returns (User);
   rpc GetUserSettings (GetUserSettingsRequest) returns (UserSettings);
   rpc UpdateUserSettings (UpdateUserSettingsRequest) returns (UserSettings);
-  rpc AddFriend (AddFriendRequest) returns (google.protobuf.Empty);
+  rpc AddFriend (AddFriendRequest) returns (PendingFriendRequest);
   rpc RemoveFriend (RemoveFriendRequest) returns (google.protobuf.Empty);
   rpc ListFriendRequestsSent (ListFriendRequestsSentRequest) returns (ListFriendRequestsSentResponse);
   rpc ListFriendRequestsReceived (ListFriendRequestsReceivedRequest) returns (ListFriendRequestsReceivedResponse);
@@ -203,15 +203,20 @@ message SearchUsersAutocompleteResponse {
 }
 
 message GetProfileImageRequest {
+  // The user whose profile image will be retrieved.
   string user_id = 1;
 }
 
 message GetProfileImageResponse {
+  // TODO - Document how these bytes are encoded.
   bytes image = 1;
 }
 
 message SetProfileImageRequest {
+  // The user whose profile image will be set.
   string user_id = 1;
+
+  // TODO - Document how these bytes should be encoded.
   bytes image = 2;
 }
 
