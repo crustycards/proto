@@ -21,6 +21,9 @@ message User {
 
   // When the user was created.
   google.protobuf.Timestamp create_time = 3; // [(google.api.field_behavior) = OUTPUT_ONLY].
+
+  // When the user was last modified.
+  google.protobuf.Timestamp update_time = 4; // [(google.api.field_behavior) = OUTPUT_ONLY].
 }
 
 // Configuration settings used to create a game.
