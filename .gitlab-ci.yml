@@ -7,6 +7,7 @@ lint:
   services:
     - docker:dind
   script:
+    - pwd
     - git clone https://github.com/googleapis/api-common-protos.git
     - go get -u github.com/googleapis/api-linter/cmd/api-linter
     - go get -u github.com/golang/protobuf/protoc-gen-go
