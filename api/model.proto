@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 // TODO - Uncomment this and use field_behavior OUTPUT_ONLY according to https://aip.dev/203.
-// import "google/api/field_behavior.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 
 message User {
