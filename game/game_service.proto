@@ -224,14 +224,27 @@ message GameView {
   int32 max_score = 4;
 
   enum Stage {
+    // Unspecified stage.
     STAGE_UNSPECIFIED = 0;
+
+    // Game is not running.
     NOT_RUNNING = 1;
+
+    // Players (other than the judge) can play cards for the current round.
     PLAY_PHASE = 2;
+
+    // The current judge can pick their favorite card(s).
+    // Cards from the play phase are visible but anonymous.
     JUDGE_PHASE = 3;
+
+    // Player scores are updated and players can view who played each card.
     ROUND_END_PHASE = 4;
   }
   
+  // What stage the game is in. This determines what actions are available.
   Stage stage = 5;
+
+  // The player's current hand.
   repeated PlayableWhiteCard hand = 6;
 
   // All real and artificial players that are currently playing.
