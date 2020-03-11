@@ -22,6 +22,7 @@ service GameService {
   rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (google.protobuf.Empty);
   rpc CreateChatMessage (CreateChatMessageRequest) returns (GameView);
   rpc GetGameView (GetGameViewRequest) returns (GameView);
+  // TODO - Create RPCs for RANDOM_CHOICE blank card picker.
 }
 
 // Returns all games that match the search criteria.
@@ -117,8 +118,8 @@ message StartNextRoundRequest {
 }
 
 message AddArtificialPlayerRequest {
-  // The name of the artificial player to add.
-  string name = 1;
+  // The display name of the new artificial player.
+  string display_name = 1;
 }
 
 message RemoveArtificialPlayerRequest {
@@ -127,7 +128,7 @@ message RemoveArtificialPlayerRequest {
 
 message CreateChatMessageRequest {
   // The chat message to create.
-  ChatMessage chat_message = 1; // [(google.api.field_behavior) = REQUIRED].
+  ChatMessage chat_message = 1;
 }
 
 message GetGameViewRequest {
@@ -137,7 +138,7 @@ message GetGameViewRequest {
 message ChatMessage {
   // The user who sent the message.
   //
-  // Required when creating (only user_id field is required).
+  // When creating, the id field is required and all other fields are ignored.
   User user = 1;
 
   // The contents of the message.
@@ -156,7 +157,7 @@ message ArtificialUser {
   // The displayed name of the artificial user.
   // Since each artificial user has a unique id,
   // the name does not have to be unique.
-  string name = 2;
+  string display_name = 2;
 }
 
 // Represents a real user or an artificial player in a game.
@@ -178,6 +179,13 @@ message Player {
 message BlankWhiteCard {
   // A server-generated uuid.
   string id = 1;
+
+  // Text entered by the user (limited to 100 characters).
+  // Always empty for cards in a player's hand and
+  // always non-empty for cards that have been played.
+  // TODO - This field might not be necessary. Remove it
+  // if it's not needed.
+  string open_text = 2;
 }
 
 // Allows players to have regular white cards or blank cards.
@@ -214,8 +222,8 @@ message GameView {
   // The id of the game.
   string game_id = 1;
 
-  // The displayed name of the game.
-  string name = 2;
+  // The name of the game.
+  string display_name = 2;
 
   // The maximum number of players that can be in the game at once.
   // Artificial players do not count towards this limit.
@@ -292,6 +300,11 @@ message GameView {
     User user = 1;
 
     // The cards played by the user.
+    // TODO - Currently, a user could check if played cards
+    // are blank cards, and this would indicate that it was
+    // played by a human. We need to find a way to make it
+    // impossible to differentiate. Perhaps returning only
+    // card texts instead of the entire PlayableWhiteCard.
     repeated PlayableWhiteCard cards = 2;
   }
 

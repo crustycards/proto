@@ -10,16 +10,16 @@ message User {
   //
   // Required when updating to indicate which
   // user should be updated.
-  string id = 1;
+  string id = 1 [(google.api.field_behavior) = IMMUTABLE];
 
   // The display name of the user.
   //
   // Required when creating.
   // Allowed when updating.
-  string name = 2;
+  string display_name = 2;
 
   // When the user was created.
-  google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 
   // When the user was last modified.
   google.protobuf.Timestamp update_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -120,23 +120,22 @@ message Cardpack {
   //
   // Required when updating to indicate which
   // cardpack should be updated.
-  string id = 1;
+  string id = 1 [(google.api.field_behavior) = IMMUTABLE];
 
   // The display name of the cardpack.
   //
   // Required when creating.
   // Allowed when updating.
-  string name = 2;
+  string display_name = 2;
 
   // The owner of the cardpack.
   // This user has full access to add, modify, or delete any cards in the pack.
   //
-  // Required when creating (only user_id field is required).
-  // Not allowed when updating.
-  User owner = 3;
+  // When creating, the id field is required and all other fields are ignored.
+  User owner = 3 [(google.api.field_behavior) = IMMUTABLE];
 
   // When the cardpack was created.
-  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 
   // This field is reset anytime any changes are made to the cardpack including adding, modifying
   // and deleting cards as well as renaming the cardpack.
@@ -157,9 +156,9 @@ message BlackCard {
   //
   // Required when updating to indicate which
   // card should be updated.
-  string id = 1;
+  string id = 1 [(google.api.field_behavior) = IMMUTABLE];
 
-  // The contents of the card.
+  // The content of the card. Limited to 300 characters.
   //
   // Required when creating.
   // Allowed when updating.
@@ -175,11 +174,10 @@ message BlackCard {
   // The cardpack this card belongs to.
   //
   // Required when creating.
-  // Not allowed when updating.
-  string cardpack_id = 4;
+  string cardpack_id = 4 [(google.api.field_behavior) = IMMUTABLE];
 
   // When the card was created.
-  google.protobuf.Timestamp create_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 
   // When the card was last modified.
   google.protobuf.Timestamp update_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
@@ -196,9 +194,9 @@ message WhiteCard {
   //
   // Required when updating to indicate which
   // card should be updated.
-  string id = 1;
+  string id = 1 [(google.api.field_behavior) = IMMUTABLE];
 
-  // The contents of the card.
+  // The content of the card. Limited to 100 characters.
   //
   // Required when creating.
   // Allowed when updating.
@@ -207,11 +205,10 @@ message WhiteCard {
   // The cardpack this card belongs to.
   //
   // Required when creating.
-  // Not allowed when updating.
-  string cardpack_id = 3;
+  string cardpack_id = 3 [(google.api.field_behavior) = IMMUTABLE];
 
   // When the card was created.
-  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+  google.protobuf.Timestamp create_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 
   // When the card was last modified.
   google.protobuf.Timestamp update_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
