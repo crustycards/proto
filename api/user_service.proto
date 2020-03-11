@@ -11,7 +11,7 @@ service UserService {
   rpc UpdateUser (UpdateUserRequest) returns (User);
   rpc GetUserSettings (GetUserSettingsRequest) returns (UserSettings);
   rpc UpdateUserSettings (UpdateUserSettingsRequest) returns (UserSettings);
-  rpc AddFriend (AddFriendRequest) returns (PendingFriendRequest);
+  rpc AddFriend (AddFriendRequest) returns (AddFriendResponse);
   rpc RemoveFriend (RemoveFriendRequest) returns (google.protobuf.Empty);
   rpc ListFriendRequestsSent (ListFriendRequestsSentRequest) returns (ListFriendRequestsSentResponse);
   rpc ListFriendRequestsReceived (ListFriendRequestsReceivedRequest) returns (ListFriendRequestsReceivedResponse);
@@ -87,6 +87,16 @@ message AddFriendRequest {
 
   // The user being added.
   string receiver_user_id = 2;
+}
+
+message AddFriendResponse {
+  oneof friend_state {
+    // Set if user is sending a friend request.
+    PendingFriendRequest friend_request = 1;
+
+    // Set if user is accepting a friend request.
+    Friend friend = 2;
+  }
 }
 
 // Removes a friend from a user's friend list
