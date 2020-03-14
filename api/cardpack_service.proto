@@ -1,72 +1,284 @@
 syntax = "proto3";
 
 import "api/model.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
 
+// Enables users to create cardpacks containing black and white cards.
+//
+// Resources:
+// - Cardpack: Cardpacks are sets of cards that can be used in games
+// - BlackCard: Belong to a cardpack and act like a black card from Cards Against Humanity
+// - WhiteCard: Belong to a cardpack and act like a white card from Cards Against Humanity
+//
+// ( -- See resource proto documentation for more information. -- )
 service CardpackService {
-  rpc CreateCardpack (CreateCardpackRequest) returns (Cardpack);
-  rpc GetCardpack (GetCardpackRequest) returns (Cardpack);
-  rpc ListCardpacks (ListCardpacksRequest) returns (ListCardpacksResponse);
-  rpc UpdateCardpack (UpdateCardpackRequest) returns (Cardpack);
-  rpc DeleteCardpack (DeleteCardpackRequest) returns (Cardpack);
+  // ( ---------------------- )
+  // ( -- Standard Methods -- )
+  // ( ---------------------- )
+
+  // Creates a Cardpack.
+  rpc CreateCardpack (CreateCardpackRequest) returns (Cardpack) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*}/cardpacks"
+      body: "cardpack"
+    };
+    option (google.api.method_signature) = "parent,cardpack";
+  };
+
+  // Returns a Cardpack.
+  rpc GetCardpack (GetCardpackRequest) returns (Cardpack) {
+    option (google.api.http) = {
+      get: "/v1/{name=users/*/cardpacks/*}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Lists Cardpacks.
+  rpc ListCardpacks (ListCardpacksRequest) returns (ListCardpacksResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=users/*}/cardpacks"
+    };
+    option (google.api.method_signature) = "parent";
+    option (google.api.method_signature) = "parent,page_token";
+    option (google.api.method_signature) = "parent,order_by,page_token";
+    option (google.api.method_signature) = "parent,order_by,page_size,page_token,show_favorited,show_deleted";
+  };
+
+  // Updates a Cardpack.
+  rpc UpdateCardpack (UpdateCardpackRequest) returns (Cardpack) {
+    option (google.api.http) = {
+      patch: "/v1/{cardpack.name=users/*/cardpacks/*}"
+      body: "cardpack"
+    };
+    option (google.api.method_signature) = "cardpack,update_mask";
+  };
+
+  // Soft deletes a Cardpack. Deleted Cardpacks can be undeleted
+  // for 30 days before they are permanently removed.
+  // Deleted Cardpacks cannot be modified, they can only be
+  // viewed and undeleted.
+  rpc DeleteCardpack (DeleteCardpackRequest) returns (Cardpack) {
+    option (google.api.http) = {
+      delete: "/v1/{name=users/*/cardpacks/*}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Creates a BlackCard.
+  rpc CreateBlackCard (CreateBlackCardRequest) returns (BlackCard) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*/cardpacks/*}/blackCards"
+      body: "black_card"
+    };
+    option (google.api.method_signature) = "parent,black_card";
+  };
+
+  // Creates a WhiteCard.
+  rpc CreateWhiteCard (CreateWhiteCardRequest) returns (WhiteCard) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*/cardpacks/*}/whiteCards"
+      body: "white_card"
+    };
+    option (google.api.method_signature) = "parent,white_card";
+  };
+
+  // Lists BlackCards.
+  rpc ListBlackCards (ListBlackCardsRequest) returns (ListBlackCardsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=users/*/cardpacks/*}/blackCards"
+    };
+    option (google.api.method_signature) = "parent";
+    option (google.api.method_signature) = "parent,page_token";
+    option (google.api.method_signature) = "parent,order_by,page_token";
+    option (google.api.method_signature) = "parent,order_by,page_size,page_token,show_deleted";
+  };
+
+  // Lists WhiteCards.
+  rpc ListWhiteCards (ListWhiteCardsRequest) returns (ListWhiteCardsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=users/*/cardpacks/*}/whiteCards"
+    };
+    option (google.api.method_signature) = "parent";
+    option (google.api.method_signature) = "parent,page_token";
+    option (google.api.method_signature) = "parent,order_by,page_token";
+    option (google.api.method_signature) = "parent,order_by,page_size,page_token,show_deleted";
+  };
+
+  // Updates a BlackCard.
+  rpc UpdateBlackCard (UpdateBlackCardRequest) returns (BlackCard) {
+    option (google.api.http) = {
+      patch: "/v1/{black_card.name=users/*/cardpacks/*/blackCards/*}"
+      body: "black_card"
+    };
+    option (google.api.method_signature) = "black_card,update_mask";
+  };
+
+  // Updates a WhiteCard.
+  rpc UpdateWhiteCard (UpdateWhiteCardRequest) returns (WhiteCard) {
+    option (google.api.http) = {
+      patch: "/v1/{white_card.name=users/*/cardpacks/*/whiteCards/*}"
+      body: "white_card"
+    };
+    option (google.api.method_signature) = "white_card,update_mask";
+  };
+
+  // Soft deletes a BlackCard. Deleted BlackCards can be undeleted
+  // for 30 days before they are permanently removed.
+  // Deleted BlackCards cannot be modified, they can only be
+  // viewed and undeleted.
+  rpc DeleteBlackCard (DeleteBlackCardRequest) returns (BlackCard) {
+    option (google.api.http) = {
+      delete: "/v1/{name=users/*/cardpacks/*/blackCards/*}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Soft deletes a WhiteCard. Deleted WhiteCards can be undeleted
+  // for 30 days before they are permanently removed.
+  // Deleted WhiteCards cannot be modified, they can only be
+  // viewed and undeleted.
+  rpc DeleteWhiteCard (DeleteWhiteCardRequest) returns (WhiteCard) {
+    option (google.api.http) = {
+      delete: "/v1/{name=users/*/cardpacks/*/whiteCards/*}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Creates a batch of BlackCards.
+  // This operation is atomic. Partial writes are not supported.
+  rpc BatchCreateBlackCards (BatchCreateBlackCardsRequest) returns (BatchCreateBlackCardsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*/cardpacks/*}/blackCards:batchCreate"
+      body: "*"
+    };
+  };
+
+  // Creates a batch of WhiteCards.
+  // This operation is atomic. Partial writes are not supported.
+  rpc BatchCreateWhiteCards (BatchCreateWhiteCardsRequest) returns (BatchCreateWhiteCardsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*/cardpacks/*}/whiteCards:batchCreate"
+      body: "*"
+    };
+  };
+
+  // Soft deletes a batch of BlackCards. Deleted BlackCards can be
+  // undeleted for 30 days before they are permanently removed.
+  // This operation is atomic. Partial writes are not supported.
+  rpc BatchDeleteBlackCards (BatchDeleteBlackCardsRequest) returns (BatchDeleteBlackCardsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*/cardpacks/*}/blackCards:batchDelete"
+      body: "*"
+    };
+  };
+
+  // Soft deletes a batch of WhiteCards. Deleted WhiteCards can be
+  // undeleted for 30 days before they are permanently removed.
+  // This operation is atomic. Partial writes are not supported.
+  rpc BatchDeleteWhiteCards (BatchDeleteWhiteCardsRequest) returns (BatchDeleteWhiteCardsResponse) {
+    option (google.api.http) = {
+      post: "/v1/{parent=users/*/cardpacks/*}/whiteCards:batchDelete"
+      body: "*"
+    };
+  };
+
+  // ( -------------------- )
+  // ( -- Custom Methods -- )
+  // ( -------------------- )
+
+  // Undeletes a Cardpack, returning it to its previous state.
+  // Deleted Cardpacks can be undeleted for 30 days before they
+  // are permanently removed. To view deleted Cardpacks, use
+  // the ListCardpacks rpc with `show_deleted` set to true.
   rpc UndeleteCardpack (UndeleteCardpackRequest) returns (Cardpack);
-  rpc LikeCardpack (LikeCardpackRequest) returns (Cardpack);
-  rpc UnlikeCardpack (UnlikeCardpackRequest) returns (Cardpack);
-  rpc GetIsCardpackLikedByUser (GetIsCardpackLikedByUserRequest) returns (GetIsCardpackLikedByUserResponse);
-  rpc SearchCardpacks (SearchCardpacksRequest) returns (SearchCardpacksResponse);
-  rpc SearchCardpacksAutocomplete (SearchCardpacksAutocompleteRequest) returns (SearchCardpacksAutocompleteResponse);
-  rpc CreateBlackCard (CreateBlackCardRequest) returns (BlackCard);
-  rpc CreateWhiteCard (CreateWhiteCardRequest) returns (WhiteCard);
-  rpc UpdateBlackCard (UpdateBlackCardRequest) returns (BlackCard);
-  rpc UpdateWhiteCard (UpdateWhiteCardRequest) returns (WhiteCard);
-  rpc DeleteBlackCard (DeleteBlackCardRequest) returns (BlackCard);
-  rpc DeleteWhiteCard (DeleteWhiteCardRequest) returns (WhiteCard);
+
+  // Undeletes a BlackCard, returning it to its previous state.
+  // Deleted BlackCards can be undeleted for 30 days before they
+  // are permanently removed. To view deleted BlackCards, use
+  // the ListBlackCards rpc with `show_deleted` set to true.
   rpc UndeleteBlackCard (UndeleteBlackCardRequest) returns (BlackCard);
+
+  // Undeletes a WhiteCard, returning it to its previous state.
+  // Deleted WhiteCards can be undeleted for 30 days before they
+  // are permanently removed. To view deleted WhiteCards, use
+  // the ListWhiteCards rpc with `show_deleted` set to true.
   rpc UndeleteWhiteCard (UndeleteWhiteCardRequest) returns (WhiteCard);
-  rpc BatchCreateCards (BatchCreateCardsRequest) returns (BatchCreateCardsResponse);
-  rpc BatchDeleteCards (BatchDeleteCardsRequest) returns (BatchDeleteCardsResponse);
-  rpc BatchUndeleteCards (BatchUndeleteCardsRequest) returns (BatchUndeleteCardsResponse);
-  rpc ListBlackCards (ListBlackCardsRequest) returns (ListBlackCardsResponse);
-  rpc ListWhiteCards (ListWhiteCardsRequest) returns (ListWhiteCardsResponse);
+
+  // Adds Cardpack to a User's favorites list.
+  // To view favorited cardpacks, use the ListCardpacks
+  // rpc with `list_favorited` set to true.
+  rpc LikeCardpack (LikeCardpackRequest) returns (Cardpack);
+
+  // Removes Cardpack from a User's favorites list.
+  // To view favorited cardpacks, use the ListCardpacks
+  // rpc with `list_favorited` set to true.
+  rpc UnlikeCardpack (UnlikeCardpackRequest) returns (Cardpack);
+
+  // Returns whether a User has added a Cardpack to their favorites.
+  rpc CheckDoesUserLikeCardpack (CheckDoesUserLikeCardpackRequest) returns (CheckDoesUserLikeCardpackResponse);
+
+  // Fetches multiple Cardpacks based off search query.
+  rpc CardpackSearch (CardpackSearchRequest) returns (CardpackSearchResponse);
+
+  // Fetches search suggestions that are used to provide autocomplete functionality.
+  rpc AutocompleteCardpackSearch (AutocompleteCardpackSearchRequest) returns (AutocompleteCardpackSearchResponse);
 }
 
+// Request message for CreateCardpack.
 message CreateCardpackRequest {
+  // The parent user.
+  // Format: users/{user}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/Cardpack"}];
+
   // The cardpack to create.
-  Cardpack cardpack = 1; // [(google.api.field_behavior) = REQUIRED].
+  Cardpack cardpack = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for GetCardpack.
 message GetCardpackRequest {
-  // The cardpack to retrieve.
-  string cardpack_id = 1;
+  // The name of the cardpack to retrieve.
+  // Format: users/{user}/cardpacks/{cardpack}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
 }
 
+// Request message for ListCardpacks.
 message ListCardpacksRequest {
-  // Which entity to list cardpacks from.
-  oneof list_by {
-    // List cardpacks that belong to a user.
-    string owner_id = 1;
+  // The parent user.
+  // Format: users/{user}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/Cardpack"}];
 
-    // List cardpacks that are liked by a user.
-    string liker_id = 2;
-  }
-
-  // The order cardpacks are returned in.
-  // Follows https://aip.dev/132#ordering.
-  // Allowed values: "name", "like_count",
-  // "create_time", "update_time", "delete_time".
-  // Defaults to "create_time".
-  string order_by = 3;
+  // Comma separated list of fields to order by, followed by
+  // `asc` or `desc` postfix. This list is case-insensitive.
+  // Default sorting order is ascending, redundant whitespace
+  // is ignored.
+  //
+  // Supported fields are:
+  // `name`, `create_time`, `update_time`, `delete_time`, `like_count`
+  //
+  // Sorts by `create_time` by default.
+  string order_by = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // The maximum page size.
-  int32 page_size = 4;
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
-  // Optional page token returned from a previous rpc.
-  string page_token = 5;
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+
+  // When enabled, lists cardpacks that the parent
+  // has favorited instead of ones that they own.
+  bool show_favorited = 5 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted cardpacks instead.
-  bool show_deleted = 6;
+  bool show_deleted = 6 [(google.api.field_behavior) = OPTIONAL];
 }
 
+// Response message for ListCardpacks.
 message ListCardpacksResponse {
   // The requested cardpacks.
   repeated Cardpack cardpacks = 1;
@@ -79,6 +291,7 @@ message ListCardpacksResponse {
   int64 total_size = 3;
 }
 
+// Request message for UpdateCardpack.
 message UpdateCardpackRequest {
   // The cardpack to update.
   Cardpack cardpack = 1;
@@ -87,212 +300,67 @@ message UpdateCardpackRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
+// Request message for DeleteCardpack.
 message DeleteCardpackRequest {
-  // The cardpack to delete.
-  string cardpack_id = 1;
-}
-
-message UndeleteCardpackRequest {
-  // The cardpack to undelete.
+  // The name of the cardpack to delete.
   // Deleted cardpacks are guaranteed to remain available to be undeleted for at least 30 days.
-  string cardpack_id = 1;
+  // Format: users/{user}/cardpacks/{cardpack}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
 }
 
-message LikeCardpackRequest {
-  // The user who liked the cardpack.
-  string user_id = 1;
-
-  // The cardpack they liked.
-  string cardpack_id = 2;
-}
-
-message UnlikeCardpackRequest {
-  // The user who unliked the cardpack.
-  string user_id = 1;
-
-  // The cardpack they unliked.
-  string cardpack_id = 2;
-}
-
-message GetIsCardpackLikedByUserRequest {
-  // The user to check.
-  string user_id = 1;
-
-  // The cardpack to check against.
-  string cardpack_id = 2;
-}
-
-message GetIsCardpackLikedByUserResponse {
-  // Whether the user has liked the cardpack.
-  bool is_liked = 1;
-}
-
-message SearchCardpacksRequest {
-  // The search query to suggest results from.
-  string query = 1;
-
-  // The maximum page size.
-  int32 page_size = 2;
-}
-
-message SearchCardpacksResponse {
-  // Search results.
-  repeated Cardpack cardpacks = 1;
-}
-
-message SearchCardpacksAutocompleteRequest {
-  // The search query to suggest results from.
-  string query = 1;
-
-  // The maximum number of suggestions to return.
-  int32 page_size = 2;
-}
-
-message SearchCardpacksAutocompleteResponse {
-  // List of autocomplete suggestions.
-  // Each entry is guaranteed to contain
-  // the original query.
-  repeated string autocomplete_entry = 1;
-}
-
+// Request message for CreateBlackCard.
 message CreateBlackCardRequest {
-  // The card to create.
-  BlackCard black_card = 1; // [(google.api.field_behavior) = REQUIRED].
+  // The parent cardpack.
+  // Format: users/{user}/cardpacks/{cardpack}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/BlackCard"}];
+
+  // The black card to create.
+  BlackCard black_card = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
+// Request message for CreateWhiteCard.
 message CreateWhiteCardRequest {
-  // The card to create.
-  WhiteCard white_card = 1; // [(google.api.field_behavior) = REQUIRED].
+  // The parent cardpack.
+  // Format: users/{user}/cardpacks/{cardpack}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/WhiteCard"}];
+
+  // The white card to create.
+  WhiteCard white_card = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-message UpdateBlackCardRequest {
-  // The card to update.
-  BlackCard black_card = 1;
-
-  // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
-}
-
-message UpdateWhiteCardRequest {
-  // The card to update.
-  WhiteCard white_card = 1;
-
-  // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
-}
-
-message DeleteBlackCardRequest {
-  // The card to delete.
-  string black_card_id = 1;
-}
-
-message DeleteWhiteCardRequest {
-  // The card to delete.
-  string white_card_id = 1;
-}
-
-message UndeleteBlackCardRequest {
-  // The card to undelete.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  string card_id = 1;
-}
-
-message UndeleteWhiteCardRequest {
-  // The card to undelete.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  string card_id = 1;
-}
-
-// All black and white cards within a single request must have the same value for cardpack_id.
-message BatchCreateCardsRequest {
-  // The id of the cardpack that cards should be added to. Must point to a valid cardpack.
-  string cardpack_id = 1;
-
-  // The black cards to create.
-  repeated BlackCard black_cards = 2;
-
-  // The white cards to create.
-  repeated WhiteCard white_cards = 3;
-}
-
-message BatchCreateCardsResponse {
-  // The created black cards. Guaranteed to be in the same order as the request.
-  repeated BlackCard black_cards = 1;
-
-  // The created white cards. Guaranteed to be in the same order as the request.
-  repeated WhiteCard white_cards = 2;
-}
-
-// All black and white cards within a single request must have the same value for cardpack_id.
-message BatchDeleteCardsRequest {
-  // The cardpack to delete cards from. The entire request will fail atomically if any black or
-  // white cards specified do not belong to this cardpack.
-  string cardpack_id = 1;
-
-  // The black cards to delete.
-  repeated string black_card_ids = 2;
-
-  // The white cards to delete.
-  repeated string white_card_ids = 3;
-}
-
-message BatchDeleteCardsResponse {
-  // The deleted black cards. Guaranteed to be in the same order as the request.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  repeated BlackCard black_cards = 1;
-
-  // The deleted white cards. Guaranteed to be in the same order as the request.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  repeated WhiteCard white_cards = 2;
-}
-
-// All black and white cards within a single request must have the same value for cardpack_id.
-message BatchUndeleteCardsRequest {
-  // The cardpack to undelete cards from. The entire request will fail atomically if any black or
-  // white cards specified do not belong to this cardpack.
-  string cardpack_id = 1;
-
-  // The black cards to undelete.
-  repeated string black_card_ids = 2;
-
-  // The white cards to undelete.
-  repeated string white_card_ids = 3;
-}
-
-message BatchUndeleteCardsResponse {
-  // The undeleted black cards. Guaranteed to be in the same order as the request.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  repeated BlackCard black_cards = 1;
-
-  // The undeleted white cards. Guaranteed to be in the same order as the request.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  repeated WhiteCard white_cards = 2;
-}
-
+// Request message for ListBlackCards.
 message ListBlackCardsRequest {
-  // The cardpack to list cards from.
-  string cardpack_id = 1;
+  // The parent cardpack.
+  // Format: users/{user}/cardpacks/{cardpack}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/BlackCard"}];
 
-  // The order cards are returned in.
-  // Follows https://aip.dev/132#ordering.
-  // Allowed values: "text",
-  // "create_time", "update_time", "delete_time".
-  // Defaults to "create_time".
-  string order_by = 2;
+  // Comma separated list of fields to order by, followed by
+  // `asc` or `desc` postfix. This list is case-insensitive.
+  // Default sorting order is ascending, redundant whitespace
+  // is ignored.
+  //
+  // Supported fields are:
+  // `text`, `create_time`, `update_time`, `delete_time`
+  //
+  // Sorts by `create_time` by default.
+  string order_by = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // The maximum page size.
-  int32 page_size = 3;
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
-  // Optional page token returned from a previous rpc.
-  string page_token = 4;
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted cards instead.
-  bool show_deleted = 5;
+  bool show_deleted = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
+// Response message for ListBlackCards.
 message ListBlackCardsResponse {
   // The requested cards.
-  repeated BlackCard cards = 1;
+  repeated BlackCard black_cards = 1;
 
   // Opaque string. Can be passed to a subsequent
   // request to retrieve the next page of items.
@@ -302,30 +370,266 @@ message ListBlackCardsResponse {
   int64 total_size = 3;
 }
 
+// Request message for ListWhiteCards.
 message ListWhiteCardsRequest {
-  // The cardpack to list cards from.
-  string cardpack_id = 1;
+  // The parent cardpack.
+  // Format: users/{user}/cardpacks/{cardpack}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/WhiteCard"}];
 
-  // The order cards are returned in.
-  // Follows https://aip.dev/132#ordering.
-  // Allowed values: "text",
-  // "create_time", "update_time", "delete_time".
-  // Defaults to "create_time".
-  string order_by = 2;
+  // Comma separated list of fields to order by, followed by
+  // `asc` or `desc` postfix. This list is case-insensitive.
+  // Default sorting order is ascending, redundant whitespace
+  // is ignored.
+  //
+  // Supported fields are:
+  // `text`, `create_time`, `update_time`, `delete_time`
+  //
+  // Sorts by `create_time` by default.
+  string order_by = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // The maximum page size.
-  int32 page_size = 3;
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
-  // Optional page token returned from a previous rpc.
-  string page_token = 4;
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted cards instead.
-  bool show_deleted = 5;
+  bool show_deleted = 5 [(google.api.field_behavior) = OPTIONAL];
 }
 
+// Response message for ListWhiteCards.
 message ListWhiteCardsResponse {
   // The requested cards.
+  repeated WhiteCard white_cards = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
+}
+
+// Request message for UpdateBlackCard.
+message UpdateBlackCardRequest {
+  // The card to update.
+  BlackCard black_card = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+// Request message for UpdateWhiteCard.
+message UpdateWhiteCardRequest {
+  // The card to update.
+  WhiteCard white_card = 1;
+
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+// Request message for DeleteBlackCard.
+message DeleteBlackCardRequest {
+  // The name of the black card to delete.
+  // Deleted black cards are guaranteed to remain available to be undeleted for at least 30 days.
+  // Format: users/{user}/cardpacks/{cardpack}/blackCards/{black_card}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/BlackCard"}];
+}
+
+// Request message for DeleteWhiteCard.
+message DeleteWhiteCardRequest {
+  // The name of the white card to delete.
+  // Deleted white cards are guaranteed to remain available to be undeleted for at least 30 days.
+  // Format: users/{user}/cardpacks/{cardpack}/whiteCards/{white_card}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/WhiteCard"}];
+}
+
+// Request message for BatchCreateBlackCards.
+message BatchCreateBlackCardsRequest {
+  // The parent resource shared by all cards being created.
+  // Format: users/{user}/cardpacks/{cardpack}
+  // If this is set, the parent field in the CreateBlackCardRequest
+  // messages must either be empty or match this field.
+  string parent = 1;
+
+  // The request message specifying the resources to create.
+  // A maximum of 10000 cards can be created in a batch.
+  repeated CreateBlackCardRequest requests = 2;
+}
+
+// Response message for BatchCreateBlackCards.
+message BatchCreateBlackCardsResponse {
+  // Black cards created. Guaranteed to be in the same order as the request.
+  repeated BlackCard black_cards = 1;
+}
+
+// Request message for BatchCreateWhiteCards.
+message BatchCreateWhiteCardsRequest {
+  // The parent resource shared by all cards being created.
+  // Format: users/{user}/cardpacks/{cardpack}
+  // If this is set, the parent field in the CreateWhiteCardRequest
+  // messages must either be empty or match this field.
+  string parent = 1;
+
+  // The request message specifying the resources to create.
+  // A maximum of 10000 cards can be created in a batch.
+  repeated CreateWhiteCardRequest requests = 2;
+}
+
+// Response message for BatchCreateWhiteCards.
+message BatchCreateWhiteCardsResponse {
+  // White cards created. Guaranteed to be in the same order as the request.
+  repeated WhiteCard white_cards = 1;
+}
+
+// Request message for BatchDeleteBlackCards.
+message BatchDeleteBlackCardsRequest {
+  // The parent resource shared by all cards being deleted.
+  // Format: users/{user}/cardpacks/{cardpack}
+  // If this is set, the parent of all of the cards
+  // specified in `names` must match this field.
+  string parent = 1;
+
+  // The names of the cards to delete.
+  // A maximum of 10000 cards can be deleted in a batch.
+  // Format: users/{user}/cardpacks/{cardpack}/blackCards/{black_card}
+  repeated string names = 2;
+}
+
+// Response message for BatchDeleteBlackCards.
+message BatchDeleteBlackCardsResponse {
+  // BlackCards deleted. Guaranteed to be in the same order as the request.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
+  repeated BlackCard cards = 1;
+}
+
+// Request message for BatchDeleteWhiteCards.
+message BatchDeleteWhiteCardsRequest {
+  // The parent resource shared by all cards being deleted.
+  // Format: users/{user}/cardpacks/{cardpack}
+  // If this is set, the parent of all of the cards
+  // specified in `names` must match this field.
+  string parent = 1;
+
+  // The names of the cards to delete.
+  // A maximum of 10000 cards can be deleted in a batch.
+  // Format: users/{user}/cardpacks/{cardpack}/whiteCards/{white_card}
+  repeated string names = 2;
+}
+
+// Response message for BatchDeleteWhiteCards.
+message BatchDeleteWhiteCardsResponse {
+  // WhiteCards deleted. Guaranteed to be in the same order as the request.
+  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
   repeated WhiteCard cards = 1;
+}
+
+// Request message for UndeleteCardpack.
+message UndeleteCardpackRequest {
+  // The name of the cardpack to undelete.
+  // Deleted cardpacks are guaranteed to remain available to be undeleted for at least 30 days.
+  // Format: users/{user}/cardpacks/{cardpack}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
+}
+
+// Request message for UndeleteBlackCard.
+message UndeleteBlackCardRequest {
+  // The name of the black card to undelete.
+  // Deleted black cards are guaranteed to remain available to be undeleted for at least 30 days.
+  // Format: users/{user}/cardpacks/{cardpack}/blackCards/{black_card}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/BlackCard"}];
+}
+
+// Request message for UndeleteWhiteCard.
+message UndeleteWhiteCardRequest {
+  // The name of the white card to undelete.
+  // Deleted white cards are guaranteed to remain available to be undeleted for at least 30 days.
+  // Format: users/{user}/cardpacks/{cardpack}/whiteCards/{white_card}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/WhiteCard"}];
+}
+
+// Request message for LikeCardpack.
+message LikeCardpackRequest {
+  // The user who liked the cardpack.
+  string user_id = 1;
+
+  // The cardpack they liked.
+  string cardpack_id = 2;
+}
+
+// Request message for UnlikeCardpack.
+message UnlikeCardpackRequest {
+  // The user who unliked the cardpack.
+  string user_id = 1;
+
+  // The cardpack they unliked.
+  string cardpack_id = 2;
+}
+
+// Request message for CheckDoesUserLikeCardpack.
+message CheckDoesUserLikeCardpackRequest {
+  // The user to check.
+  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The cardpack to check against.
+  string cardpack_id = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Response message for CheckDoesUserLikeCardpack.
+message CheckDoesUserLikeCardpackResponse {
+  // Whether the user has liked the cardpack.
+  bool is_liked = 1;
+}
+
+// Request message for CardpackSearch.
+message CardpackSearchRequest {
+  // The search query to suggest results from.
+  string query = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for CardpackSearch.
+message CardpackSearchResponse {
+  // Search results.
+  repeated Cardpack cardpacks = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
+}
+
+// Request message for AutocompleteCardpackSearch.
+message AutocompleteCardpackSearchRequest {
+  // The search query to suggest results from.
+  string query = 1 [(google.api.field_behavior) = REQUIRED];
+
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for AutocompleteCardpackSearch.
+message AutocompleteCardpackSearchResponse {
+  // List of autocomplete suggestions.
+  // Each entry is guaranteed to contain
+  // the original query.
+  repeated string autocomplete_entries = 1;
 
   // Opaque string. Can be passed to a subsequent
   // request to retrieve the next page of items.
