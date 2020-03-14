@@ -1,6 +1,7 @@
 syntax = "proto3";
 
 import "api/model.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
@@ -38,9 +39,17 @@ message SearchGamesRequest {
   int32 min_available_player_slots = 2;
 
   enum GameStageFilter {
-    FILTER_NONE = 0; // Bypass game stage filter.
-    FILTER_STOPPED = 1; // Filter all non-running games.
-    FILTER_RUNNING = 2; // Filter all running games.
+    // Default value. This value is unused.
+    GAME_STAGE_FILTER_UNSPECIFIED = 0;
+
+    // Bypass game stage filter.
+    FILTER_NONE = 1;
+
+    // Filter all non-running games.
+    FILTER_STOPPED = 2;
+
+    // Filter all running games.
+    FILTER_RUNNING = 3;
   }
   GameStageFilter game_stage_filter = 3;
 }
@@ -52,10 +61,10 @@ message SearchGamesResponse {
 message CreateGameRequest {
   // The id of the user creating the game.
   // This user will be the owner once the game is created.
-  string user_id = 1;
+  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Game configuration options.
-  GameConfig game_config = 2;
+  GameConfig game_config = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message StartGameRequest {
@@ -128,11 +137,11 @@ message RemoveArtificialPlayerRequest {
 
 message CreateChatMessageRequest {
   // The chat message to create.
-  ChatMessage chat_message = 1;
+  ChatMessage chat_message = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetGameViewRequest {
-  string user_id = 1;
+  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ChatMessage {
@@ -142,12 +151,10 @@ message ChatMessage {
   User user = 1;
 
   // The contents of the message.
-  //
-  // Required when creating.
   string text = 2;
 
   // When the message was created.
-  google.protobuf.Timestamp create_time = 3;
+  google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 }
 
 message ArtificialUser {
@@ -232,7 +239,7 @@ message GameView {
   int32 max_score = 4;
 
   enum Stage {
-    // Unspecified stage.
+    // Default value. This value is unused.
     STAGE_UNSPECIFIED = 0;
 
     // Game is not running.

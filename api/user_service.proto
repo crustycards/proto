@@ -1,28 +1,99 @@
 syntax = "proto3";
 
 import "api/model.proto";
-import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
 import "google/protobuf/field_mask.proto";
-import "google/protobuf/timestamp.proto";
 
+// Enables creating and retrieval of users and user data.
+//
+// Resources:
+// - User: Pretty much what you'd expect.
+// - UserSettings: A user's account settings and preferences.
+// - UserProfileImage: A user's profile picture.
+//
+// ( -- See resource proto documentation for more information. -- )
 service UserService {
+  // ( ---------------------- )
+  // ( -- Standard Methods -- )
+  // ( ---------------------- )
+
+  // Returns a User.
+  rpc GetUser (GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get: "/v1/{name=users/*}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Updates a User.
+  rpc UpdateUser (UpdateUserRequest) returns (User) {
+    option (google.api.http) = {
+      patch: "/v1/{user.name=users/*}"
+      body: "user"
+    };
+    option (google.api.method_signature) = "user,update_mask";
+  };
+
+  // Returns a User's settings.
+  rpc GetUserSettings (GetUserSettingsRequest) returns (UserSettings) {
+    option (google.api.http) = {
+      get: "/v1/{name=users/*/settings}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Updates a User's settings.
+  rpc UpdateUserSettings (UpdateUserSettingsRequest) returns (UserSettings) {
+    option (google.api.http) = {
+      patch: "/v1/{user_settings.name=users/*/settings}"
+      body: "user_settings"
+    };
+    option (google.api.method_signature) = "user_settings,update_mask";
+  };
+
+  // Returns a User's profile image.
+  rpc GetUserProfileImage (GetUserProfileImageRequest) returns (UserProfileImage) {
+    option (google.api.http) = {
+      get: "/v1/{name=users/*/profileImage}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Updates a User's profile image.
+  rpc UpdateUserProfileImage (UpdateUserProfileImageRequest) returns (UserProfileImage) {
+    option (google.api.http) = {
+      patch: "/v1/{user_profile_image.name=users/*/profileImage}"
+      body: "user_profile_image"
+    };
+    option (google.api.method_signature) = "user_profile_image,update_mask";
+  };
+
+  // ( -------------------- )
+  // ( -- Custom Methods -- )
+  // ( -------------------- )
+
+  // Gets a user, or creates one if it does not exist.
+  // This method of creating users may seem strange. The reason we have a 'get-or-create' instead of
+  // a simpler 'create' rpc is because of the way that oauth login works. When someone logs in using
+  // oauth, the oauth provider doesn't know whether they already have an account here (i.e. a User
+  // exists that matches their oauth account). So at login time, we need to treat every user the same
+  // regardless of whether they've signed in before since we can't know that ahead of time. With the
+  // get-or-create pattern we provide all data we might need if a new User needs to be created, and
+  // ignore it if the User already exists.
   rpc GetOrCreateUser (GetOrCreateUserRequest) returns (User);
-  rpc GetUser (GetUserRequest) returns (User);
-  rpc UpdateUser (UpdateUserRequest) returns (User);
-  rpc GetUserSettings (GetUserSettingsRequest) returns (UserSettings);
-  rpc UpdateUserSettings (UpdateUserSettingsRequest) returns (UserSettings);
-  rpc AddFriend (AddFriendRequest) returns (AddFriendResponse);
-  rpc RemoveFriend (RemoveFriendRequest) returns (google.protobuf.Empty);
-  rpc ListFriendRequestsSent (ListFriendRequestsSentRequest) returns (ListFriendRequestsSentResponse);
-  rpc ListFriendRequestsReceived (ListFriendRequestsReceivedRequest) returns (ListFriendRequestsReceivedResponse);
-  rpc ListFriends (ListFriendsRequest) returns (ListFriendsResponse);
-  rpc SearchUsers (SearchUsersRequest) returns (SearchUsersResponse);
-  rpc SearchUsersAutocomplete (SearchUsersAutocompleteRequest) returns (SearchUsersAutocompleteResponse);
-  rpc GetProfileImage (GetProfileImageRequest) returns (GetProfileImageResponse);
-  rpc SetProfileImage (SetProfileImageRequest) returns (google.protobuf.Empty);
+
+  // Fetches multiple Users based off search query.
+  rpc UserSearch (UserSearchRequest) returns (UserSearchResponse);
+
+  // Fetches search suggestions that are used to provide autocomplete functionality.
+  rpc AutocompleteUserSearch (AutocompleteUserSearchRequest) returns (AutocompleteUserSearchResponse);
 }
 
-message OAuthIdentifier {
+// Used to identify a user through their oauth account.
+message OAuthCredentials {
   // The user's oauth provider. Currently Google is the only provider that's used.
   string oauth_provider = 1;
 
@@ -30,31 +101,14 @@ message OAuthIdentifier {
   string oauth_id = 2;
 }
 
-// This method of creating users may seem strange. The reason we have a 'get-or-create' instead of
-// a simpler 'get' rpc is because of the way that oauth login works. When someone logs in using
-// oauth, the oauth provider doesn't know whether they already have an account here (i.e. a User
-// exists that matches their oauth account). So at login time, we need to treat every user the same
-// regardless of whether they've signed in before since we can't know that ahead of time. With the
-// get-or-create pattern we provide all data we might need if a new User needs to be created, and
-// ignore it if the User already exists.
-message GetOrCreateUserRequest {
-  // The user's oauth identifier.
-  OAuthIdentifier oauth_identifier = 1;
-
-  // Only used to create the user. If the user already exists, all fields here are ignored.
-  User user = 2;
-}
-
+// Request message for GetUser.
 message GetUserRequest {
-  oneof identifier {
-    // The user's internal id.
-    string user_id = 1;
-
-    // The user's oauth identifier.
-    OAuthIdentifier oauth_identifier = 2;
-  }
+  // The name of the user to retrieve.
+  // Format: users/{user}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/User"}];
 }
 
+// Request message for UpdateUser.
 message UpdateUserRequest {
   // The user to update.
   User user = 1;
@@ -63,11 +117,14 @@ message UpdateUserRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
+// Request message for GetUserSettings.
 message GetUserSettingsRequest {
-  // The user to fetch settings for.
-  string user_id = 1;
+  // The name of the user settings to retrieve.
+  // Format: users/{user}/settings
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/UserSettings"}];
 }
 
+// Request message for UpdateUserSettings.
 message UpdateUserSettingsRequest {
   // The user settings to update.
   UserSettings user_settings = 1;
@@ -76,176 +133,83 @@ message UpdateUserSettingsRequest {
   google.protobuf.FieldMask update_mask = 2;
 }
 
-// Creates or responds to a friend request.
-// If the receiver has already sent a friend request
-// to the sender, this is treated as responding to
-// that request. Otherwise this will send a friend
-// request to the receiver.
-message AddFriendRequest {
-  // The user who's sending or responding to a friend request.
-  string sender_user_id = 1;
-
-  // The user being added.
-  string receiver_user_id = 2;
+// Request message for GetUserProfileImage.
+message GetUserProfileImageRequest {
+  // The name of the profile image to retrieve.
+  // Format: users/{user}/profileImage
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/UserProfileImage"}];
 }
 
-message AddFriendResponse {
-  oneof friend_state {
-    // Set if user is sending a friend request.
-    PendingFriendRequest friend_request = 1;
+// Request message for UpdateUserProfileImage.
+message UpdateUserProfileImageRequest {
+  // The profile image to update.
+  UserProfileImage user_profile_image = 1;
 
-    // Set if user is accepting a friend request.
-    Friend friend = 2;
-  }
+  // The list of fields to be updated.
+  google.protobuf.FieldMask update_mask = 2;
 }
 
-// Removes a friend from a user's friend list
-// or deletes an incoming friend request.
-message RemoveFriendRequest {
-  // The user who's removing a friend or deleting a friend request.
-  string sender_user_id = 1;
+// Request message for GetOrCreateUser.
+message GetOrCreateUserRequest {
+  // The user's oauth credentials.
+  OAuthCredentials oauth_credentials = 1 [(google.api.field_behavior) = REQUIRED];
 
-  // The user being removed.
-  string receiver_user_id = 2;
+  // Used to create the user if it does not exist yet.
+  User user = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
-message ListFriendRequestsSentRequest {
-  // The user that requests were sent from.
-  string user_id = 1;
-
-  // The maximum page size.
-  int32 page_size = 2;
-
-  // Optional page token returned from a previous rpc.
-  string page_token = 3;
-}
-
-message ListFriendRequestsSentResponse {
-  // Friend requests sent by the specified user.
-  repeated PendingFriendRequest friend_requests_sent = 1;
-
-  // Opaque string. Can be passed to a subsequent
-  // request to retrieve the next page of items.
-  string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
-}
-
-message ListFriendRequestsReceivedRequest {
-  // The user that requests were sent to.
-  string user_id = 1;
-
-  // The maximum page size.
-  int32 page_size = 2;
-
-  // Optional page token returned from a previous rpc.
-  string page_token = 3;
-}
-
-message ListFriendRequestsReceivedResponse {
-  // Friend requests received by the specified user.
-  repeated PendingFriendRequest friend_requests_received = 1;
-
-  // Opaque string. Can be passed to a subsequent
-  // request to retrieve the next page of items.
-  string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
-}
-
-message ListFriendsRequest {
-  // The user to list friends for.
-  string user_id = 1;
-
-  // The order friends are returned in.
-  // Follows https://aip.dev/132#ordering.
-  // Allowed values: "friend.name", "create_time".
-  // Defaults to "create_time".
-  string order_by = 2;
-
-  // The maximum page size.
-  int32 page_size = 3;
-
-  // Optional page token returned from a previous rpc.
-  string page_token = 4;
-}
-
-message ListFriendsResponse {
-  // Friends of the user specified in the request.
-  repeated Friend friends = 1;
-
-  // Opaque string. Can be passed to a subsequent
-  // request to retrieve the next page of items.
-  string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
-}
-
-message SearchUsersRequest {
+// Request message for UserSearch.
+message UserSearchRequest {
   // The search query to suggest results from.
-  string query = 1;
+  string query = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The maximum page size.
-  int32 page_size = 2;
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
-message SearchUsersResponse {
+// Response message for UserSearch.
+message UserSearchResponse {
   // Search results.
   repeated User users = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
 }
 
-message SearchUsersAutocompleteRequest {
+// Request message for AutocompleteUserSearch.
+message AutocompleteUserSearchRequest {
   // The search query to suggest results from.
-  string query = 1;
+  string query = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The maximum page size.
-  int32 page_size = 2;
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
-message SearchUsersAutocompleteResponse {
+// Response message for AutocompleteUserSearch.
+message AutocompleteUserSearchResponse {
   // List of autocomplete suggestions.
   // Each entry is guaranteed to contain
   // the original query.
-  repeated string autocomplete_entry = 1;
-}
+  repeated string autocomplete_entries = 1;
 
-message GetProfileImageRequest {
-  // The user whose profile image will be retrieved.
-  string user_id = 1;
-}
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
 
-message GetProfileImageResponse {
-  // TODO - Document how these bytes are encoded.
-  bytes image = 1;
-}
-
-message SetProfileImageRequest {
-  // The user whose profile image will be set.
-  string user_id = 1;
-
-  // TODO - Document how these bytes should be encoded.
-  bytes image = 2;
-}
-
-message PendingFriendRequest {
-  // The user who sent the friend request.
-  User sender = 1;
-
-  // The user whom the friend request was sent to.
-  User recipient = 2;
-
-  // When the friend request was sent.
-  google.protobuf.Timestamp create_time = 3;
-}
-
-message Friend {
-  // The user who is friends with the user specified in the ListFriendsRequest.
-  User friend = 1;
-
-  // When the user became friends with the user specified in the ListFriendsRequest.
-  // (NOT when the friend request was sent, but instead when it was accepted).
-  google.protobuf.Timestamp create_time = 2;
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
 }
