@@ -114,7 +114,7 @@ message UpdateUserRequest {
   User user = 1;
 
   // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for GetUserSettings.
@@ -130,7 +130,7 @@ message UpdateUserSettingsRequest {
   UserSettings user_settings = 1;
 
   // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for GetUserProfileImage.
@@ -146,7 +146,7 @@ message UpdateUserProfileImageRequest {
   UserProfileImage user_profile_image = 1;
 
   // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for GetOrCreateUser.

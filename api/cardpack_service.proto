@@ -297,7 +297,7 @@ message UpdateCardpackRequest {
   Cardpack cardpack = 1;
 
   // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for DeleteCardpack.
@@ -418,7 +418,7 @@ message UpdateBlackCardRequest {
   BlackCard black_card = 1;
 
   // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for UpdateWhiteCard.
@@ -427,7 +427,7 @@ message UpdateWhiteCardRequest {
   WhiteCard white_card = 1;
 
   // The list of fields to be updated.
-  google.protobuf.FieldMask update_mask = 2;
+  google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Request message for DeleteBlackCard.
