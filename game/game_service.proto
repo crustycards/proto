@@ -19,8 +19,8 @@ service GameService {
   rpc UnplayCards (UnplayCardsRequest) returns (GameView);
   rpc VoteCard (VoteCardRequest) returns (GameView);
   rpc StartNextRound (StartNextRoundRequest) returns (GameView);
-  rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (google.protobuf.Empty);
-  rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (google.protobuf.Empty);
+  rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (GameView);
+  rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (GameView);
   rpc CreateChatMessage (CreateChatMessageRequest) returns (GameView);
   rpc GetGameView (GetGameViewRequest) returns (GameView);
   // TODO - Create RPCs for RANDOM_CHOICE blank card picker.
