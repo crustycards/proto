@@ -303,8 +303,8 @@ message GameView {
   // for details on how this is used
   // and when certain fields are filled.
   message WhiteCardsPlayed {
-    // The user who played the cards.
-    User user = 1;
+    // The player who played the cards.
+    Player user = 1;
 
     // The cards played by the user.
     // TODO - Currently, a user could check if played cards
