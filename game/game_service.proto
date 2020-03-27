@@ -93,17 +93,26 @@ message LeaveGameRequest {
 }
 
 message KickUserRequest {
-  string owner_id = 1;
+  // The user who is kicking another user.
+  string user_id = 1;
+
+  // The user being kicked.
   string troll_id = 2;
 }
 
 message BanUserRequest {
-  string owner_id = 1;
+  // The user who is banning another user.
+  string user_id = 1;
+
+  // The user being banned.
   string troll_id = 2;
 }
 
 message UnbanUserRequest {
-  string owner_id = 1;
+  // The user who is unbanning another user.
+  string user_id = 1;
+
+  // The user being unbanned.
   string troll_id = 2;
 }
 
@@ -127,12 +136,19 @@ message StartNextRoundRequest {
 }
 
 message AddArtificialPlayerRequest {
+  // The user who is adding an artificial player.
+  string user_id = 1;
+
   // The display name of the new artificial player.
-  string display_name = 1;
+  string display_name = 2;
 }
 
 message RemoveArtificialPlayerRequest {
-  string artificial_user_id = 1;
+  // The user who is removing an artificial player.
+  string user_id = 1;
+
+  // The artificial player to remove.
+  string artificial_player_id = 2;
 }
 
 message CreateChatMessageRequest {
