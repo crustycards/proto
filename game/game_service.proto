@@ -51,6 +51,7 @@ message SearchGamesRequest {
     // Filter all running games.
     FILTER_RUNNING = 3;
   }
+
   GameStageFilter game_stage_filter = 3;
 }
 
@@ -59,29 +60,29 @@ message SearchGamesResponse {
 }
 
 message CreateGameRequest {
-  // The id of the user creating the game.
+  // The name of the user creating the game.
   // This user will be the owner once the game is created.
-  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
 
   // Game configuration options.
   GameConfig game_config = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message StartGameRequest {
-  // The id of the user trying to start the game.
-  // Must be the id of someone who owns the game that they are in.
-  string user_id = 1;
+  // The name of the user trying to start the game.
+  // Must be the name of someone who owns the game that they are in.
+  string user_name = 1;
 }
 
 message StopGameRequest {
-  // The id of the user trying to stop the game.
-  // Must be the id of someone who owns the game that they are in.
-  string user_id = 1;
+  // The name of the user trying to stop the game.
+  // Must be the name of someone who owns the game that they are in.
+  string user_name = 1;
 }
 
 message JoinGameRequest {
   // The user who is joining a game.
-  string user_id = 1;
+  string user_name = 1;
 
   // The unique identifier of the game to join.
   string game_id = 2;
@@ -89,55 +90,55 @@ message JoinGameRequest {
 
 message LeaveGameRequest {
   // The user who is leaving a game.
-  string user_id = 1;
+  string user_name = 1;
 }
 
 message KickUserRequest {
   // The user who is kicking another user.
-  string user_id = 1;
+  string user_name = 1;
 
   // The user being kicked.
-  string troll_id = 2;
+  string troll_user_name = 2;
 }
 
 message BanUserRequest {
   // The user who is banning another user.
-  string user_id = 1;
+  string user_name = 1;
 
   // The user being banned.
-  string troll_id = 2;
+  string troll_user_name = 2;
 }
 
 message UnbanUserRequest {
   // The user who is unbanning another user.
-  string user_id = 1;
+  string user_name = 1;
 
   // The user being unbanned.
-  string troll_id = 2;
+  string troll_user_name = 2;
 }
 
 message PlayCardsRequest {
-  string user_id = 1;
-  repeated string card_ids = 2;
+  string user_name = 1;
+  repeated string card_names = 2;
 }
 
 message UnplayCardsRequest {
-  string user_id = 1;
+  string user_name = 1;
 }
 
 message VoteCardRequest {
-  string user_id = 1;
+  string user_name = 1;
   // The 0-based index of which set the judge votes for.
   int32 choice_index = 2;
 }
 
 message StartNextRoundRequest {
-  string user_id = 1;
+  string user_name = 1;
 }
 
 message AddArtificialPlayerRequest {
   // The user who is adding an artificial player.
-  string user_id = 1;
+  string user_name = 1;
 
   // The display name of the new artificial player.
   string display_name = 2;
@@ -145,25 +146,28 @@ message AddArtificialPlayerRequest {
 
 message RemoveArtificialPlayerRequest {
   // The user who is removing an artificial player.
-  string user_id = 1;
+  string user_name = 1;
 
   // The artificial player to remove.
-  string artificial_player_id = 2;
+  string artificial_player_name = 2;
 }
 
 message CreateChatMessageRequest {
+  // The name of the user creating the chat message.
+  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
+
   // The chat message to create.
-  ChatMessage chat_message = 1 [(google.api.field_behavior) = REQUIRED];
+  ChatMessage chat_message = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message GetGameViewRequest {
-  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
 }
 
 message ChatMessage {
   // The user who sent the message.
   //
-  // When creating, the id field is required and all other fields are ignored.
+  // When creating, the name field is required and all other fields are ignored.
   User user = 1;
 
   // The contents of the message.
@@ -245,7 +249,7 @@ message GameView {
   // The id of the game.
   string game_id = 1;
 
-  // The name of the game.
+  // The display name of the game.
   string display_name = 2;
 
   // The maximum number of players that can be in the game at once.
