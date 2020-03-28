@@ -70,7 +70,7 @@ message GameConfig {
   // A list of cardpacks that should be used when making the game.
   // All cards from all cardpacks listed will be pulled from
   // the main api at game creation.
-  repeated string cardpack_ids = 6;
+  repeated string cardpack_names = 6;
 
   // Settings defining how blank cards behave in-game.
   message BlankCardConfig {

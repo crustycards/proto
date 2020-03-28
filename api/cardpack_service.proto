@@ -294,7 +294,7 @@ message ListCardpacksResponse {
 // Request message for UpdateCardpack.
 message UpdateCardpackRequest {
   // The cardpack to update.
-  Cardpack cardpack = 1;
+  Cardpack cardpack = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The list of fields to be updated.
   google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
@@ -415,7 +415,7 @@ message ListWhiteCardsResponse {
 // Request message for UpdateBlackCard.
 message UpdateBlackCardRequest {
   // The card to update.
-  BlackCard black_card = 1;
+  BlackCard black_card = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The list of fields to be updated.
   google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
@@ -424,7 +424,7 @@ message UpdateBlackCardRequest {
 // Request message for UpdateWhiteCard.
 message UpdateWhiteCardRequest {
   // The card to update.
-  WhiteCard white_card = 1;
+  WhiteCard white_card = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The list of fields to be updated.
   google.protobuf.FieldMask update_mask = 2 [(google.api.field_behavior) = REQUIRED];
@@ -553,28 +553,28 @@ message UndeleteWhiteCardRequest {
 // Request message for LikeCardpack.
 message LikeCardpackRequest {
   // The user who liked the cardpack.
-  string user_id = 1;
+  string user_name = 1;
 
   // The cardpack they liked.
-  string cardpack_id = 2;
+  string cardpack_name = 2;
 }
 
 // Request message for UnlikeCardpack.
 message UnlikeCardpackRequest {
   // The user who unliked the cardpack.
-  string user_id = 1;
+  string user_name = 1;
 
   // The cardpack they unliked.
-  string cardpack_id = 2;
+  string cardpack_name = 2;
 }
 
 // Request message for CheckDoesUserLikeCardpack.
 message CheckDoesUserLikeCardpackRequest {
   // The user to check.
-  string user_id = 1 [(google.api.field_behavior) = REQUIRED];
+  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The cardpack to check against.
-  string cardpack_id = 2 [(google.api.field_behavior) = REQUIRED];
+  string cardpack_name = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 // Response message for CheckDoesUserLikeCardpack.
