@@ -224,6 +224,35 @@ message PlayableWhiteCard {
   }
 }
 
+// Contains cards played by
+// a single user for one round.
+// See the description for GameView.white_played
+// for details on how this is used
+// and when certain fields are filled.
+message WhiteCardsPlayed {
+  // The player who played the cards.
+  Player player = 1;
+
+  // The text of the cards played by the user.
+  // We're including only the card text to hide
+  // whether it includes any blank cards. Since
+  // artificial players never draw blank cards,
+  // including full card protos could give away
+  // that an answer belongs to a real user if it
+  // contained blank cards. By including only
+  // the text, even users with direct access to
+  // this api are unable to tell where it came
+  // from.
+  repeated string card_texts = 2;
+}
+
+message PastRound {
+  BlackCard black_card = 1;
+  repeated WhiteCardsPlayed white_played = 2;
+  User judge = 3;
+  Player winner = 4;
+}
+
 // Game list view used when users are browsing games.
 message GameInfo {
   // A server-generated uuid.
@@ -318,24 +347,6 @@ message GameView {
   // in the game the longest.
   User owner = 11;
 
-  // Contains cards played by
-  // a single user for one round.
-  // See the description for white_played
-  // for details on how this is used
-  // and when certain fields are filled.
-  message WhiteCardsPlayed {
-    // The player who played the cards.
-    Player player = 1;
-
-    // The cards played by the user.
-    // TODO - Currently, a user could check if played cards
-    // are blank cards, and this would indicate that it was
-    // played by a human. We need to find a way to make it
-    // impossible to differentiate. Perhaps returning only
-    // card texts instead of the entire PlayableWhiteCard.
-    repeated PlayableWhiteCard cards = 2;
-  }
-
   // The white cards played this round.
   // Data contained is dependent on the game stage.
   // ----------------------------------------------
@@ -386,4 +397,6 @@ message GameView {
 
   // When the game was created.
   google.protobuf.Timestamp create_time = 16;
+
+  repeated PastRound past_rounds = 17;
 }
