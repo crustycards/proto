@@ -138,18 +138,19 @@ message StartNextRoundRequest {
 
 message AddArtificialPlayerRequest {
   // The user who is adding an artificial player.
-  string user_name = 1;
+  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The display name of the new artificial player.
-  string display_name = 2;
+  string display_name = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message RemoveArtificialPlayerRequest {
   // The user who is removing an artificial player.
-  string user_name = 1;
+  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The artificial player to remove.
-  string artificial_player_name = 2;
+  // If unspecified, removes the first artificial player, prioritizing queued players.
+  string artificial_player_name = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message CreateChatMessageRequest {
