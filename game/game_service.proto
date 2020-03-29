@@ -273,6 +273,9 @@ message GameInfo {
 
   // When the underlying game was created.
   google.protobuf.Timestamp create_time = 7;
+
+  // When the underlying game was last active.
+  google.protobuf.Timestamp last_activity_time = 8;
 }
 
 message GameView {
