@@ -266,7 +266,7 @@ message GameInfo {
   int32 player_count = 3;
 
   // The current game owner.
-  User owner = 5;
+  User owner = 5; 
 
   // Whether the game is currently in progress.
   bool is_running = 6;
