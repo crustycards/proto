@@ -140,7 +140,7 @@ message UserSettings {
   ColorScheme color_scheme = 2;
 
   // Default game settings for a user to quickly start a game.
-  GameConfig quick_start_config = 3;
+  GameConfig quick_start_game_config = 3;
 }
 
 // Resource belonging to a user. Represents a collection
