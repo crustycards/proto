@@ -257,7 +257,7 @@ message ListCardpacksRequest {
   // is ignored.
   //
   // Supported fields are:
-  // `name`, `create_time`, `update_time`, `delete_time`, `like_count`
+  // `display_name`, `create_time`, `update_time`, `delete_time`, `like_count`
   //
   // Sorts by `create_time` by default.
   string order_by = 2 [(google.api.field_behavior) = OPTIONAL];
@@ -265,6 +265,8 @@ message ListCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -348,6 +350,8 @@ message ListBlackCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -390,6 +394,8 @@ message ListWhiteCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -591,6 +597,8 @@ message CardpackSearchRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -618,6 +626,8 @@ message AutocompleteCardpackSearchRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.

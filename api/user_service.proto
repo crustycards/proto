@@ -166,6 +166,8 @@ message UserSearchRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -193,6 +195,8 @@ message AutocompleteUserSearchRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
   int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
