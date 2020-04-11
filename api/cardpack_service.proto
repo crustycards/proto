@@ -251,10 +251,10 @@ message ListCardpacksRequest {
   // Format: users/{user}
   string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/Cardpack"}];
 
-  // Comma separated list of fields to order by, followed by
-  // `asc` or `desc` postfix. This list is case-insensitive.
-  // Default sorting order is ascending, redundant whitespace
-  // is ignored.
+  // Comma separated list of fields to order by.
+  // Each listed field will be sorted in ascending order by default.
+  // Append `asc` to specify ascending order for a particular field (e.g. `foo asc, bar`).
+  // This field is case-insensitive and redundant whitespace is ignored.
   //
   // Supported fields are:
   // `display_name`, `create_time`, `update_time`, `delete_time`, `like_count`
@@ -336,10 +336,10 @@ message ListBlackCardsRequest {
   // Format: users/{user}/cardpacks/{cardpack}
   string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/BlackCard"}];
 
-  // Comma separated list of fields to order by, followed by
-  // `asc` or `desc` postfix. This list is case-insensitive.
-  // Default sorting order is ascending, redundant whitespace
-  // is ignored.
+  // Comma separated list of fields to order by.
+  // Each listed field will be sorted in ascending order by default.
+  // Append `asc` to specify ascending order for a particular field (e.g. `foo asc, bar`).
+  // This field is case-insensitive and redundant whitespace is ignored.
   //
   // Supported fields are:
   // `text`, `create_time`, `update_time`, `delete_time`
@@ -380,10 +380,10 @@ message ListWhiteCardsRequest {
   // Format: users/{user}/cardpacks/{cardpack}
   string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/WhiteCard"}];
 
-  // Comma separated list of fields to order by, followed by
-  // `asc` or `desc` postfix. This list is case-insensitive.
-  // Default sorting order is ascending, redundant whitespace
-  // is ignored.
+  // Comma separated list of fields to order by.
+  // Each listed field will be sorted in ascending order by default.
+  // Append `asc` to specify ascending order for a particular field (e.g. `foo asc, bar`).
+  // This field is case-insensitive and redundant whitespace is ignored.
   //
   // Supported fields are:
   // `text`, `create_time`, `update_time`, `delete_time`
