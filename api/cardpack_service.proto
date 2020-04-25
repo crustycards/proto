@@ -456,9 +456,9 @@ message DeleteWhiteCardRequest {
 message BatchCreateBlackCardsRequest {
   // The parent resource shared by all cards being created.
   // Format: users/{user}/cardpacks/{cardpack}
-  // If this is set, the parent field in the CreateBlackCardRequest
-  // messages must either be empty or match this field.
-  string parent = 1;
+  // The `parent` field in all nested request messages
+  // must either be empty or match this field.
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
 
   // The request message specifying the resources to create.
   // A maximum of 10000 cards can be created in a batch.
@@ -475,9 +475,9 @@ message BatchCreateBlackCardsResponse {
 message BatchCreateWhiteCardsRequest {
   // The parent resource shared by all cards being created.
   // Format: users/{user}/cardpacks/{cardpack}
-  // If this is set, the parent field in the CreateWhiteCardRequest
-  // messages must either be empty or match this field.
-  string parent = 1;
+  // The `parent` field in all nested request messages
+  // must either be empty or match this field.
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
 
   // The request message specifying the resources to create.
   // A maximum of 10000 cards can be created in a batch.
@@ -494,9 +494,9 @@ message BatchCreateWhiteCardsResponse {
 message BatchDeleteBlackCardsRequest {
   // The parent resource shared by all cards being deleted.
   // Format: users/{user}/cardpacks/{cardpack}
-  // If this is set, the parent of all of the cards
+  // The parent of all of the cards
   // specified in `names` must match this field.
-  string parent = 1;
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
 
   // The names of the cards to delete.
   // A maximum of 10000 cards can be deleted in a batch.
@@ -515,9 +515,9 @@ message BatchDeleteBlackCardsResponse {
 message BatchDeleteWhiteCardsRequest {
   // The parent resource shared by all cards being deleted.
   // Format: users/{user}/cardpacks/{cardpack}
-  // If this is set, the parent of all of the cards
+  // The parent of all of the cards
   // specified in `names` must match this field.
-  string parent = 1;
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/Cardpack"}];
 
   // The names of the cards to delete.
   // A maximum of 10000 cards can be deleted in a batch.
