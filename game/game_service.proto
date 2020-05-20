@@ -279,17 +279,10 @@ message GameInfo {
 }
 
 message GameView {
-  // The id of the game.
+  // The unique id of the game.
   string game_id = 1;
-
-  // The display name of the game.
-  string display_name = 2;
-
-  // The maximum number of players that can be in the game at once.
-  // Artificial players do not count towards this limit.
-  // Value must be at least 3 and at most 100.
-  int32 max_players = 3;
-  int32 max_score = 4;
+  
+  GameConfig config = 2;
 
   enum Stage {
     // Default value. This value is unused.
@@ -310,25 +303,25 @@ message GameView {
   }
   
   // What stage the game is in. This determines what actions are available.
-  Stage stage = 5;
+  Stage stage = 3;
 
   // The player's current hand.
-  repeated PlayableWhiteCard hand = 6;
+  repeated PlayableWhiteCard hand = 4;
 
   // All real and artificial players that are currently playing.
   // Guaranteed to be ordered by join_time.
-  repeated Player players = 7;
+  repeated Player players = 5;
 
   // All real and artificial players that joined while the
   // game was running (any Stage other than NOT_RUNNING).
   // Guaranteed to be ordered by join_time.
   // These players will be automatically moved from queued_players to
   // players when either StopGame or StartNextRound RPCs are called.
-  repeated Player queued_players = 8;
+  repeated Player queued_players = 6;
 
   // All users that have been banned from the game.
   // These users are unable to join the game.
-  repeated User banned_players = 9;
+  repeated User banned_players = 7;
 
   // The current judge for the round.
   // This might be empty if the game stage is NOT_RUNNING
@@ -340,7 +333,7 @@ message GameView {
   // when the stage is changed from JUDGE_PHASE to ROUND_END_PHASE.
   // Instead, it changes when the game stage changes from ROUND_END_PHASE to PLAY_PHASE.
   // Whenever a game is started, a new random judge is selected.
-  User judge = 10;
+  User judge = 8;
 
   // The current owner of the game.
   // The game creator is the initial
@@ -348,7 +341,7 @@ message GameView {
   // leaves then ownership is transferred
   // to the next user who has been
   // in the game the longest.
-  User owner = 11;
+  User owner = 9;
 
   // The white cards played this round.
   // Data contained is dependent on the game stage.
@@ -379,12 +372,12 @@ message GameView {
   // the game was just created and there is no past round to show cards for.
   // Otherwise this will contain cards from the previous game
   // that just ended (or was stopped).
-  repeated WhiteCardsPlayed white_played = 12;
+  repeated WhiteCardsPlayed white_played = 10;
 
   // The black card that's active for the current round.
   // This is empty if stage is NOT_RUNNING, otherwise
   // this will contain the current card.
-  BlackCard current_black_card = 13;
+  BlackCard current_black_card = 11;
 
   // Contains the winner of the most recent game.
   // This is only filled when the stage is NOT_RUNNING
@@ -392,14 +385,14 @@ message GameView {
   // always a winner to display, such as if the game
   // was just created or if it was stopped
   // before someone won.
-  Player winner = 14;
+  Player winner = 12;
 
   // Chat messages sent by players in the game.
   // Contains, at most, the 100 most recent messages.
-  repeated ChatMessage chat_messages = 15;
+  repeated ChatMessage chat_messages = 13;
 
   // When the game was created.
-  google.protobuf.Timestamp create_time = 16;
+  google.protobuf.Timestamp create_time = 14;
 
-  repeated PastRound past_rounds = 17;
+  repeated PastRound past_rounds = 15;
 }
