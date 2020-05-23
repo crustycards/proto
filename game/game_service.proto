@@ -167,12 +167,10 @@ message GetGameViewRequest {
 
 message ChatMessage {
   // The user who sent the message.
-  //
-  // When creating, the name field is required and all other fields are ignored.
-  User user = 1;
+  User user = 1 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 
   // The contents of the message. Cannot be blank.
-  string text = 2;
+  string text = 2 [(google.api.field_behavior) = REQUIRED];
 
   // When the message was created.
   google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
