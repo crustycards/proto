@@ -150,7 +150,7 @@ message RemoveArtificialPlayerRequest {
 
   // The artificial player to remove.
   // If unspecified, removes the first artificial player, prioritizing queued players.
-  string artificial_player_name = 2 [(google.api.field_behavior) = OPTIONAL];
+  string artificial_player_id = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 message CreateChatMessageRequest {
