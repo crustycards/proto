@@ -128,8 +128,9 @@ message UnplayCardsRequest {
 
 message VoteCardRequest {
   string user_name = 1;
-  // The 0-based index of which set the judge votes for.
-  int32 choice_index = 2;
+
+  // The 1-based index of which set of cards to vote for as the judge.
+  int32 choice = 2;
 }
 
 message StartNextRoundRequest {
@@ -252,6 +253,9 @@ message PastRound {
 }
 
 // Game list view used when users are browsing games.
+// TODO - Possibly add a field here that indicates whether the user requesting
+// the GameInfo is banned from this game. This way we can show in the UI which
+// games the user is banned from. This might not be a super useful feature though...
 message GameInfo {
   // A server-generated uuid.
   string game_id = 1;
@@ -318,6 +322,7 @@ message GameView {
   repeated Player queued_players = 6;
 
   // All users that have been banned from the game.
+  // Always listed in the order they were banned.
   // These users are unable to join the game.
   repeated User banned_players = 7;
 
