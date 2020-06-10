@@ -118,11 +118,20 @@ message UnbanUserRequest {
 }
 
 message PlayCardsRequest {
+  // The user who is playing cards for the current round.
   string user_name = 1;
+
+  // The cards to play. All cards must be in the user's hand or the request will fail.
+  // For each card in this list, if the `white_card` property is present
+  // then only `white_card.name` is required and all other fields are ignored.
+  // If the `blank_card` property is present then `blank_card.id` and `blank_card.open_text` are required.
+  // The `blank_card.open_text` field should contain user-specified open text from a blank card.
+  // The `blank_card` property property is only allowed for games that have OPEN_TEXT behavior for blank cards.
   repeated PlayableWhiteCard cards = 2;
 }
 
 message UnplayCardsRequest {
+  // The user who is unplaying their cards for the current round.
   string user_name = 1;
 }
 
@@ -142,6 +151,7 @@ message AddArtificialPlayerRequest {
   string user_name = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The display name of the new artificial player.
+  // A name is chosen automatically if it isn't provided here.
   string display_name = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
@@ -210,8 +220,7 @@ message BlankWhiteCard {
   // Text entered by the user (limited to 100 characters).
   // Always empty for cards in a player's hand and
   // always non-empty for cards that have been played.
-  // TODO - This field might not be necessary. Remove it
-  // if it's not needed.
+  // Required when playing a blank card using the PlayCards rpc.
   string open_text = 2;
 }
 
