@@ -285,7 +285,9 @@ message GameInfo {
   // When the underlying game was created.
   google.protobuf.Timestamp create_time = 7;
 
-  // When the underlying game was last active.
+  // When the game was last active.
+  // This only accounts for game-related actions, not users joining
+  // or leaving the game or sending messages in the chat.
   google.protobuf.Timestamp last_activity_time = 8;
 }
 
@@ -403,8 +405,13 @@ message GameView {
   // Contains, at most, the 100 most recent messages.
   repeated ChatMessage chat_messages = 13;
 
-  // When the game was created.
-  google.protobuf.Timestamp create_time = 14;
+  repeated PastRound past_rounds = 14;
 
-  repeated PastRound past_rounds = 15;
+  // When the game was created.
+  google.protobuf.Timestamp create_time = 15;
+
+  // When the game was last active.
+  // This only accounts for game-related actions, not users joining
+  // or leaving the game or sending messages in the chat.
+  google.protobuf.Timestamp last_activity_time = 16;
 }
