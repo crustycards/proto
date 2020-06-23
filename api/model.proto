@@ -108,7 +108,7 @@ message GameConfig {
       // number of blank cards needed increases exponentially. A value of 0.5
       // doubles the size of the deck, a value of 0.8 increases the size by 5x
       // and a value of 0.99 would increase it by 100x.
-      double percentage_added = 3;
+      double percentage = 3;
     }
   }
 
