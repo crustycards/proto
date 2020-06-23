@@ -99,11 +99,16 @@ message GameConfig {
       // Adds a fixed number of blank cards to the deck.
       int32 card_count = 2;
 
-      // A number between 0 and 100 specifying how many blank cards to add
-      // as a percentage of the deck size. For example, if there are 1000
+      // A number between 0.0 and 0.8 specifying what percentage of the total
+      // deck size should be blank cards. For example, if there are 900
       // non-blank cards in your game and you specify a blank card percentage
-      // of 10, there will be 100 blank cards added for a total of 1100.
-      int32 percentage_added = 3;
+      // of 0.1, there will be 100 blank cards added for a total of 1000.
+      //
+      // The upper limit is 0.8 because, as this value approaches 1.0, the
+      // number of blank cards needed increases exponentially. A value of 0.5
+      // doubles the size of the deck, a value of 0.8 increases the size by 5x
+      // and a value of 0.99 would increase it by 100x.
+      double percentage_added = 3;
     }
   }
 
