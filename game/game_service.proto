@@ -18,7 +18,7 @@ service GameService {
   rpc PlayCards (PlayCardsRequest) returns (GameView);
   rpc UnplayCards (UnplayCardsRequest) returns (GameView);
   rpc VoteCard (VoteCardRequest) returns (GameView);
-  rpc StartNextRound (StartNextRoundRequest) returns (GameView);
+  rpc VoteStartNextRound (VoteStartNextRoundRequest) returns (GameView);
   rpc AddArtificialPlayer (AddArtificialPlayerRequest) returns (GameView);
   rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (GameView);
   rpc CreateChatMessage (CreateChatMessageRequest) returns (GameView);
@@ -142,7 +142,7 @@ message VoteCardRequest {
   int32 choice = 2;
 }
 
-message StartNextRoundRequest {
+message VoteStartNextRoundRequest {
   string user_name = 1;
 }
 
@@ -329,7 +329,8 @@ message GameView {
   // game was running (any Stage other than NOT_RUNNING).
   // Guaranteed to be ordered by join_time.
   // These players will be automatically moved from queued_players to
-  // players when either StopGame or StartNextRound RPCs are called.
+  // players when StopGame is called (or if every user in the game
+  // calls VoteStartNextRound).
   repeated Player queued_players = 6;
 
   // All users that have been banned from the game.
