@@ -558,29 +558,41 @@ message UndeleteWhiteCardRequest {
 
 // Request message for LikeCardpack.
 message LikeCardpackRequest {
-  // The user who liked the cardpack.
-  string user_name = 1;
+  // The user who is liking the cardpack.
+  string user = 1 [(google.api.resource_reference) = {
+    type: "api.crusty.cards/User"
+  }];
 
-  // The cardpack they liked.
-  string cardpack_name = 2;
+  // The cardpack they are liking.
+  string cardpack = 2 [(google.api.resource_reference) = {
+    type: "api.crusty.cards/Cardpack"
+  }];
 }
 
 // Request message for UnlikeCardpack.
 message UnlikeCardpackRequest {
-  // The user who unliked the cardpack.
-  string user_name = 1;
+  // The user who is unliking the cardpack.
+  string user = 1 [(google.api.resource_reference) = {
+    type: "api.crusty.cards/User"
+  }];
 
-  // The cardpack they unliked.
-  string cardpack_name = 2;
+  // The cardpack they are unliking.
+  string cardpack = 2 [(google.api.resource_reference) = {
+    type: "api.crusty.cards/Cardpack"
+  }];
 }
 
 // Request message for CheckDoesUserLikeCardpack.
 message CheckDoesUserLikeCardpackRequest {
   // The user to check.
-  string user_name = 1 [(google.api.field_behavior) = REQUIRED];
+  string user = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {
+    type: "api.crusty.cards/User"
+  }];
 
   // The cardpack to check against.
-  string cardpack_name = 2 [(google.api.field_behavior) = REQUIRED];
+  string cardpack = 2 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {
+    type: "api.crusty.cards/Cardpack"
+  }];
 }
 
 // Response message for CheckDoesUserLikeCardpack.
