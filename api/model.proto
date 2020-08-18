@@ -230,3 +230,53 @@ message WhiteCard {
   // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
   google.protobuf.Timestamp delete_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
+
+// Represents a collection of related cards that can be used when creating games.
+// Different from a normal cardpack because this is a top-level resource and therefore
+// has no owner, and it is immutable along with all cards in it.
+message DefaultCardpack {
+  option (google.api.resource) = {
+    type: "api.crusty.cards/DefaultCardpack"
+    pattern: "defaultCardpacks/{default_cardpack}"
+  };
+
+  // The resource name of the default cardpack.
+  string name = 1 [(google.api.field_behavior) = IMMUTABLE];
+
+  // The display name of the default cardpack.
+  string display_name = 2;
+}
+
+// An immutable default black card. Behaves like a black card in Cards Against Humanity.
+// Belongs to a default cardpack.
+message DefaultBlackCard {
+  option (google.api.resource) = {
+    type: "api.crusty.cards/DefaultBlackCard"
+    pattern: "defaultCardpacks/{default_cardpack}/defaultBlackCards/{default_black_card}"
+  };
+
+  // The resource name of the card.
+  string name = 1 [(google.api.field_behavior) = IMMUTABLE];
+
+  // The content of the card.
+  string text = 2;
+
+  // The number of white cards that should be played when this card is used.
+  // Value must be 1, 2, or 3.
+  int32 answer_fields = 3;
+}
+
+// An immutable default white card. Behaves like a white card in Cards Against Humanity.
+// Belongs to a default cardpack.
+message DefaultWhiteCard {
+  option (google.api.resource) = {
+    type: "api.crusty.cards/DefaultWhiteCard"
+    pattern: "defaultCardpacks/{default_cardpack}/defaultWhiteCards/{default_white_card}"
+  };
+
+  // The resource name of the card.
+  string name = 1 [(google.api.field_behavior) = IMMUTABLE];
+
+  // The content of the card.
+  string text = 2;
+}

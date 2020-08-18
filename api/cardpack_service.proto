@@ -186,6 +186,41 @@ service CardpackService {
     };
   };
 
+  // Returns a DefaultCardpack.
+  rpc GetDefaultCardpack (GetDefaultCardpackRequest) returns (DefaultCardpack) {
+    option (google.api.http) = {
+      get: "/v1/{name=defaultCardpacks/*}"
+    };
+    option (google.api.method_signature) = "name";
+  };
+
+  // Lists DefaultCardpacks.
+  rpc ListDefaultCardpacks (ListDefaultCardpacksRequest) returns (ListDefaultCardpacksResponse) {
+    option (google.api.http) = {
+      get: "/v1/defaultCardpacks"
+    };
+  };
+
+  // Lists DefaultBlackCards.
+  rpc ListDefaultBlackCards (ListDefaultBlackCardsRequest) returns (ListDefaultBlackCardsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=defaultCardpacks/*}/defaultBlackCards"
+    };
+    option (google.api.method_signature) = "parent";
+    option (google.api.method_signature) = "parent,page_token";
+    option (google.api.method_signature) = "parent,page_size,page_token";
+  };
+
+  // Lists DefaultWhiteCards.
+  rpc ListDefaultWhiteCards (ListDefaultWhiteCardsRequest) returns (ListDefaultWhiteCardsResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=defaultCardpacks/*}/defaultWhiteCards"
+    };
+    option (google.api.method_signature) = "parent";
+    option (google.api.method_signature) = "parent,page_token";
+    option (google.api.method_signature) = "parent,page_size,page_token";
+  };
+
   // ( -------------------- )
   // ( -- Custom Methods -- )
   // ( -------------------- )
@@ -530,6 +565,99 @@ message BatchDeleteWhiteCardsResponse {
   // WhiteCards deleted. Guaranteed to be in the same order as the request.
   // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
   repeated WhiteCard cards = 1;
+}
+
+// Request message for GetDefaultCardpack.
+message GetDefaultCardpackRequest {
+  // The name of the default cardpack to retrieve.
+  // Format: defaultCardpacks/{default_cardpack}
+  string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/DefaultCardpack"}];
+}
+
+// Request message for ListDefaultCardpacks. Items are sorted by `display_name`.
+message ListDefaultCardpacksRequest {
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListDefaultCardpacks.
+message ListDefaultCardpacksResponse {
+  // The requested default cardpacks.
+  repeated DefaultCardpack default_cardpacks = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
+}
+
+// Request message for ListDefaultBlackCards. Items are sorted by `text`.
+message ListDefaultBlackCardsRequest {
+  // The parent default cardpack.
+  // Format: defaultCardpacks/{default_cardpack}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/DefaultBlackCard"}];
+
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListDefaultBlackCards.
+message ListDefaultBlackCardsResponse {
+  // The requested cards.
+  repeated DefaultBlackCard default_black_cards = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
+}
+
+// Request message for ListDefaultWhiteCards. Items are sorted by `text`.
+message ListDefaultWhiteCardsRequest {
+  // The parent default cardpack.
+  // Format: defaultCardpacks/{default_cardpack}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/DefaultWhiteCard"}];
+
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  // If negative value is specified, no items will be returned. This is
+  // useful if you only want the total size of the collection.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListDefaultWhiteCards.
+message ListDefaultWhiteCardsResponse {
+  // The requested cards.
+  repeated DefaultWhiteCard default_white_cards = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
 }
 
 // Request message for UndeleteCardpack.
