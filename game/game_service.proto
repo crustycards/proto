@@ -35,8 +35,8 @@ message SearchGamesRequest {
   string query = 1;
 
   // The minimum number of slots games must have available. Used to filter out games that are full
-  // or nearly full.
-  int32 min_available_player_slots = 2;
+  // or nearly full. Value cannot be negative.
+  int32 min_available_player_slots = 2 [(google.api.field_behavior) = OPTIONAL];
 
   enum GameStageFilter {
     // Default value. This value is unused.
@@ -262,9 +262,6 @@ message PastRound {
 }
 
 // Game list view used when users are browsing games.
-// TODO - Possibly add a field here that indicates whether the user requesting
-// the GameInfo is banned from this game. This way we can show in the UI which
-// games the user is banned from. This might not be a super useful feature though...
 message GameInfo {
   // A server-generated uuid.
   string game_id = 1;
@@ -366,7 +363,7 @@ message GameView {
   // is filled for each value so that players know who has
   // played, but the 'cards' field is empty so cards remain
   // anonymous until after the judge phase. Values are
-  // in the order that players played.
+  // in no particular order.
   //
   // When the game stage is JUDGE_PHASE, this will contain
   // one value for each player that has played this round.

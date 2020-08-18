@@ -189,6 +189,7 @@ message BlackCard {
   string name = 1 [(google.api.field_behavior) = IMMUTABLE];
 
   // The content of the card. Limited to 300 characters.
+  // Whitespace at the beginning and end is automatically trimmed when this field is set or modified.
   string text = 2;
 
   // The number of white cards that should be played when this card is used.
@@ -218,6 +219,7 @@ message WhiteCard {
   string name = 1 [(google.api.field_behavior) = IMMUTABLE];
 
   // The content of the card. Limited to 100 characters.
+  // Whitespace at the beginning and end is automatically trimmed when this field is set or modified.
   string text = 2;
 
   // When the card was created.
