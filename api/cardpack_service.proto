@@ -574,7 +574,7 @@ message GetDefaultCardpackRequest {
   string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/DefaultCardpack"}];
 }
 
-// Request message for ListDefaultCardpacks. Items are sorted by `display_name`.
+// Request message for ListDefaultCardpacks. Items are not sorted by any particular field, but rather by importance (i.e. base packs are first, then large expansion packs, etc.).
 message ListDefaultCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
