@@ -72,6 +72,11 @@ message GameConfig {
   // the main api at game creation.
   repeated string cardpack_names = 6;
 
+  // A list of default cardpacks that should be used when making the game.
+  // All cards from all default cardpacks listed will be pulled from
+  // the main api at game creation.
+  repeated string default_cardpack_names = 7;
+
   // Settings defining how blank cards behave in-game.
   message BlankCardConfig {
     // How blank cards can be used.
@@ -114,7 +119,7 @@ message GameConfig {
 
   // Defines how blank cards behave in-game
   // and how many should be added to the deck.
-  BlankCardConfig blank_card_config = 7;
+  BlankCardConfig blank_card_config = 8;
 }
 
 // Singleton resource belonging to a user. Contains user-specific settings.
