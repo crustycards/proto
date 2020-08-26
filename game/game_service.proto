@@ -213,6 +213,16 @@ message Player {
   google.protobuf.Timestamp join_time = 4;
 }
 
+// Can be one of several different types of black cards.
+// This proto is used during gameplay to represent any type of black card.
+// The black card equivalent of the PlayableWhiteCard message.
+message BlackCardInRound {
+  oneof card {
+    BlackCard black_card = 1;
+    DefaultBlackCard default_black_card = 2;
+  }
+}
+
 message BlankWhiteCard {
   // A server-generated uuid.
   string id = 1;
@@ -224,11 +234,14 @@ message BlankWhiteCard {
   string open_text = 2;
 }
 
-// Allows players to have regular white cards or blank cards.
+// Can be one of several different types of white cards.
+// This proto is used during gameplay to represent any type of white card.
+// The white card equivalent of the BlackCardInRound message.
 message PlayableWhiteCard {
   oneof card {
     WhiteCard white_card = 1;
-    BlankWhiteCard blank_card = 2;
+    BlankWhiteCard blank_white_card = 2;
+    DefaultWhiteCard default_white_card = 3;
   }
 }
 
@@ -255,7 +268,7 @@ message WhiteCardsPlayed {
 }
 
 message PastRound {
-  BlackCard black_card = 1;
+  BlackCardInRound black_card = 1;
   repeated WhiteCardsPlayed white_played = 2;
   User judge = 3;
   Player winner = 4;
@@ -389,7 +402,7 @@ message GameView {
   // The black card that's active for the current round.
   // This is empty if stage is NOT_RUNNING, otherwise
   // this will contain the current card.
-  BlackCard current_black_card = 11;
+  BlackCardInRound current_black_card = 11;
 
   // Contains the winner of the most recent game.
   // This is only filled when the stage is NOT_RUNNING
