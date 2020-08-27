@@ -67,16 +67,17 @@ message GameConfig {
   // The hand limit of each player.
   int32 hand_size = 5;
 
-  // A list of cardpacks that should be used when making the game.
-  // All cards from all cardpacks listed will be pulled from
+  // A list of custom cardpacks that should be used when making the game.
+  // All cards from all custom cardpacks listed will be pulled from
   // the main api at game creation.
-  repeated string cardpack_names = 6;
+  repeated string custom_cardpack_names = 6;
 
   // A list of default cardpacks that should be used when making the game.
   // All cards from all default cardpacks listed will be pulled from
   // the main api at game creation.
   repeated string default_cardpack_names = 7;
 
+  // TODO - Rename this to `BlankWhiteCardConfig` and remove all instances of `blank_card`?
   // Settings defining how blank cards behave in-game.
   message BlankCardConfig {
     // How blank cards can be used.
@@ -155,40 +156,39 @@ message UserSettings {
 
 // Resource belonging to a user. Represents a collection
 // of related cards that can be used when creating games.
-message Cardpack {
+message CustomCardpack {
   option (google.api.resource) = {
-    type: "api.crusty.cards/Cardpack"
-    pattern: "users/{user}/cardpacks/{cardpack}"
+    type: "api.crusty.cards/CustomCardpack"
+    pattern: "users/{user}/cardpacks/{custom_cardpack}"
   };
 
-  // The resource name of the cardpack.
+  // The resource name of the custom cardpack.
   string name = 1 [(google.api.field_behavior) = IMMUTABLE];
 
-  // The display name of the cardpack.
+  // The display name of the custom cardpack.
   string display_name = 2;
 
-  // When the cardpack was created.
+  // When the custom cardpack was created.
   google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY, (google.api.field_behavior) = IMMUTABLE];
 
-  // This field is reset anytime any changes are made to the cardpack including adding, modifying
-  // and deleting cards as well as renaming the cardpack.
+  // This field is reset anytime any changes are made to the custom cardpack including adding, modifying
+  // and deleting cards as well as renaming the custom cardpack.
   google.protobuf.Timestamp update_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // If this field is not empty, it indicates that the cardpack has been deleted. Cardpacks that
+  // If this field is not empty, it indicates that the custom cardpack has been deleted. CustomCardpacks that
   // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
   google.protobuf.Timestamp delete_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
 
-  // How many other users liked this cardpack.
+  // How many other users liked this custom cardpack.
   int64 like_count = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
-// TODO - Rename this to `CustomBlackCard`.
 // A black card. Behaves like a black card in Cards Against Humanity.
-// Belongs to a cardpack.
-message BlackCard {
+// Belongs to a CustomCardpack.
+message CustomBlackCard {
   option (google.api.resource) = {
-    type: "api.crusty.cards/BlackCard"
-    pattern: "users/{user}/cardpacks/{cardpack}/blackCards/{black_card}"
+    type: "api.crusty.cards/CustomBlackCard"
+    pattern: "users/{user}/cardpacks/{custom_cardpack}/blackCards/{custom_black_card}"
   };
 
   // The resource name of the card.
@@ -213,13 +213,12 @@ message BlackCard {
   google.protobuf.Timestamp delete_time = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
-// TODO - Rename this to `CustomWhiteCard`.
 // A white card. Behaves like a white card in Cards Against Humanity.
-// Belongs to a cardpack.
-message WhiteCard {
+// Belongs to a CustomCardpack.
+message CustomWhiteCard {
   option (google.api.resource) = {
-    type: "api.crusty.cards/WhiteCard"
-    pattern: "users/{user}/cardpacks/{cardpack}/whiteCards/{white_card}"
+    type: "api.crusty.cards/CustomWhiteCard"
+    pattern: "users/{user}/cardpacks/{custom_cardpack}/whiteCards/{custom_white_card}"
   };
 
   // The resource name of the card.
@@ -241,7 +240,7 @@ message WhiteCard {
 }
 
 // Represents a collection of related cards that can be used when creating games.
-// Different from a normal cardpack because this is a top-level resource and therefore
+// Different from a custom cardpack because this is a top-level resource and therefore
 // has no owner, and it is immutable along with all cards in it.
 message DefaultCardpack {
   option (google.api.resource) = {
@@ -257,11 +256,11 @@ message DefaultCardpack {
 }
 
 // An immutable default black card. Behaves like a black card in Cards Against Humanity.
-// Belongs to a default cardpack.
+// Belongs to a DefaultCardpack.
 message DefaultBlackCard {
   option (google.api.resource) = {
     type: "api.crusty.cards/DefaultBlackCard"
-    pattern: "defaultCardpacks/{default_cardpack}/defaultBlackCards/{default_black_card}"
+    pattern: "defaultCardpacks/{default_cardpack}/blackCards/{default_black_card}"
   };
 
   // The resource name of the card.
@@ -276,11 +275,11 @@ message DefaultBlackCard {
 }
 
 // An immutable default white card. Behaves like a white card in Cards Against Humanity.
-// Belongs to a default cardpack.
+// Belongs to a DefaultCardpack.
 message DefaultWhiteCard {
   option (google.api.resource) = {
     type: "api.crusty.cards/DefaultWhiteCard"
-    pattern: "defaultCardpacks/{default_cardpack}/defaultWhiteCards/{default_white_card}"
+    pattern: "defaultCardpacks/{default_cardpack}/whiteCards/{default_white_card}"
   };
 
   // The resource name of the card.

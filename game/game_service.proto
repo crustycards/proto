@@ -122,8 +122,10 @@ message PlayCardsRequest {
   string user_name = 1;
 
   // The cards to play. All cards must be in the user's hand or the request will fail.
-  // For each card in this list, if the `white_card` property is present
-  // then only `white_card.name` is required and all other fields are ignored.
+  // For each card in this list, if the `custom_white_card` property is present
+  // then only `custom_white_card.name` is required and all other fields are ignored.
+  // If the `default_white_card` property is present
+  // then only `default_white_card.name` is required and all other fields are ignored.
   // If the `blank_card` property is present then `blank_card.id` and `blank_card.open_text` are required.
   // The `blank_card.open_text` field should contain user-specified open text from a blank card.
   // The `blank_card` property property is only allowed for games that have OPEN_TEXT behavior for blank cards.
@@ -218,7 +220,7 @@ message Player {
 // The black card equivalent of the PlayableWhiteCard message.
 message BlackCardInRound {
   oneof card {
-    BlackCard black_card = 1;
+    CustomBlackCard custom_black_card = 1;
     DefaultBlackCard default_black_card = 2;
   }
 }
@@ -239,7 +241,7 @@ message BlankWhiteCard {
 // The white card equivalent of the BlackCardInRound message.
 message PlayableWhiteCard {
   oneof card {
-    WhiteCard white_card = 1;
+    CustomWhiteCard custom_white_card = 1;
     BlankWhiteCard blank_white_card = 2;
     DefaultWhiteCard default_white_card = 3;
   }
