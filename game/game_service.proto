@@ -268,9 +268,16 @@ message WhiteCardsPlayed {
 }
 
 message PastRound {
+  // The black card that was used for the round.
   BlackCardInRound black_card = 1;
+
+  // The white cards that were played for this round. Each entry includes the player who played the cards.
   repeated WhiteCardsPlayed white_played = 2;
+
+  // The user who judged the round.
   User judge = 3;
+
+  // The player who won the round.
   Player winner = 4;
 }
 
@@ -305,8 +312,11 @@ message GameView {
   // The unique id of the game.
   string game_id = 1;
   
+  // The config that was used to create this game.
   GameConfig config = 2;
 
+  // Represents what stage this game is currently in, which
+  // determines what actions are allowed for certain players.
   enum Stage {
     // Default value. This value is unused.
     STAGE_UNSPECIFIED = 0;
@@ -416,6 +426,8 @@ message GameView {
   // Contains, at most, the 100 most recent messages.
   repeated ChatMessage chat_messages = 13;
 
+  // A list of previous rounds from the current game.
+  // This is cleared whenever the game is started/restarted.
   repeated PastRound past_rounds = 14;
 
   // When the game was created.
