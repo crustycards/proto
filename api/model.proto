@@ -77,50 +77,49 @@ message GameConfig {
   // the main api at game creation.
   repeated string default_cardpack_names = 7;
 
-  // TODO - Rename this to `BlankWhiteCardConfig` and remove all instances of `blank_card`?
-  // Settings defining how blank cards behave in-game.
-  message BlankCardConfig {
-    // How blank cards can be used.
+  // Settings defining how blank white cards behave in-game.
+  message BlankWhiteCardConfig {
+    // How blank white cards can be used.
     enum Behavior {
       // Default value. This value is unused.
       BEHAVIOR_UNSPECIFIED = 0;
 
-      // No blank cards are added to the deck.
+      // No blank white cards are added to the deck.
       DISABLED = 1;
 
-      // Allow users to play blank cards from their hand
+      // Allow users to play blank white cards from their hand
       // and write any text (limited to 100 characters).
       OPEN_TEXT = 2;
 
-      // At any time, a user can choose to trade in a blank card. Whenever
+      // At any time, a user can choose to trade in a blank white card. Whenever
       // they do, five cards are drawn from the deck and displayed to the user.
       // The user can pick any one of them and it is added to their hand.
       RANDOM_CHOICE = 3;
     }
 
-    // Specifies behavior of blank cards.
+    // Specifies behavior of blank white cards.
     Behavior behavior = 1;
 
-    oneof blank_cards_added {
-      // Adds a fixed number of blank cards to the deck.
+    oneof blank_white_cards_added {
+      // Adds a fixed number of blank white cards to the deck.
       int32 card_count = 2;
 
       // A number between 0.0 and 0.8 specifying what percentage of the total
-      // deck size should be blank cards. For example, if there are 900
-      // non-blank cards in your game and you specify a blank card percentage
-      // of 0.1, there will be 100 blank cards added for a total of 1000.
+      // deck size should be blank white cards. For example, if there are 900
+      // non-blank white cards in your game and you specify a percentage
+      // of 0.1, there will be 100 blank white cards added for a total of 1000.
       //
       // The upper limit is 0.8 because, as this value approaches 1.0, the
-      // number of blank cards needed increases exponentially. A value of 0.5
+      // number of blank white cards needed increases exponentially. A value of 0.5
       // doubles the size of the deck, a value of 0.8 increases the size by 5x
       // and a value of 0.99 would increase it by 100x.
       double percentage = 3;
     }
   }
 
-  // Defines how blank cards behave in-game
+  // Defines how blank white cards behave in-game
   // and how many should be added to the deck.
-  BlankCardConfig blank_card_config = 8;
+  BlankWhiteCardConfig blank_white_card_config = 8;
 }
 
 // Singleton resource belonging to a user. Contains user-specific settings.

@@ -23,7 +23,7 @@ service GameService {
   rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (GameView);
   rpc CreateChatMessage (CreateChatMessageRequest) returns (GameView);
   rpc GetGameView (GetGameViewRequest) returns (GameView);
-  // TODO - Create RPCs for RANDOM_CHOICE blank card picker.
+  // TODO - Create RPCs for RANDOM_CHOICE blank white card picker.
 }
 
 // Returns all games that match the search criteria.
@@ -126,9 +126,9 @@ message PlayCardsRequest {
   // then only `custom_white_card.name` is required and all other fields are ignored.
   // If the `default_white_card` property is present
   // then only `default_white_card.name` is required and all other fields are ignored.
-  // If the `blank_card` property is present then `blank_card.id` and `blank_card.open_text` are required.
-  // The `blank_card.open_text` field should contain user-specified open text from a blank card.
-  // The `blank_card` property property is only allowed for games that have OPEN_TEXT behavior for blank cards.
+  // If the `blank_white_card` property is present then `blank_white_card.id` and `blank_white_card.open_text` are required.
+  // The `blank_white_card.open_text` field should contain user-specified open text from a blank white card.
+  // The `blank_white_card` property is only allowed for games that have OPEN_TEXT behavior for blank white cards.
   repeated PlayableWhiteCard cards = 2;
 }
 
@@ -232,7 +232,7 @@ message BlankWhiteCard {
   // Text entered by the user (limited to 100 characters).
   // Always empty for cards in a player's hand and
   // always non-empty for cards that have been played.
-  // Required when playing a blank card using the PlayCards rpc.
+  // Required when playing a blank white card using the PlayCards rpc.
   string open_text = 2;
 }
 
@@ -258,14 +258,14 @@ message WhiteCardsPlayed {
 
   // The text of the cards played by the user.
   // We're including only the card text to hide
-  // whether it includes any blank cards. Since
-  // artificial players never draw blank cards,
-  // including full card protos could give away
-  // that an answer belongs to a real user if it
-  // contained blank cards. By including only
-  // the text, even users with direct access to
-  // this api are unable to tell where it came
-  // from.
+  // whether it includes any blank white cards.
+  // Since artificial players never draw blank
+  // white cards, including full card protos
+  // could give away that an answer belongs to
+  // a real user if it contained blank white
+  // cards. By including only the text, even
+  // users with direct access to this api are
+  // unable to tell where it came from.
   repeated string card_texts = 2;
 }
 
