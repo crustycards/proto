@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package crusty.cards.game;
+package crusty.cards.api;
 
 import "api/model.proto";
 import "google/api/field_behavior.proto";
