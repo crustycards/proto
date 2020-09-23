@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package crusty.cards.api;
+
 import "api/model.proto";
 import "google/api/annotations.proto";
 import "google/api/client.proto";

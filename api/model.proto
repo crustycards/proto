@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package crusty.cards.api;
+
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
 import "google/protobuf/timestamp.proto";
