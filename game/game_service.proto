@@ -360,7 +360,7 @@ message GameView {
   // All users that have been banned from the game.
   // Always listed in the order they were banned.
   // These users are unable to join the game.
-  repeated User banned_players = 7;
+  repeated User banned_users = 7;
 
   // The current judge for the round.
   // This might be empty if the game stage is NOT_RUNNING
