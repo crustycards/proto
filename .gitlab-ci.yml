@@ -14,4 +14,4 @@ lint:
     - cd /builds/cards-against-humanity/cards-proto
     - go get -u github.com/googleapis/api-linter/cmd/api-linter
     - go get -u github.com/golang/protobuf/protoc-gen-go
-    - api-linter --proto-path=/api-common-protos api/cardpack_service.proto api/model.proto api/user_service.proto game/game_service.proto
+    - api-linter --proto-path=/api-common-protos api/cardpack_service.proto api/game_service.proto api/model.proto api/user_service.proto
