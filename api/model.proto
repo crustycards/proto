@@ -57,8 +57,7 @@ message GameConfig {
   // a game will automatically end.
   oneof end_condition {
     // Once a player reaches this score, the game
-    // is stopped automatically and that player is
-    // marked as the winner.
+    // is stopped automatically and that player wins.
     int32 max_score = 3;
 
     // The game never ends automatically.
