@@ -164,45 +164,18 @@ message GetOrCreateUserRequest {
 message UserSearchRequest {
   // The search query to suggest results from.
   string query = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The maximum page size.
-  // If unspecified, at most 50 items will be returned.
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
-  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Page token returned from a previous rpc.
-  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for UserSearch.
 message UserSearchResponse {
   // Search results.
   repeated User users = 1;
-
-  // Opaque string. Can be passed to a subsequent
-  // request to retrieve the next page of items.
-  string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
 }
 
 // Request message for AutocompleteUserSearch.
 message AutocompleteUserSearchRequest {
   // The search query to suggest results from.
   string query = 1 [(google.api.field_behavior) = REQUIRED];
-
-  // The maximum page size.
-  // If unspecified, at most 50 items will be returned.
-  // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
-  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
-
-  // Page token returned from a previous rpc.
-  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for AutocompleteUserSearch.
@@ -211,11 +184,4 @@ message AutocompleteUserSearchResponse {
   // Each entry is guaranteed to contain
   // the original query.
   repeated string autocomplete_entries = 1;
-
-  // Opaque string. Can be passed to a subsequent
-  // request to retrieve the next page of items.
-  string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
 }
