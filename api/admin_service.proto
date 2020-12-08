@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package crusty.cards.api;
+
+import "google/protobuf/empty.proto";
+
+service AdminService {
+    rpc ClearUserSearchIndex(google.protobuf.Empty) returns (google.protobuf.Empty);
+    rpc RefreshUserSearchIndex (google.protobuf.Empty) returns (google.protobuf.Empty);
+}
