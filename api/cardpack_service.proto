@@ -201,6 +201,8 @@ service CardpackService {
     option (google.api.http) = {
       get: "/v1/defaultCardpacks"
     };
+    option (google.api.method_signature) = "page_token";
+    option (google.api.method_signature) = "page_size,page_token";
   };
 
   // Lists DefaultBlackCards.
@@ -291,8 +293,6 @@ message ListCustomCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -365,8 +365,6 @@ message ListCustomBlackCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -398,8 +396,6 @@ message ListCustomWhiteCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -548,8 +544,6 @@ message ListDefaultCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -578,8 +572,6 @@ message ListDefaultBlackCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
@@ -608,8 +600,6 @@ message ListDefaultWhiteCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  // If negative value is specified, no items will be returned. This is
-  // useful if you only want the total size of the collection.
   int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
