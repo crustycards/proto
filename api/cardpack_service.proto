@@ -259,12 +259,6 @@ service CardpackService {
 
   // Returns whether a User has added a CustomCardpack to their favorites.
   rpc CheckDoesUserLikeCustomCardpack (CheckDoesUserLikeCustomCardpackRequest) returns (CheckDoesUserLikeCustomCardpackResponse);
-
-  // Fetches multiple CustomCardpacks based off search query.
-  rpc CustomCardpackSearch (CustomCardpackSearchRequest) returns (CustomCardpackSearchResponse);
-
-  // Fetches search suggestions that are used to provide autocomplete functionality.
-  rpc AutocompleteCustomCardpackSearch (AutocompleteCustomCardpackSearchRequest) returns (AutocompleteCustomCardpackSearchResponse);
 }
 
 // Request message for CreateCustomCardpack.
@@ -686,30 +680,4 @@ message CheckDoesUserLikeCustomCardpackRequest {
 message CheckDoesUserLikeCustomCardpackResponse {
   // Whether the user has liked the custom cardpack.
   bool is_liked = 1;
-}
-
-// Request message for CustomCardpackSearch.
-message CustomCardpackSearchRequest {
-  // The search query to suggest results from.
-  string query = 1 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Response message for CustomCardpackSearch.
-message CustomCardpackSearchResponse {
-  // Search results.
-  repeated CustomCardpack custom_cardpacks = 1;
-}
-
-// Request message for AutocompleteCustomCardpackSearch.
-message AutocompleteCustomCardpackSearchRequest {
-  // The search query to suggest results from.
-  string query = 1 [(google.api.field_behavior) = REQUIRED];
-}
-
-// Response message for AutocompleteCustomCardpackSearch.
-message AutocompleteCustomCardpackSearchResponse {
-  // List of autocomplete suggestions.
-  // Each entry is guaranteed to contain
-  // the original query.
-  repeated string autocomplete_entries = 1;
 }
