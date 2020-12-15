@@ -168,26 +168,6 @@ service CardpackService {
     };
   };
 
-  // Soft deletes a batch of CustomBlackCards. Deleted CustomBlackCards can be
-  // undeleted for 30 days before they are permanently removed.
-  // This operation is atomic. Partial writes are not supported.
-  rpc BatchDeleteCustomBlackCards (BatchDeleteCustomBlackCardsRequest) returns (BatchDeleteCustomBlackCardsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{parent=users/*/cardpacks/*}/blackCards:batchDelete"
-      body: "*"
-    };
-  };
-
-  // Soft deletes a batch of CustomWhiteCards. Deleted CustomWhiteCards can be
-  // undeleted for 30 days before they are permanently removed.
-  // This operation is atomic. Partial writes are not supported.
-  rpc BatchDeleteCustomWhiteCards (BatchDeleteCustomWhiteCardsRequest) returns (BatchDeleteCustomWhiteCardsResponse) {
-    option (google.api.http) = {
-      post: "/v1/{parent=users/*/cardpacks/*}/whiteCards:batchDelete"
-      body: "*"
-    };
-  };
-
   // Returns a DefaultCardpack.
   rpc GetDefaultCardpack (GetDefaultCardpackRequest) returns (DefaultCardpack) {
     option (google.api.http) = {
@@ -482,48 +462,6 @@ message BatchCreateCustomWhiteCardsRequest {
 message BatchCreateCustomWhiteCardsResponse {
   // White cards created. Guaranteed to be in the same order as the request.
   repeated CustomWhiteCard custom_white_cards = 1;
-}
-
-// Request message for BatchDeleteCustomBlackCards.
-message BatchDeleteCustomBlackCardsRequest {
-  // The parent resource shared by all cards being deleted.
-  // Format: users/{user}/cardpacks/{custom_cardpack}
-  // The parent of all of the cards
-  // specified in `names` must match this field.
-  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/CustomCardpack"}];
-
-  // The names of the cards to delete.
-  // A maximum of 10000 cards can be deleted in a batch.
-  // Format: users/{user}/cardpacks/{custom_cardpack}/blackCards/{custom_black_card}
-  repeated string names = 2;
-}
-
-// Response message for BatchDeleteCustomBlackCards.
-message BatchDeleteCustomBlackCardsResponse {
-  // CustomBlackCards deleted. Guaranteed to be in the same order as the request.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  repeated CustomBlackCard cards = 1;
-}
-
-// Request message for BatchDeleteCustomWhiteCards.
-message BatchDeleteCustomWhiteCardsRequest {
-  // The parent resource shared by all cards being deleted.
-  // Format: users/{user}/cardpacks/{custom_cardpack}
-  // The parent of all of the cards
-  // specified in `names` must match this field.
-  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/CustomCardpack"}];
-
-  // The names of the cards to delete.
-  // A maximum of 10000 cards can be deleted in a batch.
-  // Format: users/{user}/cardpacks/{custom_cardpack}/whiteCards/{custom_white_card}
-  repeated string names = 2;
-}
-
-// Response message for BatchDeleteCustomWhiteCards.
-message BatchDeleteCustomWhiteCardsResponse {
-  // CustomWhiteCards deleted. Guaranteed to be in the same order as the request.
-  // Deleted cards are guaranteed to remain available to be undeleted for at least 30 days.
-  repeated CustomWhiteCard cards = 1;
 }
 
 // Request message for GetDefaultCardpack.
