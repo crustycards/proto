@@ -50,7 +50,7 @@ service CardpackService {
     };
     option (google.api.method_signature) = "parent";
     option (google.api.method_signature) = "parent,page_token";
-    option (google.api.method_signature) = "parent,page_size,page_token,show_favorited,show_deleted";
+    option (google.api.method_signature) = "parent,page_size,page_token,show_deleted";
   };
 
   // Updates a CustomCardpack.
@@ -231,13 +231,11 @@ service CardpackService {
   rpc ListFavoritedCustomCardpacks (ListFavoritedCustomCardpacksRequest) returns (ListFavoritedCustomCardpacksResponse);
 
   // Adds CustomCardpack to a User's favorites list.
-  // To view favorited custom cardpacks, use the ListCustomCardpacks
-  // rpc with `list_favorited` set to true.
+  // To view favorited custom cardpacks, use the ListFavoritedCustomCardpacks rpc.
   rpc LikeCustomCardpack (LikeCustomCardpackRequest) returns (google.protobuf.Empty);
 
   // Removes CustomCardpack from a User's favorites list.
-  // To view favorited custom cardpacks, use the ListCustomCardpacks
-  // rpc with `list_favorited` set to true.
+  // To view favorited custom cardpacks, use the ListFavoritedCustomCardpacks rpc.
   rpc UnlikeCustomCardpack (UnlikeCustomCardpackRequest) returns (google.protobuf.Empty);
 
   // Returns whether a User has added a CustomCardpack to their favorites.
