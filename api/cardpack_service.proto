@@ -228,6 +228,8 @@ service CardpackService {
   // the ListCustomWhiteCards rpc with `show_deleted` set to true.
   rpc UndeleteCustomWhiteCard (UndeleteCustomWhiteCardRequest) returns (CustomWhiteCard);
 
+  rpc ListFavoritedCustomCardpacks (ListFavoritedCustomCardpacksRequest) returns (ListFavoritedCustomCardpacksResponse);
+
   // Adds CustomCardpack to a User's favorites list.
   // To view favorited custom cardpacks, use the ListCustomCardpacks
   // rpc with `list_favorited` set to true.
@@ -272,10 +274,6 @@ message ListCustomCardpacksRequest {
 
   // Page token returned from a previous rpc.
   string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
-
-  // When enabled, lists custom cardpacks that the parent
-  // has favorited instead of ones that they own.
-  bool show_favorited = 5 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted custom cardpacks instead.
   bool show_deleted = 6 [(google.api.field_behavior) = OPTIONAL];
@@ -574,6 +572,34 @@ message UndeleteCustomWhiteCardRequest {
   // Deleted white cards are guaranteed to remain available to be undeleted for at least 30 days.
   // Format: users/{user}/cardpacks/{custom_cardpack}/whiteCards/{custom_white_card}
   string name = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {type: "api.crusty.cards/CustomWhiteCard"}];
+}
+
+// Request message for ListFavoritedCustomCardpacks.
+message ListFavoritedCustomCardpacksRequest {
+  // The parent user.
+  // Format: users/{user}
+  string parent = 1 [(google.api.field_behavior) = REQUIRED, (google.api.resource_reference) = {child_type: "api.crusty.cards/CustomCardpack"}];
+
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+// Response message for ListFavoritedCustomCardpacks.
+message ListFavoritedCustomCardpacksResponse {
+  // The requested custom cardpacks.
+  repeated CustomCardpack custom_cardpacks = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
 }
 
 // Request message for LikeCustomCardpack.
