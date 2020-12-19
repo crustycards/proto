@@ -590,14 +590,17 @@ message ListFavoritedCustomCardpacksRequest {
 // Response message for ListFavoritedCustomCardpacks.
 message ListFavoritedCustomCardpacksResponse {
   // The requested custom cardpacks.
+  // The user's favorite list contains references to cardpacks, so if
+  // a cardpack in the list is deleted, the reference still exists in
+  // the user's favorites. When this occurs, a completely empty proto
+  // is included in this repeated field. Also, soft-deleted cardpacks
+  // do still show up in this list - an empty proto is only used when
+  // the cardpack has been permanently deleted.
   repeated CustomCardpack custom_cardpacks = 1;
 
   // Opaque string. Can be passed to a subsequent
   // request to retrieve the next page of items.
   string next_page_token = 2;
-
-  // The total number of items in the list specified in the request.
-  int64 total_size = 3;
 }
 
 // Request message for LikeCustomCardpack.

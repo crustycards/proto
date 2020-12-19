@@ -178,9 +178,6 @@ message CustomCardpack {
   // If this field is not empty, it indicates that the custom cardpack has been deleted. CustomCardpacks that
   // have been deleted are guaranteed to remain available to be undeleted for at least 30 days.
   google.protobuf.Timestamp delete_time = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
-
-  // How many other users liked this custom cardpack.
-  int64 like_count = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 
 // A black card. Behaves like a black card in Cards Against Humanity.
