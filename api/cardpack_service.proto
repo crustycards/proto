@@ -268,13 +268,13 @@ message ListCustomCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted custom cardpacks instead.
-  bool show_deleted = 6 [(google.api.field_behavior) = OPTIONAL];
+  bool show_deleted = 4 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListCustomCardpacks.
@@ -336,13 +336,13 @@ message ListCustomBlackCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted cards instead.
-  bool show_deleted = 5 [(google.api.field_behavior) = OPTIONAL];
+  bool show_deleted = 4 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListCustomBlackCards.
@@ -367,13 +367,13 @@ message ListCustomWhiteCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 
   // Show soft-deleted cards instead.
-  bool show_deleted = 5 [(google.api.field_behavior) = OPTIONAL];
+  bool show_deleted = 4 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListCustomWhiteCards.
@@ -473,10 +473,10 @@ message ListDefaultCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 1 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 2 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListDefaultCardpacks.
@@ -501,10 +501,10 @@ message ListDefaultBlackCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListDefaultBlackCards.
@@ -529,10 +529,10 @@ message ListDefaultWhiteCardsRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListDefaultWhiteCards.
@@ -581,10 +581,10 @@ message ListFavoritedCustomCardpacksRequest {
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
   // The maximum value is 1000; values above 1000 will be coerced to 1000.
-  int32 page_size = 3 [(google.api.field_behavior) = OPTIONAL];
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
 
   // Page token returned from a previous rpc.
-  string page_token = 4 [(google.api.field_behavior) = OPTIONAL];
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
 }
 
 // Response message for ListFavoritedCustomCardpacks.
