@@ -25,7 +25,7 @@ service GameService {
   rpc RemoveArtificialPlayer (RemoveArtificialPlayerRequest) returns (GameView);
   rpc CreateChatMessage (CreateChatMessageRequest) returns (GameView);
   rpc GetGameView (GetGameViewRequest) returns (GameView);
-  // TODO - Create RPCs for RANDOM_CHOICE blank white card picker.
+  rpc ListWhiteCardTexts(ListWhiteCardTextsRequest) returns (ListWhiteCardTextsResponse);
 }
 
 // Returns all games that match the search criteria.
@@ -178,6 +178,39 @@ message CreateChatMessageRequest {
 
 message GetGameViewRequest {
   string user_name = 1 [(google.api.field_behavior) = REQUIRED];
+}
+
+// Used to search among all cards that are in a game - including the dicard pile and all players' hands.
+// The purpose of this rpc is for games that use DUPLICATE_TEXT blank white cards.
+// Returned items are sorted alphabetically.
+message ListWhiteCardTextsRequest {
+  // The game to search within.
+  string game_id = 1;
+
+  // The maximum page size.
+  // If unspecified, at most 50 items will be returned.
+  // The maximum value is 1000; values above 1000 will be coerced to 1000.
+  int32 page_size = 2 [(google.api.field_behavior) = OPTIONAL];
+
+  // Page token returned from a previous rpc.
+  string page_token = 3 [(google.api.field_behavior) = OPTIONAL];
+
+  // Filter cards by their text. Right now this does not have any
+  // special functionality described in https://google.aip.dev/160.
+  // It is strictly an exact text filter.
+  string filter = 4 [(google.api.field_behavior) = OPTIONAL];
+}
+
+message ListWhiteCardTextsResponse {
+  // The text of each card.
+  repeated string card_texts = 1;
+
+  // Opaque string. Can be passed to a subsequent
+  // request to retrieve the next page of items.
+  string next_page_token = 2;
+
+  // The total number of items in the list specified in the request.
+  int64 total_size = 3;
 }
 
 message ChatMessage {

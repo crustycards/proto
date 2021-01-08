@@ -92,10 +92,10 @@ message GameConfig {
       // and write any text (limited to 100 characters).
       OPEN_TEXT = 2;
 
-      // At any time, a user can choose to trade in a blank white card. Whenever
-      // they do, five cards are drawn from the deck and displayed to the user.
-      // The user can pick any one of them and it is added to their hand.
-      RANDOM_CHOICE = 3;
+      // Similar to OPEN_TEXT, except the card text must exactly match
+      // another white card that is in the current game. To search for
+      // cards to copy, use the ListWhiteCardTexts rpc.
+      DUPLICATE_TEXT = 3;
     }
 
     // Specifies behavior of blank white cards.
