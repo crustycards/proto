@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package crusty.cards.api;
+package crusty_cards_api;
 
 import "google/protobuf/empty.proto";
 

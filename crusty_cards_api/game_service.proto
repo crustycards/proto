@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package crusty.cards.api;
+package crusty_cards_api;
 
 import "api/model.proto";
 import "google/api/field_behavior.proto";
@@ -185,7 +185,7 @@ message GetGameViewRequest {
 // Returned items are sorted alphabetically.
 message ListWhiteCardTextsRequest {
   // The game to search within.
-  string game_id = 1;
+  string game_id = 1 [(google.api.field_behavior) = REQUIRED];
 
   // The maximum page size.
   // If unspecified, at most 50 items will be returned.
