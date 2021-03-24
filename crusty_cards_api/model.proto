@@ -4,6 +4,7 @@ package crusty_cards_api;
 
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 // Top-level resource representing a user.
@@ -62,7 +63,7 @@ message GameConfig {
 
     // The game never ends automatically.
     // Scores are still tracked.
-    bool endless_mode = 4;
+    google.protobuf.Empty endless_mode = 4;
   }
 
   // The hand limit of each player.
